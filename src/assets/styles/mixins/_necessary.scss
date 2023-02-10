@@ -1,0 +1,36 @@
+
+@mixin display-flex() {
+	display: flex
+}
+
+@mixin flex-direction($direction) {
+    display: flex;
+    flex-direction: $direction;
+  }
+  
+  @mixin flex-grow($grow) {
+    display: flex;
+    flex-grow: $grow;
+  }
+  
+  @mixin align-items($align) {
+    align-items: $align;
+  }
+
+  
+@mixin border-radius($radius) {
+    border-radius: $radius;
+  }
+
+  
+@mixin justify-content($justify) {
+    justify-content: $justify;
+  }
+
+  @mixin transition-duration($duration) {
+    transition-duration: $duration;
+  }
+
+  @mixin transition($transition) {
+    transition: $transition;
+  }

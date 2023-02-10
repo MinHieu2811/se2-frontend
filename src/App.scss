@@ -1,0 +1,63 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* === Plugin styles === */
+
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+@import "../src/assets/styles/variables";
+@import "~compass-mixins/lib/compass";
+@import "~compass-mixins/lib/animate";
+@import "~bootstrap/scss/bootstrap";
+@import "../src/assets/styles/fonts";
+@import "../src/assets/styles/functions";
+@import "../src/assets/styles/mixins/necessary";
+
+/* === Icon fonts === */
+// @import "~@mdi/font/scss/materialdesignicons";
+
+
+/* === Template mixins === */
+// @import "../src/assets/styles/mixins/animation";
+@import "../src/assets/styles/mixins/badges";
+@import "../src/assets/styles/mixins/buttons";
+@import "../src/assets/styles/mixins/misc";
+@import "../src/assets/styles/mixins/color-functions";
+@import "../src/assets/styles/mixins/cards";
+@import "../src/assets/styles/mixins/blockqoute";
+
+
+/* === Core Styles === */
+@import "../src/assets/styles/typography";
+@import "../src/assets/styles/reset";
+@import "../src/assets/styles/responsive";
+@import "../src/assets/styles/misc";
+@import "../src/assets/styles/utilities";
+@import "../src/assets/styles/demo";
+@import "../src/assets/styles/spinner";
+@import "../src/assets/styles/dashboard";
+
+/* === Components === */
+
+@import "../src/assets/styles/components/checkbox-radio";
+@import "../src/assets/styles/components/forms";
+@import "../src/assets/styles/components/icons";
+@import "../src/assets/styles/components/tables";
+@import "../src/assets/styles/components/buttons";
+@import "../src/assets/styles/components/breadcrumbs";
+@import "../src/assets/styles/components/badges";
+@import "../src/assets/styles/components/cards";
+@import "../src/assets/styles/components/preview";
+@import "../src/assets/styles/components/lists";
+@import "../src/assets/styles/components/todo-list";
+@import "../src/assets/styles/components/dropdowns";
+@import "../src/assets/styles/components/loaders/loaders";
+
+@import "../src/assets/styles/components/landing-screens/auth";
+
+/* === Layout === */
+@import "../src/assets/styles/navbar";
+@import "../src/assets/styles/sidebar";
+@import "../src/assets/styles/footer";
+@import "../src/assets/styles/layout";
