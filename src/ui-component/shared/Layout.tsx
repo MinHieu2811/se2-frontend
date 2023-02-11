@@ -1,29 +1,27 @@
-import React from 'react'
-import Footer from './Footer'
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
+import React from "react";
+import Footer from "./Footer";
+import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 
 type Props = {
-    children: JSX.Element
-}
+  children: JSX.Element;
+};
 
-const Layout = ({children}: Props) => {
+const Layout = ({ children }: Props) => {
   return (
     <>
-        <nav>
-            <Navbar />
-        </nav>
-        <>
-            <Sidebar />
-        </>
-        <>
-            {children}
-        </>
-        <footer>
-            <Footer />
-        </footer>
+      <div className="d-flex">
+        <div className="sidebar-wrapper">
+          <Sidebar />
+        </div>
+        <div className="content" style={{ width: "100%" }}>
+          <Navbar />
+          <>{children}</>
+          <Footer />
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

@@ -4,17 +4,15 @@ import { Collapse, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { GrMoreVertical } from 'react-icons/gr'
 import { AiFillHome } from 'react-icons/ai'
+import { BsChevronDown } from 'react-icons/bs'
+import { GiPresent } from 'react-icons/gi'
+import { TbCheckupList, TbShoppingCartDiscount } from 'react-icons/tb'
+import { BiErrorCircle } from 'react-icons/bi'
 
 type Props = {};
 type UIprops = {
-  basicUiMenuOpen: boolean;
-  formElementsMenuOpen: boolean;
-  tablesMenuOpen: boolean;
-  chartsMenuOpen: boolean;
-  iconsMenuOpen: boolean;
-  errorPagesMenuOpen: boolean;
-  userPagesMenuOpen: boolean;
-};
+  [key: string]: boolean
+}
 
 const dropdownPaths = [
   {path:'/apps', state: 'appsMenuOpen'},
@@ -31,17 +29,17 @@ const Sidebar = (props: Props) => {
   const sidebarRef = useRef<HTMLDivElement>(null)
   // const logo = require('../../assets/images/address-book.svg') as string
   const [config, setConfig] = useState<UIprops>({
-    basicUiMenuOpen: false,
-    formElementsMenuOpen: false,
-    tablesMenuOpen: false,
-    chartsMenuOpen: false,
-    iconsMenuOpen: false,
-    errorPagesMenuOpen: false,
-    userPagesMenuOpen: false,
+    "basicUiMenuOpen": false,
+    "formElementsMenuOpen": false,
+    "tablesMenuOpen": false,
+    "chartsMenuOpen": false,
+    "iconsMenuOpen": false,
+    "errorPagesMenuOpen": false,
+    "userPagesMenuOpen": false,
   });
 
   function toggleMenuState(name: string) {
-    if ([name]) {
+    if (config[name]) {
       setConfig({
         ...config,
         [name]: false,
@@ -101,7 +99,7 @@ const Sidebar = (props: Props) => {
     return window.location.pathname.startsWith(path);
   }
   return (
-    <nav className="sidebar sidebar-offcanvas" id="sidebar" ref={sidebarRef}>
+    <nav className="sidebar sidebar-offcanvas height-full" id="sidebar" ref={sidebarRef}>
       <div className="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
         <h1>Dashboard</h1>
       </div>
@@ -209,10 +207,10 @@ const Sidebar = (props: Props) => {
             data-toggle="collapse"
           >
             <span className="menu-icon">
-              <i className="mdi mdi-laptop"></i>
+            <GiPresent />
             </span>
-            <span className="menu-title">Basic UI Elements</span>
-            <i className="menu-arrow"></i>
+            <span className="menu-title">Products</span>
+            <BsChevronDown style={{ marginLeft: 'auto'}}/>
           </div>
           <Collapse in={config?.basicUiMenuOpen}>
             <div>
@@ -221,39 +219,26 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
-                      isPathActive("/basic-ui/buttons")
+                      isPathActive("/products")
                         ? "nav-link active"
                         : "nav-link"
                     }
-                    to="/basic-ui/buttons"
+                    to="/products/create-product"
                   >
-                    Buttons
+                    Create Product
                   </Link>
                 </li>
                 <li className="nav-item">
                   {" "}
                   <Link
                     className={
-                      isPathActive("/basic-ui/dropdowns")
+                      isPathActive("/products")
                         ? "nav-link active"
                         : "nav-link"
                     }
-                    to="/basic-ui/dropdowns"
+                    to="/products/all-product"
                   >
-                    Dropdowns
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  {" "}
-                  <Link
-                    className={
-                      isPathActive("/basic-ui/typography")
-                        ? "nav-link active"
-                        : "nav-link"
-                    }
-                    to="/basic-ui/typography"
-                  >
-                    Typography
+                    All Products
                   </Link>
                 </li>
               </ul>
@@ -277,10 +262,10 @@ const Sidebar = (props: Props) => {
             data-toggle="collapse"
           >
             <span className="menu-icon">
-              <i className="mdi mdi-playlist-play"></i>
+            <TbCheckupList />
             </span>
-            <span className="menu-title">Form Elements</span>
-            <i className="menu-arrow"></i>
+            <span className="menu-title">Orders</span>
+            <BsChevronDown style={{ marginLeft: 'auto'}}/>
           </div>
           <Collapse in={config?.formElementsMenuOpen}>
             <div>
@@ -289,13 +274,26 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
-                      isPathActive("/form-elements/basic-elements")
+                      isPathActive("/orders")
                         ? "nav-link active"
                         : "nav-link"
                     }
-                    to="/form-elements/basic-elements"
+                    to="/orders/all-orders"
                   >
-                    Basic Elements
+                    All Orders
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  {" "}
+                  <Link
+                    className={
+                      isPathActive("/orders")
+                        ? "nav-link active"
+                        : "nav-link"
+                    }
+                    to="/orders/shipping"
+                  >
+                    Shipping
                   </Link>
                 </li>
               </ul>
@@ -317,10 +315,10 @@ const Sidebar = (props: Props) => {
             data-toggle="collapse"
           >
             <span className="menu-icon">
-              <i className="mdi mdi-table-large"></i>
+              <TbShoppingCartDiscount />
             </span>
-            <span className="menu-title">Tables</span>
-            <i className="menu-arrow"></i>
+            <span className="menu-title">Voucher</span>
+            <BsChevronDown style={{ marginLeft: 'auto'}}/>
           </div>
           <Collapse in={config?.tablesMenuOpen}>
             <div>
@@ -329,20 +327,33 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
-                      isPathActive("/tables/basic-table")
+                      isPathActive("/voucher")
                         ? "nav-link active"
                         : "nav-link"
                     }
-                    to="/tables/basic-table"
+                    to="/voucher/create-voucher"
                   >
-                    Basic Table
+                    Create Voucher
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  {" "}
+                  <Link
+                    className={
+                      isPathActive("/voucher")
+                        ? "nav-link active"
+                        : "nav-link"
+                    }
+                    to="/voucher/all-voucher"
+                  >
+                    All Voucher
                   </Link>
                 </li>
               </ul>
             </div>
           </Collapse>
         </li>
-        <li
+        {/* <li
           className={
             isPathActive("/charts")
               ? "nav-item menu-items active"
@@ -360,7 +371,7 @@ const Sidebar = (props: Props) => {
               <i className="mdi mdi-chart-bar"></i>
             </span>
             <span className="menu-title">Charts</span>
-            <i className="menu-arrow"></i>
+            <BsChevronDown style={{ marginLeft: 'auto'}}/>
           </div>
           <Collapse in={config?.chartsMenuOpen}>
             <div>
@@ -400,7 +411,7 @@ const Sidebar = (props: Props) => {
               <i className="mdi mdi-contacts"></i>
             </span>
             <span className="menu-title">Icons</span>
-            <i className="menu-arrow"></i>
+            <BsChevronDown style={{ marginLeft: 'auto'}}/>
           </div>
           <Collapse in={config?.iconsMenuOpen}>
             <div>
@@ -440,7 +451,7 @@ const Sidebar = (props: Props) => {
               <i className="mdi mdi-security"></i>
             </span>
             <span className="menu-title">User Pages</span>
-            <i className="menu-arrow"></i>
+            <BsChevronDown style={{ marginLeft: 'auto'}}/>
           </div>
           <Collapse in={config?.userPagesMenuOpen}>
             <div>
@@ -477,7 +488,7 @@ const Sidebar = (props: Props) => {
         </li>
         <li className="nav-item nav-category">
           <span className="nav-link">More</span>
-        </li>
+        </li> */}
         <li
           className={
             isPathActive("/error-pages")
@@ -493,10 +504,10 @@ const Sidebar = (props: Props) => {
             data-toggle="collapse"
           >
             <span className="menu-icon">
-              <i className="mdi mdi-lock"></i>
+              <BiErrorCircle />
             </span>
             <span className="menu-title">Error Pages</span>
-            <i className="menu-arrow"></i>
+            <BsChevronDown style={{ marginLeft: 'auto'}}/>
           </div>
           <Collapse in={config?.errorPagesMenuOpen}>
             <div>
@@ -531,7 +542,7 @@ const Sidebar = (props: Props) => {
             </div>
           </Collapse>
         </li>
-        <li className="nav-item menu-items">
+        {/* <li className="nav-item menu-items">
           <a
             className="nav-link"
             href="http://bootstrapdash.com/demo/corona-react-free/documentation/documentation.html"
@@ -543,7 +554,7 @@ const Sidebar = (props: Props) => {
             </span>
             <span className="menu-title">Documentation</span>
           </a>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );
