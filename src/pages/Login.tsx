@@ -20,7 +20,6 @@ const Login = () => {
             <div className="card">
               <div className="card-body">
                 <h4 className="card-title">SIGN IN</h4>
-                <form className="forms-sample">
                   <Form.Group className="mb-4">
                     <label htmlFor="exampleInputEmail1">Email address</label>
                     <Form.Control
@@ -46,7 +45,6 @@ const Login = () => {
                   <button className="btn btn-primary mr-2">
                     Submit
                   </button>
-                </form>
               </div>
             </div>
           </div>
