@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from '../../context/AuthProvider';
+import React from "react";
 
 type Props = {
     children: JSX.Element
@@ -8,7 +9,11 @@ type Props = {
 const ProtectedRoute = ({children}: Props) => {
     const { token } = useAuth()
 
-    if(!token) {
+    // if(!token) {
+    //     return <Navigate to="/login" replace />
+    // }
+
+    if(token) {
         return <Navigate to="/login" replace />
     }
 

@@ -1,0 +1,110 @@
+.toast-wrapper {
+    z-index: 1002;
+    min-width: 200px;
+    max-width: 400px;
+    position: fixed;
+    top: 80px;
+    right: 32px;
+    font-size: 13px;
+    transition: all 0.4s ease-in-out;
+
+    &.animated {
+        animation-duration: 0.3s;
+        animation-fill-mode: both;
+
+        &.infinite {
+            animation-iteration-count: infinite;
+        }
+    }
+
+    &.slide-in-down {
+        animation-name: slide-in-down;
+    }
+
+    .toast-component {
+        border-radius: 6px;
+        padding: 2px 10px;
+        min-height: 50px;
+        display: flex;
+        font-weight: 600;
+        justify-content: space-between;
+        align-items: center;
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+        }
+
+        &.is-success {
+            background-color: #21f379 !important;
+            border: 2px solid #1dd86b !important;
+            box-shadow: 0px 6.4px 14.4px rgba(101, 115, 129, 0.13) !important;
+            border-radius: 8px;
+            color: #363636 !important;
+        }
+
+        &.is-info {
+            background-color: #f1f9fe !important;
+            border: 2px solid #2196f3 !important;
+            box-shadow: 0px 6.4px 14.4px rgba(101, 115, 129, 0.13) !important;
+            border-radius: 8px;
+            color: #363636 !important;
+        }
+
+        &.is-danger {
+            background-color: #eb5757;
+        }
+
+        &.is-orange {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 24px;
+            color: #363636;
+            padding: 12px 56px 12px 12px;
+            background-color: #fff3e0;
+            border: 1px solid #f57c00;
+            border-radius: 8px;
+        }
+
+        .toast-btn {
+            min-width: 24px;
+            min-height: 24px;
+            top: 12px;
+            right: 12px;
+            outline: none;
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+@media print and (prefers-reduced-motion: reduce) {
+    .toast-wrapper.animated {
+        animation-duration: 1ms !important;
+        transition-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+@keyframes slide-in-down {
+    from {
+        transform: translate3d(100%, 0, 0);
+        visibility: visible;
+    }
+
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .toast-wrapper {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        min-width: calc(100% - 24px);
+    }
+}
