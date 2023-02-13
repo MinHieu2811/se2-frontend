@@ -3,9 +3,15 @@ import Layout from "../ui-component/shared/Layout";
 import Helmet from "../ui-component/shared/Helmet";
 import { REMOVE_ALL_AND_ADD } from "../ui-component/toast";
 import { useToastContext } from "../ui-component/toast/ToastContext";
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const Home = () => {
   const { toastDispatch } = useToastContext()
+  const [keyword, setLocalStorageData] = useLocalStorage("key")
+
+  const handleChange = (e: any) => {
+    setLocalStorageData(e.target.value as string)
+  }
   return (
     <Layout>
       <>
@@ -18,6 +24,8 @@ const Home = () => {
               content: `Please login!`
             }
           })} style={{marginTop: '100px'}}>Toast</button>
+          <input type="text" onClick={handleChange} />
+          <p>{keyword}</p>
         </div>
       </>
     </Layout>

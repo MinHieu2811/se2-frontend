@@ -130,7 +130,7 @@ const FilesUploader: React.FC<UploadFilesProps> = ({
               borderRadius: "8px",
             }}
           >
-            <BsFillCameraFill />
+            <BsFillCameraFill style={{color: "black", fontSize: "20px"}}/>
 
             <p className="title-style body-1b ">{uploadTitle}</p>
             <p>{uploadContent || ""}</p>

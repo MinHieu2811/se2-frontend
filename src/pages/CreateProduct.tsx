@@ -38,9 +38,9 @@ const CreateProduct = (props: Props) => {
       <>
         <Helmet title="Create New Product" />
         <div className="card mt-5">
-          <div className="card-body">
+          <div className="card-body height-full">
             <form>
-              <Form.Group className="mb-4">
+              <Form.Group className="mb-4 width-all">
                 <label htmlFor="ProductName">Product Name</label>
                 <Form.Control
                   type="text"
@@ -51,11 +51,11 @@ const CreateProduct = (props: Props) => {
                   onChange={handleChange}
                 />
               </Form.Group>
-              {/* <Form.Group className="mb-4">
+              <Form.Group className="mb-4 width-all">
                 <label htmlFor="ProductDesc">Product Description</label>
-                <Form. 
-              </Form.Group> */}
-              <Form.Group className="mb-4">
+                <textarea className="form-control text-area mr-2" onChange={handleChange} placeholder="Product Description" style={{width: "100%", resize: "vertical"}} name="ProductDesc" id="ProductDesc" />
+              </Form.Group>
+              <Form.Group className="mb-4 width-all">
                 <label htmlFor="ProductPrice">Product Price</label>
                 <Form.Control
                   type="text"
@@ -66,6 +66,10 @@ const CreateProduct = (props: Props) => {
                   onChange={handleChange}
                 />
               </Form.Group>
+              <Form.Group className="mb-4 width-all">
+                <label htmlFor="ProductQuantity">Product Quantity</label>
+                <Form.Control type="number" />
+              </Form.Group>
               <div className={`image-container`}>
                 <div
                   className={`${
@@ -75,21 +79,21 @@ const CreateProduct = (props: Props) => {
                   }`}
                 >
                   <FilesUploader
-                    className="img-wrapper"
+                    className="img-wrapper mb-4 width-all"
                     multiple={true}
                     allowedTypes="image/*"
                     onFilesChanged={(f) => onImageChanged(f)}
                   />
                   {reviewImagesBlob?.length ? (
                     reviewImagesBlob?.map((image, key) => (
-                      <img src={URL.createObjectURL(image)} key={key} alt="" />
+                      <img className="preview-image" src={URL.createObjectURL(image)} key={key} alt="" />
                     ))
                   ) : (
                     <></>
                   )}
                 </div>
               </div>
-              <button className="btn btn-primary mr-2">Submit</button>
+              <button className="btn btn-primary mr-2 mt-4">Submit</button>
             </form>
           </div>
         </div>

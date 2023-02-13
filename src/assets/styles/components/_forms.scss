@@ -24,7 +24,7 @@
   padding: 0.625rem 0.6875rem;
   background-color: $input-bg;
   border-radius: 2px;
-  color: #ffffff;
+  color: #ffffff !important;
   &:focus {
     border: 1px solid rgba(71, 164, 71, 0.5);
     background-color: $input-bg;

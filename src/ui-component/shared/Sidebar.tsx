@@ -2,40 +2,40 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Collapse, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { GrMoreVertical } from 'react-icons/gr'
-import { AiFillHome } from 'react-icons/ai'
-import { BsChevronDown } from 'react-icons/bs'
-import { GiPresent } from 'react-icons/gi'
-import { TbCheckupList, TbShoppingCartDiscount } from 'react-icons/tb'
-import { BiErrorCircle } from 'react-icons/bi'
+import { GrMoreVertical } from "react-icons/gr";
+import { AiFillHome } from "react-icons/ai";
+import { BsChevronDown } from "react-icons/bs";
+import { GiPresent } from "react-icons/gi";
+import { TbCheckupList, TbShoppingCartDiscount } from "react-icons/tb";
+import { BiErrorCircle } from "react-icons/bi";
 
 type Props = {};
 type UIprops = {
-  [key: string]: boolean
-}
+  [key: string]: boolean;
+};
 
 const dropdownPaths = [
-  {path:'/apps', state: 'appsMenuOpen'},
-  {path:'/basic-ui', state: 'basicUiMenuOpen'},
-  {path:'/form-elements', state: 'formElementsMenuOpen'},
-  {path:'/tables', state: 'tablesMenuOpen'},
-  {path:'/icons', state: 'iconsMenuOpen'},
-  {path:'/charts', state: 'chartsMenuOpen'},
-  {path:'/user-pages', state: 'userPagesMenuOpen'},
-  {path:'/error-pages', state: 'errorPagesMenuOpen'},
+  { path: "/apps", state: "appsMenuOpen" },
+  { path: "/basic-ui", state: "basicUiMenuOpen" },
+  { path: "/form-elements", state: "formElementsMenuOpen" },
+  { path: "/tables", state: "tablesMenuOpen" },
+  { path: "/icons", state: "iconsMenuOpen" },
+  { path: "/charts", state: "chartsMenuOpen" },
+  { path: "/user-pages", state: "userPagesMenuOpen" },
+  { path: "/error-pages", state: "errorPagesMenuOpen" },
 ];
 
 const Sidebar = (props: Props) => {
-  const sidebarRef = useRef<HTMLDivElement>(null)
+  const sidebarRef = useRef<HTMLDivElement>(null);
   // const logo = require('../../assets/images/address-book.svg') as string
   const [config, setConfig] = useState<UIprops>({
-    "basicUiMenuOpen": false,
-    "formElementsMenuOpen": false,
-    "tablesMenuOpen": false,
-    "chartsMenuOpen": false,
-    "iconsMenuOpen": false,
-    "errorPagesMenuOpen": false,
-    "userPagesMenuOpen": false,
+    basicUiMenuOpen: false,
+    formElementsMenuOpen: false,
+    tablesMenuOpen: false,
+    chartsMenuOpen: false,
+    iconsMenuOpen: false,
+    errorPagesMenuOpen: false,
+    userPagesMenuOpen: false,
   });
 
   function toggleMenuState(name: string) {
@@ -64,42 +64,46 @@ const Sidebar = (props: Props) => {
   }
 
   function onRouteChanged() {
-    sidebarRef?.current?.classList.remove("active")
-    Object.keys(config).forEach(i => {
-      setConfig({...config, [i]: false});
+    sidebarRef?.current?.classList.remove("active");
+    Object.keys(config).forEach((i) => {
+      setConfig({ ...config, [i]: false });
     });
 
     dropdownPaths.forEach((el) => {
-      if(isPathActive(el.path)) {
-        setConfig({...config, [el.state]: true})
+      if (isPathActive(el.path)) {
+        setConfig({ ...config, [el.state]: true });
       }
-    })
+    });
   }
 
   useEffect(() => {
-    onRouteChanged()
+    onRouteChanged();
 
-    const body = document.querySelector('body');
-    document.querySelectorAll('.sidebar .nav-item').forEach((el) => {
-      
-      el.addEventListener('mouseover', function() {
-        if(body?.classList.contains('sidebar-icon-only')) {
-          el.classList.add('hover-open');
+    const body = document.querySelector("body");
+    document.querySelectorAll(".sidebar .nav-item").forEach((el) => {
+      el.addEventListener("mouseover", function () {
+        if (body?.classList.contains("sidebar-icon-only")) {
+          el.classList.add("hover-open");
         }
       });
-      el.addEventListener('mouseout', function() {
-        if(body?.classList.contains('sidebar-icon-only')) {
-          el.classList.remove('hover-open');
+      el.addEventListener("mouseout", function () {
+        if (body?.classList.contains("sidebar-icon-only")) {
+          el.classList.remove("hover-open");
         }
       });
     });
-  }, [])
+  }, []);
 
   function isPathActive(path: string) {
     return window.location.pathname.startsWith(path);
   }
+
   return (
-    <nav className="sidebar sidebar-offcanvas height-full" id="sidebar" ref={sidebarRef}>
+    <nav
+      className="sidebar sidebar-offcanvas height-full"
+      id="sidebar"
+      ref={sidebarRef}
+    >
       <div className="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
         <h1>Dashboard</h1>
       </div>
@@ -180,12 +184,10 @@ const Sidebar = (props: Props) => {
         </li>
         <li
           className={
-            isPathActive("/")
-              ? "nav-item menu-items active"
-              : "nav-item menu-items"
+            "nav-item menu-items"
           }
         >
-          <Link className="nav-link" to="/dashboard">
+          <Link className="nav-link" to="/">
             <span className="menu-icon">
               <AiFillHome />
             </span>
@@ -194,50 +196,34 @@ const Sidebar = (props: Props) => {
         </li>
         <li
           className={
-            isPathActive("/basic-ui")
-              ? "nav-item menu-items active"
-              : "nav-item menu-items"
+            "nav-item menu-items"
           }
         >
           <div
-            className={
+            className={`${
               config?.basicUiMenuOpen ? "nav-link menu-expanded" : "nav-link"
-            }
+            }`}
             onClick={() => toggleMenuState("basicUiMenuOpen")}
             data-toggle="collapse"
           >
             <span className="menu-icon">
-            <GiPresent />
+              <GiPresent />
             </span>
             <span className="menu-title">Products</span>
-            <BsChevronDown style={{ marginLeft: 'auto'}}/>
+            <BsChevronDown style={{ marginLeft: "auto" }} />
           </div>
           <Collapse in={config?.basicUiMenuOpen}>
             <div>
               <ul className="nav flex-column sub-menu">
-                <li className="nav-item">
+                <li className={`nav-item`}>
                   {" "}
-                  <Link
-                    className={
-                      isPathActive("/products")
-                        ? "nav-link active"
-                        : "nav-link"
-                    }
-                    to="/products/create-product"
-                  >
+                  <Link className={"nav-link"} to="/products/create-product">
                     Create Product
                   </Link>
                 </li>
                 <li className="nav-item">
                   {" "}
-                  <Link
-                    className={
-                      isPathActive("/products")
-                        ? "nav-link active"
-                        : "nav-link"
-                    }
-                    to="/products/all-product"
-                  >
+                  <Link className={"nav-link"} to="/products/all-product">
                     All Products
                   </Link>
                 </li>
@@ -245,13 +231,7 @@ const Sidebar = (props: Props) => {
             </div>
           </Collapse>
         </li>
-        <li
-          className={
-            isPathActive("/form-elements")
-              ? "nav-item menu-items active"
-              : "nav-item menu-items"
-          }
-        >
+        <li className={"nav-item menu-items"}>
           <div
             className={
               config?.formElementsMenuOpen
@@ -262,10 +242,10 @@ const Sidebar = (props: Props) => {
             data-toggle="collapse"
           >
             <span className="menu-icon">
-            <TbCheckupList />
+              <TbCheckupList />
             </span>
             <span className="menu-title">Orders</span>
-            <BsChevronDown style={{ marginLeft: 'auto'}}/>
+            <BsChevronDown style={{ marginLeft: "auto" }} />
           </div>
           <Collapse in={config?.formElementsMenuOpen}>
             <div>
@@ -274,9 +254,7 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
-                      isPathActive("/orders")
-                        ? "nav-link active"
-                        : "nav-link"
+                      "nav-link"
                     }
                     to="/orders/all-orders"
                   >
@@ -287,9 +265,7 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
-                      isPathActive("/orders")
-                        ? "nav-link active"
-                        : "nav-link"
+                      "nav-link"
                     }
                     to="/orders/shipping"
                   >
@@ -302,9 +278,7 @@ const Sidebar = (props: Props) => {
         </li>
         <li
           className={
-            isPathActive("/tables")
-              ? "nav-item menu-items active"
-              : "nav-item menu-items"
+            "nav-item menu-items"
           }
         >
           <div
@@ -318,7 +292,7 @@ const Sidebar = (props: Props) => {
               <TbShoppingCartDiscount />
             </span>
             <span className="menu-title">Voucher</span>
-            <BsChevronDown style={{ marginLeft: 'auto'}}/>
+            <BsChevronDown style={{ marginLeft: "auto" }} />
           </div>
           <Collapse in={config?.tablesMenuOpen}>
             <div>
@@ -327,9 +301,7 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
-                      isPathActive("/voucher")
-                        ? "nav-link active"
-                        : "nav-link"
+                      "nav-link"
                     }
                     to="/voucher/create-voucher"
                   >
@@ -340,9 +312,7 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
-                      isPathActive("/voucher")
-                        ? "nav-link active"
-                        : "nav-link"
+                     "nav-link"
                     }
                     to="/voucher/all-voucher"
                   >
@@ -491,9 +461,7 @@ const Sidebar = (props: Props) => {
         </li> */}
         <li
           className={
-            isPathActive("/error-pages")
-              ? "nav-item menu-items active"
-              : "nav-item menu-items"
+            "nav-item menu-items"
           }
         >
           <div
@@ -507,7 +475,7 @@ const Sidebar = (props: Props) => {
               <BiErrorCircle />
             </span>
             <span className="menu-title">Error Pages</span>
-            <BsChevronDown style={{ marginLeft: 'auto'}}/>
+            <BsChevronDown style={{ marginLeft: "auto" }} />
           </div>
           <Collapse in={config?.errorPagesMenuOpen}>
             <div>
@@ -516,9 +484,7 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
-                      isPathActive("/error-pages/error-404")
-                        ? "nav-link active"
-                        : "nav-link"
+                      "nav-link"
                     }
                     to="/error-pages/error-404"
                   >
@@ -529,9 +495,7 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
-                      isPathActive("/error-pages/error-500")
-                        ? "nav-link active"
-                        : "nav-link"
+                      "nav-link"
                     }
                     to="/error-pages/error-500"
                   >

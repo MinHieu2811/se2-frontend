@@ -41,7 +41,7 @@
   }
 
   .title-style {
-    color: var(--gray-7);
+    color: black;
     font-style: normal;
     font-weight: 600;
     font-size: 15px;
@@ -52,7 +52,7 @@
     font-weight: normal;
     font-size: 13px;
     line-height: 24px;
-    color: var(--gray-6);
+    color: black;
   }
 
   .file-drop > .file-drop-target.file-drop-dragging-over-frame {
@@ -71,4 +71,11 @@
     /* turn stuff success when we are dragging over the target */
     color: #6fcf97;
     box-shadow: 0 0 13px 3px #eaf7f0;
+  }
+
+  .preview-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 4px;
+    margin: 5px 5px 5px 0;
   }
