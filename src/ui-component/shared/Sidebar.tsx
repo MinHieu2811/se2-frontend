@@ -291,7 +291,7 @@ const Sidebar = (props: Props) => {
             <span className="menu-icon">
               <TbShoppingCartDiscount />
             </span>
-            <span className="menu-title">Voucher</span>
+            <span className="menu-title">Voucher & Discount</span>
             <BsChevronDown style={{ marginLeft: "auto" }} />
           </div>
           <Collapse in={config?.tablesMenuOpen}>
@@ -303,7 +303,7 @@ const Sidebar = (props: Props) => {
                     className={
                       "nav-link"
                     }
-                    to="/voucher/create-voucher"
+                    to="/voucher-discount/create-voucher"
                   >
                     Create Voucher
                   </Link>
@@ -312,11 +312,33 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link
                     className={
+                      "nav-link"
+                    }
+                    to="/voucher-discount/create-discount"
+                  >
+                    Create Discount
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  {" "}
+                  <Link
+                    className={
                      "nav-link"
                     }
-                    to="/voucher/all-voucher"
+                    to="/voucher-discount/all-voucher"
                   >
                     All Voucher
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  {" "}
+                  <Link
+                    className={
+                     "nav-link"
+                    }
+                    to="/voucher-discount/all-discount"
+                  >
+                    All Discount
                   </Link>
                 </li>
               </ul>
