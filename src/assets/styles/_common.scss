@@ -17,3 +17,16 @@
 .width-all {
     width: 100%;
 }
+
+// Custom table wrapper
+.table-wrapper {
+    display: inline-block;
+    width: 100%;
+    padding: 50px;
+    min-height: 100vh;
+
+    .list-header {
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+}

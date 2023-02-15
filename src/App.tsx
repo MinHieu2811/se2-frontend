@@ -7,13 +7,15 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import ProtectedRoute from './ui-component/shared/ProtectedRoute';
 import CreateProduct from './pages/CreateProduct';
+import ProductList from './pages/ProductList';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>}/>
-        <Route path='/products/create-product' element={<ProtectedRoute><CreateProduct /></ProtectedRoute>} />
+        <Route path='/admin/products/create-product' element={<ProtectedRoute><CreateProduct /></ProtectedRoute>} />
+        <Route path='/admin/products/all-product' element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
       </Routes>
