@@ -110,7 +110,7 @@ const ProductList = () => {
               <td>{item?.price}</td>
               <td>{item?.quantity}</td>
               <td className="d-flex justify-center">
-                <Button href={`/products/edit/${item?._id}`} style={{marginRight: "5px"}}>
+                <Button href={`/admin/products/edit/${item?._id}`} style={{marginRight: "5px"}}>
                   <AiOutlineEdit />
                 </Button>
                 <Button>
