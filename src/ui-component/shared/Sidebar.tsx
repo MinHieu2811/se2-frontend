@@ -217,13 +217,13 @@ const Sidebar = (props: Props) => {
               <ul className="nav flex-column sub-menu">
                 <li className={`nav-item`}>
                   {" "}
-                  <Link className={"nav-link"} to="/products/create-product">
+                  <Link className={"nav-link"} to="/admin/products/create-product">
                     Create Product
                   </Link>
                 </li>
                 <li className="nav-item">
                   {" "}
-                  <Link className={"nav-link"} to="/products/all-product">
+                  <Link className={"nav-link"} to="/admin/products/all-product">
                     All Products
                   </Link>
                 </li>
@@ -256,7 +256,7 @@ const Sidebar = (props: Props) => {
                     className={
                       "nav-link"
                     }
-                    to="/orders/all-orders"
+                    to="/admin/orders/all-orders"
                   >
                     All Orders
                   </Link>
@@ -267,7 +267,7 @@ const Sidebar = (props: Props) => {
                     className={
                       "nav-link"
                     }
-                    to="/orders/shipping"
+                    to="/admin/orders/shipping"
                   >
                     Shipping
                   </Link>
@@ -303,7 +303,7 @@ const Sidebar = (props: Props) => {
                     className={
                       "nav-link"
                     }
-                    to="/voucher-discount/create-voucher"
+                    to="/admin/voucher-discount/create-voucher"
                   >
                     Create Voucher
                   </Link>
@@ -314,7 +314,7 @@ const Sidebar = (props: Props) => {
                     className={
                       "nav-link"
                     }
-                    to="/voucher-discount/create-discount"
+                    to="/admin/voucher-discount/create-discount"
                   >
                     Create Discount
                   </Link>
@@ -325,7 +325,7 @@ const Sidebar = (props: Props) => {
                     className={
                      "nav-link"
                     }
-                    to="/voucher-discount/all-voucher"
+                    to="/admin/voucher-discount/all-voucher"
                   >
                     All Voucher
                   </Link>
@@ -336,7 +336,7 @@ const Sidebar = (props: Props) => {
                     className={
                      "nav-link"
                     }
-                    to="/voucher-discount/all-discount"
+                    to="/admin/voucher-discount/all-discount"
                   >
                     All Discount
                   </Link>
@@ -508,7 +508,7 @@ const Sidebar = (props: Props) => {
                     className={
                       "nav-link"
                     }
-                    to="/error-pages/error-404"
+                    to="/admin/error-pages/error-404"
                   >
                     404
                   </Link>
@@ -519,7 +519,7 @@ const Sidebar = (props: Props) => {
                     className={
                       "nav-link"
                     }
-                    to="/error-pages/error-500"
+                    to="/admin/error-pages/error-500"
                   >
                     500
                   </Link>
