@@ -1,7 +1,8 @@
-import { FC } from 'react'
+import { FC } from "react";
+import { Spinner } from "react-bootstrap";
 
 interface ILoading {
-  isFullWidth?: boolean
+  isFullWidth?: boolean;
 }
 
 const Loading: FC<ILoading> = ({ isFullWidth = false }) => {
@@ -12,12 +13,12 @@ const Loading: FC<ILoading> = ({ isFullWidth = false }) => {
           <div className="loading-component button p-0 is-loading" />
         ) : (
           <div className="loader-wrapper is-active">
-            <div className="loader is-loading" />
+            <Spinner animation="border" role="status" variant="dark" />
           </div>
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Loading
+export default Loading;
