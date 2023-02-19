@@ -82,7 +82,7 @@ const ProductList = () => {
 
   return (
     <Layout>
-      <div className="table-wrapper">
+      <div className="w-100">
         {loading && <Loading />}
         <div className="list-header d-flex">
           <h1 style={{flex: 1}}>All Products</h1>

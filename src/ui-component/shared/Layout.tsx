@@ -11,14 +11,18 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <div className="d-flex">
-        <div style={{ position: "relative", width: "280px" }}>
-          <div className="sidebar-wrapper" style={{ position: "fixed"}}>
+        <div style={{ position: "relative" }}>
+          <div className="container-scroller">
             <Sidebar />
           </div>
         </div>
         <div className="content" style={{ width: "100%" }}>
           <Navbar />
-          <>{children}</>
+          <div className="main-panel">
+            <div className="content-wrapper"  style={{ width: "100%" }}>
+              {children}
+            </div>
+          </div>
           <Footer />
         </div>
       </div>

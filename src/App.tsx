@@ -9,6 +9,7 @@ import ProtectedRoute from './ui-component/shared/ProtectedRoute';
 import CreateProduct from './pages/admin/product/CreateProduct';
 import ProductList from './pages/admin/product/ProductList';
 import CreateVoucher from './pages/admin/voucher/CreateVoucher';
+import VoucherList from "./pages/admin/voucher/VoucherList";
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
         <Route path='/admin/products/create-product' element={<ProtectedRoute><CreateProduct /></ProtectedRoute>} />
         <Route path='/admin/products/all-product' element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
         <Route path='/products/create-product' element={<ProtectedRoute><CreateProduct /></ProtectedRoute>} />
-        <Route path='/voucher-discount/create-voucher' element={<ProtectedRoute><CreateVoucher /></ProtectedRoute>} />
+        <Route path='/admin/voucher-discount/create-voucher' element={<ProtectedRoute><CreateVoucher /></ProtectedRoute>} />
+        <Route path='/admin/voucher-discount/all-voucher' element={<ProtectedRoute><VoucherList /></ProtectedRoute>} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         {/* Customer */}
