@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Layout from "../ui-component/shared/Layout";
-import Helmet from "../ui-component/shared/Helmet";
+import Layout from "../../../ui-component/shared/Layout";
+import Helmet from "../../../ui-component/shared/Helmet";
 import { Form } from "react-bootstrap";
-import { useToastContext } from "../ui-component/toast/ToastContext";
-import { REMOVE_ALL_AND_ADD } from "../ui-component/toast";
-import FilesUploader from "../ui-component/shared/UploadFiles";
+import { useToastContext } from "../../../ui-component/toast/ToastContext";
+import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
+import FilesUploader from "../../../ui-component/shared/UploadFiles";
 
 type Props = {};
 

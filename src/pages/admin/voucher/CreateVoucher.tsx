@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
-import Layout from "../ui-component/shared/Layout";
+import Layout from "../../../ui-component/shared/Layout";
 
-import Helmet from "../ui-component/shared/Helmet";
+import Helmet from "../../../ui-component/shared/Helmet";
 type Props = {};
 
 const CreateVoucher = (props: Props) => {
