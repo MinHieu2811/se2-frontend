@@ -12,8 +12,8 @@ const CreateVoucher = (props: Props) => {
     <Layout>
       <>
         <Helmet title="Create New Discount" />
-          <div className="card mt-5">
-            <div className="card-body height-full">
+          <div className="card w-100">
+            <div className="card-body">
             <form>
               <Form.Group className="mb-4 width-all">
                 <label htmlFor="VoucherCode">Voucher Code</label>
