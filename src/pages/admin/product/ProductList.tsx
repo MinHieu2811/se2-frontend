@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, InputGroup, Table } from "react-bootstrap";
 import axios from "axios";
-import { axiosInstance } from "../client-api";
-import { useToastContext } from "../ui-component/toast/ToastContext";
-import Loading from "../ui-component/shared/Loading";
+import { axiosInstance } from "../../../client-api";
+import { useToastContext } from "../../../ui-component/toast/ToastContext";
+import Loading from "../../../ui-component/shared/Loading";
 import { AiOutlineEdit, AiFillDelete } from "react-icons/ai";
-import { ResponseData } from "../model/product";
-import Layout from "../ui-component/shared/Layout";
-import Pagination from "../ui-component/shared/Pagination";
+import { ResponseData } from "../../../model/product";
+import Layout from "../../../ui-component/shared/Layout";
+import Pagination from "../../../ui-component/shared/Pagination";
 
 const fakeData = [
   {
