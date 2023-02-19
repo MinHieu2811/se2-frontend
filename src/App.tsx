@@ -2,19 +2,20 @@ import React from 'react';
 import './App.scss';
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Routes } from 'react-router';
-import Home from './pages/Home';
-import Register from './pages/Register';
-import Login from './pages/Login';
+import Home from './pages/admin/Home';
+import Register from './pages/admin/auth/Register';
+import Login from './pages/admin/auth/Login';
 import ProtectedRoute from './ui-component/shared/ProtectedRoute';
-import CreateProduct from './pages/CreateProduct';
-import ProductList from './pages/ProductList';
-import CreateVoucher from './pages/CreateVoucher';
-import EditProduct from './pages/EditProduct';
+import CreateProduct from './pages/admin/product/CreateProduct';
+import ProductList from './pages/admin/product/ProductList';
+import CreateVoucher from './pages/admin/voucher/CreateVoucher';
+import EditProduct from './pages/admin/product/EditProduct';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Admin dashboard */}
         <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>}/>
         <Route path='/admin/products/create-product' element={<ProtectedRoute><CreateProduct /></ProtectedRoute>} />
         <Route path='/admin/products/edit/:id' element={<ProtectedRoute><EditProduct /></ProtectedRoute>} />
@@ -23,6 +24,7 @@ function App() {
         <Route path='/voucher-discount/create-voucher' element={<ProtectedRoute><CreateVoucher /></ProtectedRoute>} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
+        {/* Customer */}
       </Routes>
     </BrowserRouter>
   );
