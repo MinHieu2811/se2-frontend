@@ -1,17 +1,29 @@
 import React from "react";
 import { Dropdown } from "react-bootstrap";
-import { AiFillSetting } from 'react-icons/ai'
+import { AiFillSetting, AiOutlineBars } from 'react-icons/ai'
 import { FiLogOut } from 'react-icons/fi'
 import { useAuth } from "../../context/AuthProvider";
 
 const Navbar: React.FC = () => {
   const {token} = useAuth()
-
+  const toggleOffcanvas = () => {
+    const sidebarRight = document.querySelector('.sidebar-offcanvas')!;
+    sidebarRight.classList.toggle('active');
+  }
   console.log(token)
   return (
     <nav className="navbar p-0 fixed-top d-flex flex-row">
       <div className="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
         {/* <Link className="navbar-brand brand-logo-mini" to="/"><img src={require('../../assets/images/logo-mini.svg')} alt="logo" /></Link> */}
+        <button
+          className="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
+          type="button"
+          onClick={toggleOffcanvas}
+        >
+          <span className="toggle-sidebar-icon">
+              <AiOutlineBars />
+            </span>
+        </button>
       </div>
       <div className="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
         <ul className="navbar-nav w-100">
@@ -244,12 +256,6 @@ const Navbar: React.FC = () => {
             </Dropdown.Menu>
           </Dropdown>
         </ul>
-        <button
-          className="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
-          type="button"
-        >
-          <span className="mdi mdi-format-line-spacing"></span>
-        </button>
       </div>
     </nav>
   );

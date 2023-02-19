@@ -44,41 +44,41 @@ const fakeData = [
 ]
 
 const VoucherList = () => {
-  // const [productData, setProductData] = useState<ResponseData>();
-  // const [loading, setLoading] = useState<boolean>(false);
-  // const { toastDispatch } = useToastContext();
+  const [productData, setProductData] = useState<ResponseData>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const { toastDispatch } = useToastContext();
 
-  // useEffect(() => {
-  //   const cancelToken = axios.CancelToken.source();
+  useEffect(() => {
+    const cancelToken = axios.CancelToken.source();
 
-  //   const fetchProductList = async () => {
-  //     setLoading(true);
-  //     await axiosInstance
-  //       .get("/products/get-all?page=1&skip=0&take=30", {
-  //         cancelToken: cancelToken.token,
-  //       })
-  //       .then((res) => {
-  //         toastDispatch({
-  //           type: "REMOVE_ALL_AND_ADD",
-  //           payload: {
-  //             type: "is-success",
-  //             content: res.data.msg,
-  //           },
-  //         });
-  //         setLoading(false);
-  //         setProductData(res.data);
-  //       });
-  //   };
-  //   fetchProductList();
+    const fetchProductList = async () => {
+      setLoading(true);
+      await axiosInstance
+        .get("/products/get-all?page=1&skip=0&take=30", {
+          cancelToken: cancelToken.token,
+        })
+        .then((res) => {
+          toastDispatch({
+            type: "REMOVE_ALL_AND_ADD",
+            payload: {
+              type: "is-success",
+              content: res.data.msg,
+            },
+          });
+          setLoading(false);
+          setProductData(res.data);
+        });
+    };
+    fetchProductList();
 
-  //   return () => {
-  //     cancelToken.cancel();
-  //   };
-  // }, [toastDispatch]);
+    return () => {
+      cancelToken.cancel();
+    };
+  }, [toastDispatch]);
 
   return (
     <Layout>
-      <div className="table-wrapper">
+      <div className="w-100">
         {/* {loading && <Loading />} */}
         <div className="list-header d-flex">
           <h1 style={{flex: 1}}>All Voucher</h1>
