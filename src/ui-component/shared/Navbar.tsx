@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
           onClick={toggleOffcanvas}
         >
           <span className="toggle-sidebar-icon">
-              <AiOutlineBars />
+              <AiOutlineBars style={{color: "white"}}/>
             </span>
         </button>
       </div>
