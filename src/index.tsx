@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./context/AuthProvider";
 import { ToastProvider } from "./ui-component/toast/ToastContext";
+import { ModalProvider } from "./context/ModalProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,7 +14,9 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
       <ToastProvider>
-        <App />
+        <ModalProvider>
+          <App />
+        </ModalProvider>
       </ToastProvider>
     </AuthProvider>
   </React.StrictMode>
