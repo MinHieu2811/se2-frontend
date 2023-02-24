@@ -6,6 +6,7 @@ import { GrMoreVertical } from "react-icons/gr";
 import { AiFillHome } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { GiPresent } from "react-icons/gi";
+import { BiCategoryAlt } from "react-icons/bi";
 import { TbCheckupList, TbShoppingCartDiscount } from "react-icons/tb";
 import { BiErrorCircle } from "react-icons/bi";
 
@@ -225,6 +226,43 @@ const Sidebar = (props: Props) => {
                   {" "}
                   <Link className={"nav-link"} to="/admin/products/all-product">
                     All Products
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </Collapse>
+        </li>
+        <li
+          className={
+            "nav-item menu-items"
+          }
+        >
+          <div
+            className={`${
+              config?.CategoryMenuOpen ? "nav-link menu-expanded" : "nav-link"
+            }`}
+            onClick={() => toggleMenuState("CategoryMenuOpen")}
+            data-toggle="collapse"
+          >
+            <span className="menu-icon">
+              <BiCategoryAlt />
+            </span>
+            <span className="menu-title">Category</span>
+            <BsChevronDown style={{ marginLeft: "auto" }} />
+          </div>
+          <Collapse in={config?.CategoryMenuOpen}>
+            <div>
+              <ul className="nav flex-column sub-menu">
+                <li className={`nav-item`}>
+                  {" "}
+                  <Link className={"nav-link"} to="/admin/category/create-category">
+                    Create Category
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  {" "}
+                  <Link className={"nav-link"} to="/admin/category/all-category">
+                    All Categories
                   </Link>
                 </li>
               </ul>
