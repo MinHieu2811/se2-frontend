@@ -13,6 +13,10 @@ import VoucherList from "./pages/admin/voucher/VoucherList";
 import EditProduct from "./pages/admin/product/EditProduct";
 import Homepage from "./pages/customer/Homepage";
 import CustomRoute from "./utils/CustomRoute";
+import CreateDiscount from './pages/admin/discount/CreateDiscount';
+import DiscountList from "./pages/admin/discount/DiscountList";
+import CreateCategory from "./pages/admin/category/CreateCategory";
+import CategoryList from "./pages/admin/category/CategoryList";
 function App() {
   return (
     <BrowserRouter>
@@ -52,6 +56,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+        <Route path='/admin/category/create-category' element={<ProtectedRoute><CreateCategory /></ProtectedRoute>} />
+        <Route path='/admin/category/all-category' element={<ProtectedRoute><CategoryList /></ProtectedRoute>} />
           <Route
             path="/products/create-product"
             element={
@@ -68,6 +74,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+        <Route path='/admin/voucher-discount/create-discount' element={<ProtectedRoute><CreateDiscount/></ProtectedRoute>} />
           <Route
             path="/admin/voucher-discount/all-voucher"
             element={
@@ -76,6 +83,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+        <Route path='/admin/voucher-discount/all-discount' element={<ProtectedRoute><DiscountList /></ProtectedRoute>} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {/* Customer */}
