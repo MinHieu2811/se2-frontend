@@ -56,8 +56,22 @@ function App() {
               </ProtectedRoute>
             }
           />
-        <Route path='/admin/category/create-category' element={<ProtectedRoute><CreateCategory /></ProtectedRoute>} />
-        <Route path='/admin/category/all-category' element={<ProtectedRoute><CategoryList /></ProtectedRoute>} />
+        <Route 
+        path='/admin/category/create-category'
+         element={
+         <ProtectedRoute>
+          <CreateCategory />
+          </ProtectedRoute>
+          }
+           />
+        <Route 
+        path='/admin/category/all-category' 
+        element={
+        <ProtectedRoute>
+          <CategoryList />
+          </ProtectedRoute>
+          }
+           />
           <Route
             path="/products/create-product"
             element={
