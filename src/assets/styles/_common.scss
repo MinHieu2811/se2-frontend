@@ -18,6 +18,23 @@
     width: 100%;
 }
 
+.wrapper-layout {
+    margin-top: 100px;
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper-layout {
+        margin-top: 50px;
+    }
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+}
+
 // Custom table wrapper
 .table-wrapper {
     display: inline-block;

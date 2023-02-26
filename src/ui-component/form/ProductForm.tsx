@@ -96,7 +96,7 @@ function ProductForm({ handleSubmit, initialData }: Props) {
                 className="form-control"
                 id="ProductQuantity"
                 placeholder="Product Quantity"
-                value={productInfo?.quantity}
+                value={productInfo?.amount}
                 onChange={handleChange}
               />
             </Form.Group>

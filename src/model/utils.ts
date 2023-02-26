@@ -7,3 +7,7 @@ export interface ResponseType<T> {
     success: boolean
     message?: string
 }
+
+export interface DetailedObject<T> {
+    [key: string]: T
+}

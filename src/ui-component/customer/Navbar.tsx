@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   AiOutlineMenu,
-  AiOutlineShoppingCart,
   AiOutlineUser,
 } from "react-icons/ai";
+import { HiOutlineShoppingBag } from 'react-icons/hi'
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CartModal from "./CartModal";
 import { useToggleModal } from "../../context/ModalProvider";
@@ -89,7 +89,7 @@ const Navbar = () => {
       <div className="main-nav_right">
         <div className="main-nav_right_item">
           <span className="main-nav_right_item_qty">0</span>
-          <AiOutlineShoppingCart onClick={setOpen}/>
+          <HiOutlineShoppingBag onClick={setOpen}/>
         </div>
         <div
           className="main-nav_right_item login-box"
