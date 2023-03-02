@@ -11,10 +11,10 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <div className="d-flex">
-        <div style={{ position: "relative" }}>
-          <div className="container-scroller">
+        <div style={{ position: "relative", width: "275px" }}>
+          {/* <div className="container-scroller"> */}
             <Sidebar />
-          </div>
+          {/* </div> */}
         </div>
         <div className="content" style={{ width: "100%" }}>
           <Navbar />

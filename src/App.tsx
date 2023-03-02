@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.scss";
 import { BrowserRouter } from "react-router-dom";
-import { Route, Routes } from "react-router";
+import { Route } from "react-router";
 import Home from "./pages/admin/Home";
 import Register from "./pages/admin/auth/Register";
 import Login from "./pages/admin/auth/Login";
@@ -17,6 +17,7 @@ import CreateDiscount from './pages/admin/discount/CreateDiscount';
 import DiscountList from "./pages/admin/discount/DiscountList";
 import CreateCategory from "./pages/admin/category/CreateCategory";
 import CategoryList from "./pages/admin/category/CategoryList";
+import Category from "./pages/customer/Category";
 function App() {
   return (
     <BrowserRouter>
@@ -102,6 +103,13 @@ function App() {
           <Route path="/login" element={<Login />} />
           {/* Customer */}
           <Route path="/" element={<Homepage />} />
+          <Route path="/category" element={<Category />} />
+          {/* <Route path="/category">
+            <Route path=":page" element={<Category />} />
+            <Route path=":sorting" element={<Category />} />
+            <Route path=":filter" element={<Category />} />
+            <Route path=":keyword" element={<Category />} />
+          </Route> */}
         </>
         {/* </Routes> */}
       </CustomRoute>

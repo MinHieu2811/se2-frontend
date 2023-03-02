@@ -67,7 +67,7 @@ html {
   background: $content-bg;
   padding: $content-padding;
   width: 100%;
-  @include flex-grow(1);
+  // @include flex-grow(1);
 }
 
 .container-scroller {

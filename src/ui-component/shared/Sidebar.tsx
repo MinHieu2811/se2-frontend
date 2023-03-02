@@ -10,7 +10,6 @@ import { BiCategoryAlt } from "react-icons/bi";
 import { TbCheckupList, TbShoppingCartDiscount } from "react-icons/tb";
 import { BiErrorCircle } from "react-icons/bi";
 
-type Props = {};
 type UIprops = {
   [key: string]: boolean;
 };
@@ -26,7 +25,7 @@ const dropdownPaths = [
   { path: "/error-pages", state: "errorPagesMenuOpen" },
 ];
 
-const Sidebar = (props: Props) => {
+const Sidebar = () => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   // const logo = require('../../assets/images/address-book.svg') as string
   const [config, setConfig] = useState<UIprops>({
@@ -106,7 +105,7 @@ const Sidebar = (props: Props) => {
       ref={sidebarRef}
     >
       <div className="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <h1>Dashboard</h1>
+        <h1 style={{color: "white"}}>Dashboard</h1>
       </div>
       <ul className="nav">
         <li className="nav-item profile">

@@ -1,0 +1,19 @@
+.dropdown-select {
+    &:not(:last-child) {
+        margin-bottom: 15px;
+    }
+
+    .select {
+        height: auto;
+
+        select {
+            height: auto;
+            padding: 10px 40px 10px 10px;
+            border-color: #4a4a4a;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 18px;
+            text-transform: capitalize;
+        }
+    }
+}

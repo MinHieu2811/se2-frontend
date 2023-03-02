@@ -68,7 +68,7 @@ const CreateProduct = (props: Props) => {
               </Form.Group>
               <Form.Group className="mb-4 width-all">
                 <label htmlFor="ProductQuantity">Product Quantity</label>
-                <Form.Control type="number" />
+                <Form.Control type="number" placeholder="Product Quantity"/>
               </Form.Group>
               <div className={`image-container`}>
                 <div

@@ -1,0 +1,30 @@
+.breadcrumb {
+    padding: 0;
+    border: 0;
+}
+
+.breadcrumb-item {
+    display: inline-block;
+    font-size: 20px !important;
+
+    &:last-of-type {
+        pointer-events: none;
+    }
+
+    &:not(:last-of-type):after {
+        font-size: 20px;
+        content: '';
+        margin: 0 8px;
+        display: inline-block;
+        color: var(--indigo-7);
+    }
+}
+
+.breadcrumb-link {
+    color: black;
+    text-transform: capitalize;
+
+    &:hover {
+        color: $main-color;
+    }
+}

@@ -1,9 +1,11 @@
 export interface ProductModel {
-    _id: string
+    id: string
     name: string
     description: string
     price: number
-    quantity: number
+    amount: number
+    image: string[]
+    brand: string
 }
 
 export interface ResponseData {

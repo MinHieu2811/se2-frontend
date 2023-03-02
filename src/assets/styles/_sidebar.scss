@@ -16,6 +16,7 @@
 
 .sidebar {
   min-height: calc(100vh - #{$navbar-height});
+  position: fixed;
   background: $sidebar-bg;
   font-weight: normal;
   padding: 0;

@@ -1,0 +1,40 @@
+.category-wrapper {
+    margin-top: 150px;
+
+    .filter-bar {
+        width: 75%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        &__search {
+            // flex: 2;
+            margin-right: 20px;
+            input {
+                width: 100%;
+                padding: 5px;
+                font-size: 16px;
+                border: 2px solid black;
+                outline: none;
+                transition: border 0.3s ease;
+                border-radius: 4px;
+
+                &:focus {
+                    border: 2px solid #c93429;
+                }
+            }
+
+        }
+
+        &__brand {
+            // flex: 1;
+            margin-right: 20px;
+        }
+
+        // &__sorting {
+        //     // flex: 1;
+        // }
+    }
+
+
+}
