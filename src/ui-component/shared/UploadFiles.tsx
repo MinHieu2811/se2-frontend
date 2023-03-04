@@ -145,7 +145,7 @@ const FilesUploader: React.FC<UploadFilesProps> = ({
             <label htmlFor="file" onClick={onClick}></label>
             <input
               type="file"
-              name="file"
+              name="multiple-files"
               id="file"
               onChange={onChange}
               accept={allowedTypes}
