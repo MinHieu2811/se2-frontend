@@ -13,6 +13,8 @@ import Collection from "../../ui-component/customer/Collection";
 import Grid from "../../ui-component/customer/Grid";
 import { AiOutlineShopping, AiFillCreditCard } from "react-icons/ai";
 import { BiDiamond } from "react-icons/bi";
+import SectionProduct from "../../ui-component/customer/SectionProduct";
+import Banner from "../../ui-component/customer/Banner";
 
 type PolicyCard = {
   name: string;
@@ -24,17 +26,17 @@ const policy: PolicyCard = [
   {
     name: "Miễn phí giao hàng",
     description: "Miễn phí giao hàng với đơn hàng > 239K",
-    icon: <AiOutlineShopping style={{fontSize: "3rem"}}/>,
+    icon: <AiOutlineShopping style={{ fontSize: "3rem" }} />,
   },
   {
     name: "Thanh toán COD",
     description: "Thanh toán khi nhận hàng (COD)",
-    icon: <AiFillCreditCard style={{fontSize: "3rem"}}/>,
+    icon: <AiFillCreditCard style={{ fontSize: "3rem" }} />,
   },
   {
     name: "Khách hàng VIP",
     description: "Ưu đãi dành cho khách hàng VIP",
-    icon: <BiDiamond style={{fontSize: "3rem"}}/>,
+    icon: <BiDiamond style={{ fontSize: "3rem" }} />,
   },
 ];
 
@@ -80,7 +82,6 @@ function Homepage() {
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []);
 
-  console.log(loading);
   return (
     <>
       <Helmet title="SolStore" />
@@ -111,6 +112,18 @@ function Homepage() {
 
       <>
         <Collection />
+      </>
+
+      <>
+        <SectionProduct title="New Arrivals" products={products} />
+      </>
+
+      <>
+        <Banner />
+      </>
+
+      <>
+        <SectionProduct title="Best Sellers" products={products} />
       </>
     </>
   );
