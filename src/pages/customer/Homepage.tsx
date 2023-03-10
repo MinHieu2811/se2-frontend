@@ -15,6 +15,7 @@ import { AiOutlineShopping, AiFillCreditCard } from "react-icons/ai";
 import { BiDiamond } from "react-icons/bi";
 import SectionProduct from "../../ui-component/customer/SectionProduct";
 import Banner from "../../ui-component/customer/Banner";
+import Footer from "../../ui-component/customer/Footer";
 
 type PolicyCard = {
   name: string;
@@ -124,6 +125,10 @@ function Homepage() {
 
       <>
         <SectionProduct title="Best Sellers" products={products} />
+      </>
+      
+      <>
+        <Footer />
       </>
     </>
   );
