@@ -7,8 +7,36 @@ import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
 import { axiosInstance } from "../../client-api";
 import axios from "axios";
 import Loading from "../../ui-component/shared/Loading";
-import products from '../../fake-data'
+import products from "../../fake-data";
 import HeroSlider from "../../ui-component/customer/HeroSlider";
+import Collection from "../../ui-component/customer/Collection";
+import Grid from "../../ui-component/customer/Grid";
+import { AiOutlineShopping, AiFillCreditCard } from "react-icons/ai";
+import { BiDiamond } from "react-icons/bi";
+
+type PolicyCard = {
+  name: string;
+  description: string;
+  icon: React.ReactElement;
+}[];
+
+const policy: PolicyCard = [
+  {
+    name: "Miễn phí giao hàng",
+    description: "Miễn phí giao hàng với đơn hàng > 239K",
+    icon: <AiOutlineShopping style={{fontSize: "3rem"}}/>,
+  },
+  {
+    name: "Thanh toán COD",
+    description: "Thanh toán khi nhận hàng (COD)",
+    icon: <AiFillCreditCard style={{fontSize: "3rem"}}/>,
+  },
+  {
+    name: "Khách hàng VIP",
+    description: "Ưu đãi dành cho khách hàng VIP",
+    icon: <BiDiamond style={{fontSize: "3rem"}}/>,
+  },
+];
 
 function Homepage() {
   const [allProducts, setAllProducts] = useState<ProductModel[]>([]);
@@ -52,7 +80,7 @@ function Homepage() {
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []);
 
-  console.log(loading)
+  console.log(loading);
   return (
     <>
       <Helmet title="SolStore" />
@@ -60,7 +88,29 @@ function Homepage() {
       <Navbar />
 
       <>
-        <HeroSlider productList={products}/>
+        <HeroSlider productList={products} />
+      </>
+
+      <div style={{ margin: "50px 50px" }}>
+        <Grid col={3} mdCol={2} smCol={1} gap={20}>
+          <>
+            {policy?.map((item, index) => (
+              <div className="policy-card" key={`card-${index}`}>
+                <div className="policy-card_item">{item.icon}</div>
+                <div className="policy-card_info">
+                  <div className="policy-card_info_title">{item.name}</div>
+                  <div className="policy-card_info_description">
+                    {item.description}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </>
+        </Grid>
+      </div>
+
+      <>
+        <Collection />
       </>
     </>
   );

@@ -1,0 +1,33 @@
+.policy-card{
+    @include flex (center, flex-start);
+    padding: 20px;
+    padding-left: 0;
+    box-shadow: rgba(149, 157, 165, .2) 0px 8px 24px;
+    transition: transform .5s ease;
+    background-color: $main-bg;
+
+    &:hover{
+        transform: translateY(-15px);
+    }
+
+    &_item{
+        @include flex(center, center);
+        width: 40%;
+        color: $main-color;
+    }
+
+    &_info{
+        &_title{
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-family: "Roboto", sans-serif;
+        }
+
+        &_description{
+            font-size: 1rem;
+            color: #8d8d8d;
+            font-family: "Roboto", sans-serif;
+        }
+    }
+}
