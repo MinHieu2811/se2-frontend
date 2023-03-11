@@ -1,0 +1,132 @@
+@import 'swiper/css';
+
+.heroslider-wrapper {
+    margin-top: $head-height;
+    height: calc(100vh - $head-height);
+
+    @include tablet {
+        height: calc(100vh - 60px);
+    }
+
+    overflow: hidden;
+
+    &_item {
+        height: 100%;
+        @include flex(flex-start, space-evenly);
+
+        @include tablet {
+            flex-direction: column-reverse;
+        }
+
+        &_info {
+            @media screen and (min-width: 768px) {
+                flex: 1;
+            }
+
+            padding-left: 20px;
+            z-index: 2;
+            height: 100%;
+            @include flex(flex-start, center);
+            flex-direction: column;
+            background-color: $bg-slide;
+
+            &_name {
+                font-size: 7rem;
+                width: 150%;
+                text-transform: uppercase;
+                position: inherit;
+                margin: 50px 0;
+                overflow: visible;
+                transition: all 0.3s ease-in-out;
+
+                @include tablet {
+                    font-size: 2rem;
+                    margin: 20px 0;
+                }
+
+                @include mobile {
+                    font-size: 1rem;
+                }
+            }
+
+            &_brand {
+                font-size: 2rem;
+                margin: 30px 0;
+                text-transform: uppercase;
+
+                color: $text-gray;
+                overflow: visible;
+                transition: all 0.3s ease-in-out;
+
+                @include tablet {
+                    margin: 20px 0;
+                }
+            }
+
+            &_btn {
+                overflow: visible;
+                transition-delay: 0.6s;
+                transition: all 0.3s ease-in-out;
+
+                button {
+                    font-size: 1.5rem;
+                    border: 0;
+                    outline: none;
+                    background-color: #c93429;
+                    text-transform: uppercase;
+                    padding: 10px 30px;
+                    color: white;
+                    font-family: 'Antonio', sans-serif;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: $main-color-hover
+                    }
+                }
+            }
+        }
+
+        &_img {
+            @media screen and (min-width: 768px) {
+                flex: 2;
+            }
+
+            height: 100%;
+            transition: all 0.3s ease-in-out;
+
+            &_wrapper {
+                height: 100%;
+                @include flex(center, center);
+            }
+        }
+    }
+
+    &_item_control {
+        position: absolute;
+        bottom: 0;
+        left: 35%;
+        z-index: 10;
+        background-color: white;
+
+        @include flex(center, center);
+
+        &_next,
+        &_prev {
+            width: 40px;
+            height: 40px;
+            @include flex(center, center);
+            font-size: 2.5rem;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        &_index {
+            width: 50px;
+            height: 40px;
+            @include flex(center, center);
+            font-size: 1.2rem;
+            background-color: white;
+        }
+    }
+
+}

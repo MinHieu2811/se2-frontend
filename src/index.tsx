@@ -15,7 +15,9 @@ root.render(
     <AuthProvider>
       <ToastProvider>
         <ModalProvider>
-          <App />
+          <>
+            <App />
+          </>
         </ModalProvider>
       </ToastProvider>
     </AuthProvider>
