@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "./context/AuthProvider";
 import { ToastProvider } from "./ui-component/toast/ToastContext";
 import { ModalProvider } from "./context/ModalProvider";
+import { CartProvider } from "./context/CartProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,13 +14,15 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <ToastProvider>
-        <ModalProvider>
-          <>
-            <App />
-          </>
-        </ModalProvider>
-      </ToastProvider>
+      <CartProvider>
+        <ToastProvider>
+          <ModalProvider>
+            <>
+              <App />
+            </>
+          </ModalProvider>
+        </ToastProvider>
+      </CartProvider>
     </AuthProvider>
   </React.StrictMode>
 );

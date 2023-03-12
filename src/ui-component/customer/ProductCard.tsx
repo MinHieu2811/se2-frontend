@@ -1,19 +1,21 @@
 import React from "react";
 import { ProductModel } from "../../model/product";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   AiFillDelete,
   AiOutlineHeart,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { BiShow } from "react-icons/bi";
+import { useCart } from "../../context/CartProvider";
 
 type Props = {
   productInfo: ProductModel;
 };
 
 function ProductCard({ productInfo }: Props) {
-    const location = useLocation()
+
+  const {addToCartHandler} = useCart()
   return (
     <div className="productCart-wrapper">
       <div className="productCart-wrapper_img">
@@ -52,7 +54,7 @@ function ProductCard({ productInfo }: Props) {
                 // onClick={() => addToCart(link)}
               ></i>
             )} */}
-            <AiOutlineShoppingCart />
+            {addToCartHandler && <AiOutlineShoppingCart onClick={() => addToCartHandler(productInfo, 1)}/>}
           </div>
         </div>
         <div className="productCart-wrapper_action_save action-wrapper">
@@ -81,4 +83,4 @@ function ProductCard({ productInfo }: Props) {
   );
 }
 
-export default ProductCard;
+export default React.memo(ProductCard);
