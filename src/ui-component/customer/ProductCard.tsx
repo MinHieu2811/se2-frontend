@@ -8,14 +8,20 @@ import {
 } from "react-icons/ai";
 import { BiShow } from "react-icons/bi";
 import { useCart } from "../../context/CartProvider";
+import { useToggleModal } from "../../context/ModalProvider";
 
 type Props = {
   productInfo: ProductModel;
 };
 
 function ProductCard({ productInfo }: Props) {
+  const { addToCartHandler } = useCart();
+  const {setOpen} = useToggleModal()
 
-  const {addToCartHandler} = useCart()
+  const addToCart = (product: ProductModel, quantity: number) => {
+    addToCartHandler && addToCartHandler(product, quantity);
+    setOpen && setOpen()
+  };
   return (
     <div className="productCart-wrapper">
       <div className="productCart-wrapper_img">
@@ -54,7 +60,11 @@ function ProductCard({ productInfo }: Props) {
                 // onClick={() => addToCart(link)}
               ></i>
             )} */}
-            {addToCartHandler && <AiOutlineShoppingCart onClick={() => addToCartHandler(productInfo, 1)}/>}
+            {addToCartHandler && (
+              <AiOutlineShoppingCart
+                onClick={() => addToCart(productInfo, 1)}
+              />
+            )}
           </div>
         </div>
         <div className="productCart-wrapper_action_save action-wrapper">

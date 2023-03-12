@@ -5,7 +5,7 @@ type Props = {
   children: JSX.Element;
 };
 
-interface CartModel {
+export interface CartModel {
   product: ProductModel;
   quantity: number;
 }
@@ -33,37 +33,23 @@ export const CartProvider = ({ children }: Props) => {
     const productInCart = cart.findIndex(
       (item) => item?.product?.id === product?.id
     );
-    console.log(productInCart);
+    const { id } = product;
     if (productInCart >= 0) {
-      const leftoverCart = cart.filter(
-        (item) => item?.product?.id !== product?.id
-      );
-      console.log(leftoverCart);
-      setCart([
-        ...leftoverCart,
-        {
-          product,
-          quantity:
-            cart[productInCart]?.quantity + 1 > product?.amount
-              ? product?.amount
-              : cart[productInCart]?.quantity + 1,
-        },
-      ]);
-
-      localStorage.setItem(
-        "cart",
-        JSON.stringify([
-          ...leftoverCart,
-          {
+      const changedCart = cart.map(({ product, quantity }) => {
+        if (product?.id === id) {
+          return {
             product,
             quantity:
-              cart[productInCart]?.quantity + 1 > product?.amount
-                ? product?.amount
-                : cart[productInCart]?.quantity + 1,
-          },
-        ])
-      );
-      console.log("run up");
+              quantity + 1 > product?.amount ? product?.amount : quantity + 1,
+          };
+        } else {
+          return { product, quantity };
+        }
+      });
+
+      setCart(changedCart);
+
+      localStorage.setItem("cart", JSON.stringify(changedCart));
     } else {
       setCart([
         ...cart,
@@ -77,43 +63,40 @@ export const CartProvider = ({ children }: Props) => {
           { product, quantity: quantity && product?.amount > 0 ? quantity : 1 },
         ])
       );
-      console.log("run down");
     }
   };
 
   const removeFromCart = (product: ProductModel, all: boolean) => {
     if (all) {
-      setCart([]);
-      localStorage.setItem("cart", JSON.stringify([]));
+      const leftoverCart = cart.filter(
+        (item) => item?.product?.id !== product?.id
+      );
+      setCart(leftoverCart);
+      localStorage.setItem("cart", JSON.stringify(leftoverCart));
     } else {
-      const productInCart = cart.findIndex(
-        (item) => item?.product?.id === product?.id
-      );
-      setCart([
-        ...cart,
-        {
-          product,
-          quantity:
-            cart[productInCart].quantity - 1 > 0
-              ? cart[productInCart].quantity - 1
-              : 1,
-        },
-      ]);
-      localStorage.setItem(
-        "cart",
-        JSON.stringify([
-          ...cart,
-          {
+      const { id } = product;
+
+      const changedCart = cart.map(({ product, quantity }) => {
+        if (product?.id === id) {
+          return {
             product,
-            quantity:
-              cart[productInCart].quantity - 1 > 0
-                ? cart[productInCart].quantity - 1
-                : 1,
-          },
-        ])
-      );
+            quantity: quantity - 1 > 0 ? quantity - 1 : 1,
+          };
+        } else {
+          return { product, quantity };
+        }
+      });
+      setCart(changedCart);
+      localStorage.setItem("cart", JSON.stringify(changedCart));
     }
   };
+
+  useEffect(() => {
+    const cartFromLocal = JSON.parse(localStorage.getItem("cart") || "");
+    if (cartFromLocal?.length) {
+      setCart(cartFromLocal);
+    }
+  }, []);
 
   useEffect(() => {
     setTotalItems(
@@ -126,11 +109,6 @@ export const CartProvider = ({ children }: Props) => {
         0
       )
     );
-
-    // const cartExist = JSON.parse(localStorage.getItem("cart") || '')
-    // if(cartExist?.length > 0) {
-    //   localStorage.setItem("cart", JSON.stringify(cartExist))
-    // }
   }, [cart]);
 
   const value: ValueContext = {

@@ -1,0 +1,123 @@
+.quantity-input {
+    padding-bottom: 8px;
+    .icon-button {
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+    .is-right {
+      margin-left: 1px;
+    }
+
+    .button {
+      height: 48px;
+      width: 48px;
+      border-radius: 6px;
+      border: 1px solid var(--indigo-5);
+      &:focus,
+      &:hover {
+        box-shadow: none;
+      }
+
+      &.left {
+        margin-right: 1px;
+        border-right: none;
+      }
+
+      &.right {
+        border-left: none;
+      }
+    }
+
+    .input {
+      border-right: 0;
+      border-left: 0;
+      box-shadow: none;
+      height: 36px;
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+      text-align: center;
+      width: 2rem;
+
+      &:focus,
+      &:hover {
+        box-shadow: none;
+        border-color: #dbdbdb;
+      }
+
+      &[type='number'] {
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+      }
+      &[type='number']::-webkit-inner-spin-button,
+      &[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+      }
+    }
+
+    &.is-horizontal {
+      align-items: center;
+
+      .button,
+      .input {
+        height: 40px;
+      }
+
+      .button {
+        padding: 5px 12px;
+      }
+    }
+
+    &.is-cta {
+      .button,
+      .input {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 30px;
+        height: 56px;
+        padding: 15px 12px;
+      }
+    }
+
+    &.is-fullwidth {
+      .control-input {
+        width: calc(100% - 60px);
+
+        .input {
+          width: 100%;
+        }
+      }
+    }
+
+    &.is-fullwidth-mobile {
+      @media screen and (max-width: 768px) {
+        .button {
+          &.left {
+            border-right: 1px solid var(--indigo-5);
+          }
+
+          &.right {
+            border-left: 1px solid var(--indigo-5);
+          }
+        }
+        .control-input {
+          width: calc(100% - 60px);
+
+          .input {
+            width: 100%;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 28px;
+          }
+        }
+      }
+    }
+  }
+
+  .field-label .label-quantity {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+  }

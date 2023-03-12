@@ -4,22 +4,22 @@ import Helmet from "../../../ui-component/shared/Helmet";
 import { Form } from "react-bootstrap";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
 import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ToggleButton from 'react-bootstrap/ToggleButton';
+// import ButtonGroup from 'react-bootstrap/ButtonGroup';
+// import ToggleButton from 'react-bootstrap/ToggleButton';
 
 type Props = {};
 
 const CreateCategory = (props: Props) => {
   const [reviewImagesBlob, setReviewImagesBlob] = useState<File[]>([]);
   const { toastDispatch } = useToastContext();
-  const [checked, setChecked] = useState(false);
-  const [radioValue, setRadioValue] = useState('1');
-  const [startDate, setStartDate] = useState(new Date());
-  const radios = [
-    { name: 'All Products', value: '1' },
-    { name: 'Specific Category', value: '2' },
-    { name: 'Specific Product', value: '3' },
-  ];
+  // const [checked, setChecked] = useState(false);
+  // const [radioValue, setRadioValue] = useState('1');
+  // const [startDate, setStartDate] = useState(new Date());
+  // const radios = [
+  //   { name: 'All Products', value: '1' },
+  //   { name: 'Specific Category', value: '2' },
+  //   { name: 'Specific Product', value: '3' },
+  // ];
   const onImageChanged = (file: File[]) => {
     if (file && file?.length) {
       const arrayCheck = [".jpg", ".jpeg", ".png", "tiff", "webp", "gif"];

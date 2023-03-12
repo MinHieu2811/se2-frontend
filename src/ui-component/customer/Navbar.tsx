@@ -7,6 +7,7 @@ import { HiOutlineShoppingBag } from 'react-icons/hi'
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CartModal from "./CartModal";
 import { useToggleModal } from "../../context/ModalProvider";
+import { useCart } from "../../context/CartProvider";
 
 const Navbar = () => {
   const headerRef = useRef<HTMLDivElement>(null);
@@ -16,8 +17,8 @@ const Navbar = () => {
   const { setOpen } = useToggleModal()
   const navigate = useNavigate();
 
-  const [isLogin, setIsLogin] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLogin, ] = useState(false);
+  const [isAdmin, ] = useState(false);
 
   const handleScroll = () => {
     if (
@@ -65,6 +66,8 @@ const Navbar = () => {
     (e) => e.path.split("/")[1] === pathname.split("/")[1]
   );
 
+  const { totalItems } = useCart()
+
   return (
     <div className="main-nav" ref={headerRef}>
       <div className="main-nav_left">
@@ -88,7 +91,7 @@ const Navbar = () => {
       </div>
       <div className="main-nav_right">
         <div className="main-nav_right_item">
-          <span className="main-nav_right_item_qty">0</span>
+          <span className="main-nav_right_item_qty">{totalItems}</span>
           <HiOutlineShoppingBag onClick={setOpen}/>
         </div>
         <div
