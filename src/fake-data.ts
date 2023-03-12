@@ -67,6 +67,19 @@ const products: ProductModel[] = [
     price: 151,
     amount: 32
   },
+  {
+    id: "asdkjhaksjhdshgashd",
+    name: "Christian Loubotin Goyetta",
+    image: [
+      "/images/products/product6.png",
+      "/images/products/product6-thumb.png",
+    ],
+    brand: "Gucci",
+    description:
+      "($50.00 for 0.10 oz.) is a slightly muted, medium-dark red with subtle, cool undertones and a semi-matte finish. The pigmentation was excellent and yielded full coverage. It had a comfortable, lightweight texture that felt velvety and smooth so the color distributed evenly on the lips. On me, this shade lasted for over six hours and left a stain behind, though it was neither drying nor hydrating. MAC Opera (LE, $16.00) is a smidgen lighter. MAC Stunner (LE, $16.00) is darker. MAC Kinky (LE, $16.00) is a touch darker. NARS Deadly Catch (LE, $26.00) is glossier. MAC Frank-n-furter (LE, $16.00) is darker. Kat Von D Hexagram (P, $21.00) is cooler-toned, more matte. MAC RiRi Woo (LE, $16.00) is cooler-toned, more matte. MAC Ruby Woo (P, $16.00) is cooler-toned, more matte. MAC Ronnie Red (LE, $16.00) is darker. MAC MAC Red (P, $16.00) is cooler-toned, more matte. See comparison swatches / view dupes.",
+    price: 151,
+    amount: 32
+  },
 ];
 
 export default products;

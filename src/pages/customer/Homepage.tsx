@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../ui-component/customer/Navbar";
 import Helmet from "../../ui-component/shared/Helmet";
-import { ProductModel } from "../../model/product";
-import { useToastContext } from "../../ui-component/toast/ToastContext";
-import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
-import { axiosInstance } from "../../client-api";
-import axios from "axios";
+// import { ProductModel } from "../../model/product";
+// import { useToastContext } from "../../ui-component/toast/ToastContext";
+// import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
+// import { axiosInstance } from "../../client-api";
+// import axios from "axios";
 import Loading from "../../ui-component/shared/Loading";
 import products from "../../fake-data";
 import HeroSlider from "../../ui-component/customer/HeroSlider";
@@ -42,9 +42,9 @@ const policy: PolicyCard = [
 ];
 
 function Homepage() {
-  const [allProducts, setAllProducts] = useState<ProductModel[]>([]);
+  // const [allProducts, setAllProducts] = useState<ProductModel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const { toastDispatch } = useToastContext();
+  // const { toastDispatch } = useToastContext();
   // useEffect(() => {
   //   const cancelToken = axios.CancelToken.source();
   //   setLoading(true);
