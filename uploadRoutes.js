@@ -18,8 +18,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-
 
 function checkFileType(file, cb) {
   const filetypes = /jpeg|jpg|png/;
@@ -45,7 +43,6 @@ router.post("/", upload.array("product"), (req, res) => {
   if (req.files.length === 1) {
     res.send(`/${req.file.path}`);
   } else if (req.files.length > 1) {
-    console.log(req.files)
     res.send(req.files);
   }
 });
