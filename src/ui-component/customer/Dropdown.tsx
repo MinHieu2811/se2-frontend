@@ -17,7 +17,7 @@ export default function DropdownSelect({
 }: DropdownSelectProps) {
   return (
     <div className="dropdown-select">
-      <div className={`field ${isHorizontal ? 'is-horizontal' : ''}`}>
+      <div className={`field is-vertical`}>
         <div className="field-label is-normal">
           <label className="label is-capitalized has-text-left">{propertyName}</label>
         </div>

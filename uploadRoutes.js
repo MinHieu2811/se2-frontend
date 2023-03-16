@@ -11,12 +11,13 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname + "/public/images/products/"));
   },
   filename: (req, file, cb) => {
+    // console.log(file, req)
     cb(
-      null,
-      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+      null, file.originalname
     );
   },
 });
+
 
 function checkFileType(file, cb) {
   const filetypes = /jpeg|jpg|png/;

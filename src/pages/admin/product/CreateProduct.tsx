@@ -9,13 +9,16 @@ import { axiosInstance } from "../../../client-api";
 
 const CreateProduct = () => {
   const [reviewImagesBlob, setReviewImagesBlob] = useState<Blob[]>([]);
+  const [imageName, setImageName] = useState<string[]>([])
   const { toastDispatch } = useToastContext();
 
   const onImageChanged = (file: File[]) => {
     if (file && file?.length) {
       const arrayCheck = [".jpg", ".jpeg", ".png", "tiff", "webp", "gif"];
+      let images: string[] = []
       file.forEach((image) => {
         const nameFile = image?.name;
+        images = [...images, `/images/products/${nameFile}`]
         if (!arrayCheck.some((v) => nameFile.includes(v))) {
           toastDispatch({
             type: REMOVE_ALL_AND_ADD,
@@ -27,15 +30,15 @@ const CreateProduct = () => {
 
           return;
         }
-
+        setImageName(images)
         setReviewImagesBlob(file);
       });
     }
   };
 
   const handleSubmitImage = async (e: any) => {
+    e.preventDefault()
     try {
-      e.preventDefault()
       const formData = new FormData()
       if (reviewImagesBlob.length > 0) {
         reviewImagesBlob?.forEach((image) => {
