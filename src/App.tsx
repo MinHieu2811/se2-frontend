@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.scss";
 import { BrowserRouter } from "react-router-dom";
 import { Route } from "react-router";
@@ -20,6 +20,12 @@ import CategoryList from "./pages/admin/category/CategoryList";
 import Category from "./pages/customer/Category";
 import ProductPage from "./pages/customer/ProductPage";
 function App() {
+
+  useEffect(() => {
+    if(!localStorage.getItem("cart" || "")) {
+      localStorage.setItem("cart", JSON.stringify([]))
+    }
+  }, [])
   return (
     <BrowserRouter>
       <CustomRoute>
