@@ -1,0 +1,186 @@
+@import "swiper/css";
+@import "swiper/css/free-mode";
+@import "swiper/css/navigation";
+@import "swiper/css/thumbs";
+
+.product-info-wrapper {
+    margin-top: 100px;
+    @include flex(flex-start, center);
+    overflow: hidden;
+    height: fit-content;
+    // width: 100vw;
+
+    @include tablet {
+        @include flex(center, center);
+        flex-direction: column;
+    }
+
+    &_img_container {
+        @include flex(center, center);
+        flex-direction: column;
+        // height:50vh;
+        margin: 30px;
+
+        @include tablet {
+            flex-direction: column-reverse;
+            margin: 0;
+        }
+
+        &_main {
+            width: 800px;
+            height: 600px;
+            overflow: hidden;
+            @include flex(flex-start, center);
+            position: relative;
+
+            @include tablet {
+                width: 375px;
+            }
+
+            img {
+                height: 100%;
+                transform-origin: center;
+                transition: all 0.3s ease-in-out;
+            }
+
+            img.pic2 {
+                position: absolute;
+                top: 20px;
+                transform: scale(0);
+            }
+
+            &:hover img.pic2 {
+                transform: scale(1);
+            }
+
+            &:hover img.pic1 {
+                transform: scale(0);
+            }
+        }
+    }
+
+    &_info {
+        margin: 20px;
+        @include flex(flex-start, space-evenly);
+        flex-direction: column;
+
+        &_name {
+            font-size: 2rem;
+            margin: 2rem 0;
+            text-transform: capitalize;
+
+            &::first-letter {
+                color: $main-color;
+            }
+        }
+
+        &_branch {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            margin: 1rem 0;
+            padding: 3px 5px;
+            border: 1px solid $main-color;
+        }
+
+        &_price {
+            font-size: 2rem;
+            margin: 1rem 0;
+        }
+        &_btn {
+            button.btn {
+                margin: 1.5rem 0;
+                padding: 10px 20px;
+
+                font-size: 1.5rem;
+                background-color: $main-color;
+                color: $main-bg;
+
+                outline: none;
+                border: 0;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $main-color-hover;
+                }
+            }
+        }
+    }
+}
+
+.width100 {
+    width: 100%;
+}
+
+.product-description {
+    width: 100%;
+    padding: 2rem 2rem 3rem;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+
+    @include mobile {
+        display: none;
+    }
+
+    &.mobile {
+        display: none;
+
+        @include mobile {
+            display: block;
+        }
+    }
+
+    &.expand {
+        height: max-content;
+        transition: all 0.5s ease-in-out;
+    }
+
+    &_title {
+        font-size: 2.5rem;
+        text-transform: capitalize;
+        font-weight: 600;
+        margin: 2rem 0;
+    }
+
+    &_content {
+        font-size: 1.25rem;
+        line-height: 1.875rem;
+        text-align: justify;
+    }
+
+    &_toggle {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+
+        button {
+            padding: 10px 20px;
+            border: 1px solid $main-color;
+            font-size: 1.3rem;
+            transition: all 0.2s ease-in-out;
+            background-color: $main-color;
+            color: $main-bg;
+
+            &:hover {
+                background-color: $main-color-hover;
+                color: $main-bg;
+            }
+        }
+    }
+}
+
+.navigate-back{
+    @include flex(center, flex-start);
+    margin: 2rem 0;
+    font-size: 1.7rem;
+    text-transform: uppercase;
+    color: $main-color;
+    cursor: pointer;
+    z-index: 1;
+
+    &:hover {
+        color: $main-color-hover;
+    }
+}

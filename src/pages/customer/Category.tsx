@@ -46,7 +46,7 @@ const Category = (props: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filterObj, setFilterObj] = useState<DetailedObject<string>>(initialState);
   const navigate = useNavigate();
-  console.log(searchParams.get('keyword'), searchParams.get('brand'), searchParams.get('sorting'))
+  // console.log(searchParams.get('keyword'), searchParams.get('brand'), searchParams.get('sorting'))
 
   function onPropertyChanged(property: string, name: string) {
     setFilterObj({
@@ -62,7 +62,6 @@ const Category = (props: Props) => {
       serializeQuery({...filterObj, keyword: debouncedKeyword});
       const query = new URLSearchParams({...filterObj, keyword: debouncedKeyword});
       setSearchParams(query.toString());
-      console.log(query.toString())
       navigate((filterObj?.keyword || filterObj?.sorting || filterObj.brand) ? `?${query.toString()}` : '' );
     }
   }, [filterObj, navigate, debouncedKeyword]);

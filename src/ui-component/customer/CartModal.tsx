@@ -128,4 +128,4 @@ const CartModal = () => {
   );
 };
 
-export default CartModal;
+export default React.memo(CartModal);
