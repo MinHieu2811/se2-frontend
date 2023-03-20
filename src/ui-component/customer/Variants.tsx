@@ -29,6 +29,7 @@ type VariantType = {
 
 function Variant({ variant }: VariantType) {
   const { removeFromCart } = useCart();
+
   return (
     <>
       <div className="variant">

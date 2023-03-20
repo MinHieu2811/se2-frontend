@@ -8,11 +8,22 @@ type Props = {
   className?: string;
   isHorizontal?: boolean;
   value: number;
-  product: ProductModel
+  product: ProductModel;
+  increase?: () => void;
+  decrease?: () => void;
 };
 
-function QuantityInput({ label, className, isHorizontal, value, product }: Props) {
-    const { addToCartHandler, removeFromCart} = useCart()
+function QuantityInput({
+  label,
+  className,
+  isHorizontal,
+  value,
+  product,
+  increase,
+  decrease,
+}: Props) {
+  const { addToCartHandler, removeFromCart } = useCart();
+
   return (
     <div
       className={`quantity-input field ${isHorizontal ? "is-horizontal" : ""} ${
@@ -29,15 +40,35 @@ function QuantityInput({ label, className, isHorizontal, value, product }: Props
       <div className="field-body">
         <div className="field has-addons">
           <span className="control">
-            <button className="icon-button button left">
-              {removeFromCart && <AiOutlineMinus onClick={() => removeFromCart(product, false)}/>}
-            </button>
+            {decrease ? (
+              <button className="icon-button button left">
+                <AiOutlineMinus onClick={decrease} />
+              </button>
+            ) : (
+              <button className="icon-button button left">
+                {removeFromCart && (
+                  <AiOutlineMinus
+                    onClick={() => removeFromCart(product, false)}
+                  />
+                )}
+              </button>
+            )}
           </span>
           <span className="control control-input">{value}</span>
           <span className="control is-right">
-            <button className="icon-button button right">
-              {addToCartHandler && <AiOutlinePlus onClick={() => addToCartHandler(product, value)}/>}
-            </button>
+            {increase ? (
+              <button className="icon-button button left">
+                <AiOutlinePlus onClick={increase} />
+              </button>
+            ) : (
+              <button className="icon-button button left">
+                {addToCartHandler && (
+                  <AiOutlinePlus
+                    onClick={() => addToCartHandler(product, 1)}
+                  />
+                )}
+              </button>
+            )}
           </span>
         </div>
       </div>

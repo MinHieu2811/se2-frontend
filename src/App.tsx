@@ -18,6 +18,7 @@ import DiscountList from "./pages/admin/discount/DiscountList";
 import CreateCategory from "./pages/admin/category/CreateCategory";
 import CategoryList from "./pages/admin/category/CategoryList";
 import Category from "./pages/customer/Category";
+import ProductPage from "./pages/customer/ProductPage";
 function App() {
   return (
     <BrowserRouter>
@@ -104,6 +105,7 @@ function App() {
           {/* Customer */}
           <Route path="/" element={<Homepage />} />
           <Route path="/category" element={<Category />} />
+          <Route path="/category/:productId" element={<ProductPage />} />
           {/* <Route path="/category">
             <Route path=":page" element={<Category />} />
             <Route path=":sorting" element={<Category />} />

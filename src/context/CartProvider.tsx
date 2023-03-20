@@ -29,7 +29,7 @@ export const CartProvider = ({ children }: Props) => {
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [totalItems, setTotalItems] = useState<number>(0);
 
-  const addToCartHandler = (product: ProductModel, quantity?: number) => {
+  const addToCartHandler = (product: ProductModel, quantityAdd?: number) => {
     const productInCart = cart.findIndex(
       (item) => item?.product?.id === product?.id
     );
@@ -37,7 +37,11 @@ export const CartProvider = ({ children }: Props) => {
     if (productInCart >= 0) {
       const changedCart = cart.map(({ product, quantity }) => {
         if (product?.id === id) {
-          return {
+          return quantityAdd ? {
+            product,
+            quantity:
+              quantity + quantityAdd > product?.amount ? product?.amount : quantity + quantityAdd,
+          } : {
             product,
             quantity:
               quantity + 1 > product?.amount ? product?.amount : quantity + 1,
@@ -53,14 +57,14 @@ export const CartProvider = ({ children }: Props) => {
     } else {
       setCart([
         ...cart,
-        { product, quantity: quantity && product?.amount > 0 ? quantity : 1 },
+        { product, quantity: quantityAdd && product?.amount > 0 ? quantityAdd : 1 },
       ]);
 
       localStorage.setItem(
         "cart",
         JSON.stringify([
           ...cart,
-          { product, quantity: quantity && product?.amount > 0 ? quantity : 1 },
+          { product, quantity: quantityAdd && product?.amount > 0 ? quantityAdd : 1 },
         ])
       );
     }
