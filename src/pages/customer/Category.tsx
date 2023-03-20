@@ -10,6 +10,7 @@ import products from "../../fake-data";
 import ProductCard from "../../ui-component/customer/ProductCard";
 import { Breadcrumb } from '../../ui-component/customer/Breadcrumb';
 import { useDebounce } from "../../hooks/useDebounce";
+import { serializeQuery } from "../../hooks/useSearchNavigate";
 
 const properties: DetailedObject<string[]> = {
   brand: ["Tom Ford", "Loubotin", "Dior", "Gucci"],
@@ -22,12 +23,6 @@ const properties: DetailedObject<string[]> = {
 //   sorting?: string;
 //   page?: number;
 // }
-
-const serializeQuery = (obj: DetailedObject<string>) => {
-  return Object.keys(obj).map(function(key) {
-    return [key, obj[key]].map(encodeURIComponent).join("=");
-  }).join("&");
-};
 
 const initialState: DetailedObject<string> = {
   keyword: '',
@@ -52,7 +47,7 @@ const Category = () => {
   useEffect(() => {
     if (filterObj) {
       const query = serializeQuery({...filterObj, keyword: debouncedKeyword});
-      navigate((filterObj?.keyword || filterObj?.sorting || filterObj.brand) ? `?${query.toString()}` : '' );
+      navigate((filterObj?.keyword || filterObj?.sorting || filterObj?.brand) ? `?${query?.toString()}` : '' );
     }
   }, [filterObj, navigate, debouncedKeyword]);
 

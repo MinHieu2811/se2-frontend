@@ -1,24 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  AiOutlineMenu,
-  AiOutlineUser,
-} from "react-icons/ai";
-import { HiOutlineShoppingBag } from 'react-icons/hi'
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
+import { HiOutlineShoppingBag } from "react-icons/hi";
+import { Link, useNavigate } from "react-router-dom";
 import CartModal from "./CartModal";
 import { useToggleModal } from "../../context/ModalProvider";
 import { useCart } from "../../context/CartProvider";
+import { useSearchNavigate } from "../../hooks/useSearchNavigate";
 
 const Navbar = () => {
   const headerRef = useRef<HTMLDivElement>(null);
 
+  const searchNavigate = useSearchNavigate();
+
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const { setOpen } = useToggleModal()
+  const { setOpen } = useToggleModal();
   const navigate = useNavigate();
 
-  const [isLogin, ] = useState(false);
-  const [isAdmin, ] = useState(false);
+  const [isLogin] = useState(false);
+  const [isAdmin] = useState(false);
 
   const handleScroll = () => {
     if (
@@ -49,24 +49,42 @@ const Navbar = () => {
   const mainNav = [
     {
       display: "Home",
-      path: "/",
+      path: {
+        pathname: "/",
+        brand: "",
+      },
     },
     {
-      display: "category",
-      path: "/category",
+      display: "Dior",
+      path: {
+        pathname: "/category",
+        brand: "Dior",
+      },
     },
     {
-      display: "wishlist",
-      path: "/wishlist",
+      display: "Gucci",
+      path: {
+        pathname: "/category",
+        brand: "Gucci",
+      },
+    },
+    {
+      display: "Tom Ford",
+      path: {
+        pathname: "/category",
+        brand: "Tom Ford",
+      },
+    },
+    {
+      display: "Loubotin",
+      path: {
+        pathname: "/category",
+        brand: "Loubotin",
+      },
     },
   ];
 
-  const { pathname } = useLocation();
-  const navActive = mainNav.findIndex(
-    (e) => e.path.split("/")[1] === pathname.split("/")[1]
-  );
-
-  const { totalItems } = useCart()
+  const { totalItems } = useCart();
 
   return (
     <div className="main-nav" ref={headerRef}>
@@ -78,13 +96,21 @@ const Navbar = () => {
       <div className="main-nav_center">
         <ul className="main-nav_center_container">
           {mainNav.map((item, index) => (
-            <li
-              className={`main-nav_center_container_item ${
-                index === navActive ? "active" : ""
-              }`}
-              key={index}
-            >
-              <Link to={item.path}>{item.display}</Link>
+            <li className={`main-nav_center_container_item`} key={index}>
+              <div
+                onClick={() =>
+                  searchNavigate({
+                    pathName: item?.path?.pathname,
+                    queryObj: {
+                      brand: item?.path?.brand,
+                      keyword: "",
+                      sorting: "",
+                    },
+                  })
+                }
+              >
+                {item.display}
+              </div>
             </li>
           ))}
         </ul>
@@ -92,7 +118,7 @@ const Navbar = () => {
       <div className="main-nav_right">
         <div className="main-nav_right_item">
           <span className="main-nav_right_item_qty">{totalItems}</span>
-          <HiOutlineShoppingBag onClick={setOpen}/>
+          <HiOutlineShoppingBag onClick={setOpen} />
         </div>
         <div
           className="main-nav_right_item login-box"
