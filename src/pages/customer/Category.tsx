@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Helmet from "../../ui-component/shared/Helmet";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../../ui-component/customer/Layout";
 import DropdownSelect from "../../ui-component/customer/Dropdown";
 import { DetailedObject } from "../../model/utils";
@@ -10,8 +10,6 @@ import products from "../../fake-data";
 import ProductCard from "../../ui-component/customer/ProductCard";
 import { Breadcrumb } from '../../ui-component/customer/Breadcrumb';
 import { useDebounce } from "../../hooks/useDebounce";
-
-type Props = {};
 
 const properties: DetailedObject<string[]> = {
   brand: ["Tom Ford", "Loubotin", "Dior", "Gucci"],
@@ -26,14 +24,9 @@ const properties: DetailedObject<string[]> = {
 // }
 
 const serializeQuery = (obj: DetailedObject<string>) => {
-  let result: string = "";
-  Object.keys(obj).forEach((item) => {
-    if (obj[item]) {
-      return result.concat(`?${item}=${obj[item]}`);
-    }
-  });
-
-  return result;
+  return Object.keys(obj).map(function(key) {
+    return [key, obj[key]].map(encodeURIComponent).join("=");
+  }).join("&");
 };
 
 const initialState: DetailedObject<string> = {
@@ -42,11 +35,10 @@ const initialState: DetailedObject<string> = {
   brand: ''
 }
 
-const Category = (props: Props) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [filterObj, setFilterObj] = useState<DetailedObject<string>>(initialState);
+const Category = () => {
+  const [filterObj, setFilterObj] = useState<DetailedObject<string>>();
   const navigate = useNavigate();
-  // console.log(searchParams.get('keyword'), searchParams.get('brand'), searchParams.get('sorting'))
+  const location = useLocation()
 
   function onPropertyChanged(property: string, name: string) {
     setFilterObj({
@@ -59,12 +51,20 @@ const Category = (props: Props) => {
 
   useEffect(() => {
     if (filterObj) {
-      serializeQuery({...filterObj, keyword: debouncedKeyword});
-      const query = new URLSearchParams({...filterObj, keyword: debouncedKeyword});
-      setSearchParams(query.toString());
+      const query = serializeQuery({...filterObj, keyword: debouncedKeyword});
       navigate((filterObj?.keyword || filterObj?.sorting || filterObj.brand) ? `?${query.toString()}` : '' );
     }
   }, [filterObj, navigate, debouncedKeyword]);
+
+  useEffect(() => {
+    if(location?.search) {
+      const queryString = location?.search?.substring(1)
+      const result = JSON.parse('{"' + decodeURI(queryString).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+      setFilterObj(result)
+    } else {
+      setFilterObj(initialState)
+    }
+  }, [])
   return (
     <Layout>
       <>
@@ -84,16 +84,17 @@ const Category = (props: Props) => {
                   onChange={(e) => setFilterObj({...filterObj, keyword: e.target.value})}
                 />
               </div>
-              {Object.keys(properties).map((item) => (
-                <div className={`filter-bar__${item}`} key={`filter-${item}`}>
+              {Object.keys(properties).map((item) => {
+                console.log('item', filterObj?.[item]);
+                return (<div className={`filter-bar__${item}`} key={`filter-${item}`}>
                   <DropdownSelect
                     propertyName={item.toUpperCase()}
-                    selectedProperty={filterObj?.item as string}
+                    selectedProperty={filterObj?.[item] as string}
                     values={properties[item]}
                     onPropertyChanged={onPropertyChanged}
                   />
                 </div>
-              ))}
+              )})}
             </div>
             <div className="product-list">
               <Grid col={3} mdCol={2} smCol={1} gap={20}>
