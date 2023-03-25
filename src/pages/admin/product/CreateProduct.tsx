@@ -236,7 +236,7 @@ const CreateProduct = () => {
                 Product Price
               </label>
               <Form.Control
-                type="text"
+                type="number"
                 name="price"
                 className="form-control"
                 id="ProductPrice"
