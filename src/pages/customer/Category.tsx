@@ -80,7 +80,6 @@ const Category = () => {
                 />
               </div>
               {Object.keys(properties).map((item) => {
-                console.log('item', filterObj?.[item]);
                 return (<div className={`filter-bar__${item}`} key={`filter-${item}`}>
                   <DropdownSelect
                     propertyName={item.toUpperCase()}

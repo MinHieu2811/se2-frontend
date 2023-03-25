@@ -57,7 +57,7 @@ const VoucherList = () => {
         .get("/products/get-all?page=1&skip=0&take=30", {
           cancelToken: cancelToken.token,
         })
-        .then((res) => {
+        .then((res: any) => {
           toastDispatch({
             type: "REMOVE_ALL_AND_ADD",
             payload: {

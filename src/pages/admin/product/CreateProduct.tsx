@@ -5,20 +5,39 @@ import { Form } from "react-bootstrap";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
 import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
 import FilesUploader from "../../../ui-component/shared/UploadFiles";
-import { axiosInstance } from "../../../client-api";
+import { axiosImageInstance, axiosInstance } from "../../../client-api";
+import { DetailedObject } from "../../../model/utils";
+
+interface ProductModel extends DetailedObject<string | number | string[]> {
+  name: string;
+  description: string;
+  price: number;
+  brand: string;
+  quantity: number;
+  images: string[];
+}
+
+const initialStates: ProductModel = {
+  name: "",
+  description: "",
+  brand: "",
+  price: 0,
+  quantity: 0,
+  images: [],
+};
 
 const CreateProduct = () => {
   const [reviewImagesBlob, setReviewImagesBlob] = useState<Blob[]>([]);
-  const [imageName, setImageName] = useState<string[]>([])
   const { toastDispatch } = useToastContext();
+  const [productInfo, setProductInfo] = useState<ProductModel>(initialStates);
 
   const onImageChanged = (file: File[]) => {
     if (file && file?.length) {
       const arrayCheck = [".jpg", ".jpeg", ".png", "tiff", "webp", "gif"];
-      let images: string[] = []
+      let images: string[] = [];
       file.forEach((image) => {
         const nameFile = image?.name;
-        images = [...images, `/images/products/${nameFile}`]
+        images = [...images, `/images/products/${nameFile}`];
         if (!arrayCheck.some((v) => nameFile.includes(v))) {
           toastDispatch({
             type: REMOVE_ALL_AND_ADD,
@@ -30,28 +49,27 @@ const CreateProduct = () => {
 
           return;
         }
-        setImageName(images)
+        setProductInfo({ ...productInfo, images: images });
         setReviewImagesBlob(file);
       });
     }
   };
 
-  const handleSubmitImage = async (e: any) => {
-    e.preventDefault()
+  const handleSubmitImage = async () => {
     try {
-      const formData = new FormData()
+      const formData = new FormData();
       if (reviewImagesBlob.length > 0) {
         reviewImagesBlob?.forEach((image) => {
-          formData.append("product", image)
-        })
-        const res = await axiosInstance
-          .post("http://localhost:5000/api/uploads", formData, {
+          formData.append("product", image);
+        });
+        await axiosImageInstance
+          .post("/uploads", formData, {
             headers: {
-              'Content-Type': 'multipart/form-data; '
-            }
+              "Content-Type": "multipart/form-data; ",
+            },
           })
-          .then((res) => res.data);
-        console.log(res);
+          .then((res) => res.data)
+          .then((res) => console.log("api Image", res));
       } else {
         toastDispatch({
           type: REMOVE_ALL_AND_ADD,
@@ -72,70 +90,190 @@ const CreateProduct = () => {
     }
   };
 
-  const handleChange = () => {};
+  const handlePostInfo = async () => {
+    try {
+      let checked: boolean = true;
+      Object.keys(productInfo).forEach((item: string) => {
+        if (
+          productInfo[item] === "" ||
+          productInfo[item] === 0 ||
+          productInfo["images"]?.length === 0
+        ) {
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-danger",
+              content: `Check the field ${item} !!!`,
+            },
+          });
+          checked = false;
+          return;
+        } else {
+          checked = true;
+        }
+      });
+      return (
+        checked &&
+        (await axiosInstance
+          .post("https://se2-ecommerce.herokuapp.com/product", productInfo)
+          .then((res) => res?.data))
+      );
+    } catch (err: any) {
+      toastDispatch({
+        type: REMOVE_ALL_AND_ADD,
+        payload: {
+          type: "is-danger",
+          content: err.msg,
+        },
+      });
+    }
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    await Promise.allSettled([handleSubmitImage(), handlePostInfo()])
+      .then(([resultPostInfo, resultSubmitImage]) => {
+
+        console.log(resultPostInfo, 'post');
+        console.log(resultSubmitImage, 'image');
+        if (
+          resultPostInfo?.status === "fulfilled" &&
+          resultSubmitImage?.status === "fulfilled"
+        ) {
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-success",
+              content: "Created successfully",
+            },
+          });
+          setProductInfo(initialStates);
+          setReviewImagesBlob([]);
+        }
+      })
+      .catch((err) => {
+        toastDispatch({
+          type: REMOVE_ALL_AND_ADD,
+          payload: {
+            type: "is-danger",
+            content: err.msg,
+          },
+        });
+      });
+  };
+
+  // await handleSubmitImage()
+  //   .then(async (res) => {
+  //     // res?.data?.success && handleSubmitImage()
+  //     console.log('run');
+  //     await handlePostInfo();
+  //   })
+  //   .then(() => {
+  //     // toastDispatch({
+  //     //   type: REMOVE_ALL_AND_ADD,
+  //     //   payload: {
+  //     //     type: "is-success",
+  //     //     content: "Created successfully",
+  //     //   },
+  //     // });
+  //     setProductInfo(initialStates);
+  //     setReviewImagesBlob([]);
+  //   })
+  //   .catch((err) => {
+  //     toastDispatch({
+  //       type: REMOVE_ALL_AND_ADD,
+  //       payload: {
+  //         type: "is-danger",
+  //         content: err.msg,
+  //       },
+  //     });
+  //   });
+
+  const handleChange = (e: any) => {
+    e.preventDefault();
+    setProductInfo({
+      ...productInfo,
+      [e.target.name]: e.target.value,
+    });
+  };
   return (
     <Layout>
       <>
         <Helmet title="Create New Product" />
         <div className="card mt-5">
           <div className="card-body height-full">
-            {/* <form>
-              <Form.Group className="mb-4 width-all">
-                <label htmlFor="ProductName" style={{ color: "white" }}>Product Name</label>
-                <Form.Control
-                  type="text"
-                  name="ProductName"
-                  className="form-control"
-                  id="ProductName"
-                  placeholder="Product Name"
-                  onChange={handleChange}
-                />
-              </Form.Group>
-              <Form.Group className="mb-4 width-all">
-                <label htmlFor="ProductDesc" style={{ color: "white" }}>Product Description</label>
-                <textarea className="form-control text-area mr-2" onChange={handleChange} placeholder="Product Description" style={{width: "100%", resize: "vertical"}} name="ProductDesc" id="ProductDesc" />
-              </Form.Group>
-              <Form.Group className="mb-4 width-all">
-                <label htmlFor="ProductPrice" style={{ color: "white" }}>Product Price</label>
-                <Form.Control
-                  type="text"
-                  name="ProductPrice"
-                  className="form-control"
-                  id="ProductPrice"
-                  placeholder="Product Price"
-                  onChange={handleChange}
-                />
-              </Form.Group>
-              <Form.Group className="mb-4 width-all">
-                <label htmlFor="ProductQuantity" style={{ color: "white" }}>Product Quantity</label>
-                <Form.Control type="number" placeholder="Product Quantity"/>
-              </Form.Group>
-              <div className={`image-container`}>
-                <div
-                  className={`${
-                    reviewImagesBlob?.length
-                      ? "after-upload-boarder"
-                      : "before-upload-boarder"
-                  }`}
-                >
-                  <FilesUploader
-                    className="img-wrapper mb-4 width-all"
-                    multiple={true}
-                    allowedTypes="image/*"
-                    onFilesChanged={(f) => onImageChanged(f)}
-                  />
-                  {reviewImagesBlob?.length ? (
-                    reviewImagesBlob?.map((image, key) => (
-                      <img className="preview-image" src={URL.createObjectURL(image)} key={key} alt="" />
-                    ))
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </div>
-              <button className="btn btn-primary mr-2 mt-4" style={{ fontSize: "20px", padding: "10px 15px"}}>Submit</button>
-            </form> */}
-
+            {/* <form> */}
+            <Form.Group className="mb-4 width-all">
+              <label htmlFor="ProductName" style={{ color: "white" }}>
+                Product Name
+              </label>
+              <Form.Control
+                type="text"
+                name="name"
+                className="form-control"
+                id="ProductName"
+                placeholder="Product Name"
+                onChange={handleChange}
+                value={productInfo?.name}
+              />
+            </Form.Group>
+            <Form.Group className="mb-4 width-all">
+              <label htmlFor="ProductDesc" style={{ color: "white" }}>
+                Product Description
+              </label>
+              <textarea
+                className="form-control text-area mr-2"
+                onChange={handleChange}
+                placeholder="Product Description"
+                style={{ width: "100%", resize: "vertical" }}
+                name="description"
+                id="ProductDesc"
+                value={productInfo?.description}
+              />
+            </Form.Group>
+            <Form.Group className="mb-4 width-all">
+              <label htmlFor="ProductPrice" style={{ color: "white" }}>
+                Product Price
+              </label>
+              <Form.Control
+                type="number"
+                name="price"
+                className="form-control"
+                id="ProductPrice"
+                autoComplete="0"
+                placeholder="Product Price"
+                onChange={handleChange}
+                value={productInfo?.price}
+              />
+            </Form.Group>
+            <Form.Group className="mb-4 width-all">
+              <label htmlFor="ProductBrand" style={{ color: "white" }}>
+                Product Brand
+              </label>
+              <Form.Control
+                type="text"
+                name="brand"
+                className="form-control"
+                id="ProductBrand"
+                autoComplete="0"
+                placeholder="Product Brand"
+                onChange={handleChange}
+                value={productInfo?.brand}
+              />
+            </Form.Group>
+            <Form.Group className="mb-4 width-all">
+              <label htmlFor="ProductQuantity" style={{ color: "white" }}>
+                Product Quantity
+              </label>
+              <Form.Control
+                type="number"
+                autoComplete="0"
+                placeholder="Product Quantity"
+                name="quantity"
+                value={productInfo?.quantity}
+                onChange={handleChange}
+              />
+            </Form.Group>
             <div className={`image-container`}>
               <div
                 className={`${
@@ -165,12 +303,49 @@ const CreateProduct = () => {
               </div>
             </div>
             <button
+              onClick={handleSubmit}
+              className="btn btn-primary mr-2 mt-4"
+              style={{ fontSize: "20px", padding: "10px 15px" }}
+            >
+              Submit
+            </button>
+            {/* </form> */}
+
+            {/* <div className={`image-container`}>
+              <div
+                className={`${
+                  reviewImagesBlob?.length
+                    ? "after-upload-boarder"
+                    : "before-upload-boarder"
+                }`}
+              >
+                <FilesUploader
+                  className="img-wrapper mb-4 width-all"
+                  multiple={true}
+                  allowedTypes="image/*"
+                  onFilesChanged={(f) => onImageChanged(f)}
+                />
+                {reviewImagesBlob?.length ? (
+                  reviewImagesBlob?.map((image, key) => (
+                    <img
+                      className="preview-image"
+                      src={URL.createObjectURL(image)}
+                      key={key}
+                      alt=""
+                    />
+                  ))
+                ) : (
+                  <></>
+                )}
+              </div>
+            </div> */}
+            {/* <button
               className="btn btn-primary mr-2 mt-4"
               style={{ fontSize: "20px", padding: "10px 15px" }}
               onClick={handleSubmitImage}
             >
               Submit
-            </button>
+            </button> */}
           </div>
         </div>
       </>

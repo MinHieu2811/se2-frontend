@@ -5,11 +5,12 @@ import Footer from './Footer'
 type Props = {
     children: JSX.Element
 }
+const MemoizedNavbar = React.memo(() => <Navbar />)
 
 function Layout({children}: Props) {
   return (
     <>
-        <Navbar />
+        <MemoizedNavbar />
 
         <div className='wrapper-layout'>
             {children}
