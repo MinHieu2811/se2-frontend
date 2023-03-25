@@ -1,7 +1,11 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse , AxiosError} from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000/api",
+    baseURL: "https://se2-ecommerce.herokuapp.com",
+    headers: {
+        "Allow-Control-Allow-Origin": "*",
+        "Allow-Control-Allow-Methods": "POST, PUT, GET, HEAD, OPTIONS, DELETE"
+    },
     timeout: 30000
 })
 
