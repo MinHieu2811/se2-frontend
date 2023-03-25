@@ -40,10 +40,22 @@ const upload = multer({
 });
 
 router.post("/", upload.array("product"), (req, res) => {
-  if (req.files.length === 1) {
-    res.send(`/${req.file.path}`);
-  } else if (req.files.length > 1) {
-    res.send(req.files);
+  try {
+    if (req.files.length === 1) {
+      res.send(`/${req.file.path}`);
+    } else if (req.files.length > 1) {
+      res.status(201).json({
+        data: null,
+        success: true,
+        message: ""
+      })
+    }
+  } catch(err) {
+    res.status(400).json({
+      data: null,
+      success: false,
+      message: ""
+    })
   }
 });
 

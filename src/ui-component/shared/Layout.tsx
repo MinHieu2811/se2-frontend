@@ -7,6 +7,8 @@ type Props = {
   children: JSX.Element;
 };
 
+const MemoizedNavbar = React.memo(() => <Navbar />)
+
 const Layout = ({ children }: Props) => {
   return (
     <>
@@ -17,7 +19,7 @@ const Layout = ({ children }: Props) => {
           {/* </div> */}
         </div>
         <div className="content" style={{ width: "100%" }}>
-          <Navbar />
+          <MemoizedNavbar />
           <div className="main-panel">
             <div className="content-wrapper"  style={{ width: "100%" }}>
               {children}

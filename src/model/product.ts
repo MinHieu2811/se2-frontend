@@ -17,4 +17,5 @@ export interface ResponseData {
         take: number
     },  
     success: boolean
+    message: string
 }

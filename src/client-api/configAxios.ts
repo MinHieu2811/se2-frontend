@@ -1,7 +1,13 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse , AxiosError} from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:3000/api",
+    baseURL: "https://se2-ecommerce.herokuapp.com",
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Methods': 'POST, PUT, PATCH, GET, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': '*'
+    },
     timeout: 30000
 })
 
@@ -9,6 +15,7 @@ axiosInstance.interceptors.request.use((req: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("access_token") || ""
 
     if(token) req.headers.Authorization = `Bearer ${token}`
+    req.headers["Content-Type"] = "application/json"
     return req
 }, (err) => {
     console.log(err)
@@ -38,4 +45,9 @@ axiosInstance.interceptors.response.use((res: AxiosResponse) => {
             })
         }
     }
+})
+
+export const axiosImageInstance = axios.create({
+    baseURL: "http://localhost:5000/api",
+    timeout: 30000
 })

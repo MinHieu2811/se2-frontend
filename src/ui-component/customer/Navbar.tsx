@@ -98,16 +98,18 @@ const Navbar = () => {
           {mainNav.map((item, index) => (
             <li className={`main-nav_center_container_item`} key={index}>
               <div
-                onClick={() =>
+                onClick={() => {
                   searchNavigate({
                     pathName: item?.path?.pathname,
-                    queryObj: {
-                      brand: item?.path?.brand,
-                      keyword: "",
-                      sorting: "",
-                    },
-                  })
-                }
+                    queryObj: item?.path?.pathname.includes("/category")
+                      ? {
+                          brand: item?.path?.brand,
+                          keyword: "",
+                          sorting: "",
+                        }
+                      : {},
+                  });
+                }}
               >
                 {item.display}
               </div>
