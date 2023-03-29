@@ -108,7 +108,6 @@ const CartModal = () => {
               <div className="empty-content">
                 <div>Looks like your bag is empty.</div>
                 <p>Not sure where to start?</p>
-                <p>Check out our bestsellers.</p>
                 <button
                   onClick={() => {
                     setOpen && setOpen();
@@ -116,7 +115,7 @@ const CartModal = () => {
                   }}
                   className="button button--cta is-fullwidth is-primary"
                 >
-                  Discover our bestsellers
+                  Discover our products
                 </button>
               </div>
             </section>
