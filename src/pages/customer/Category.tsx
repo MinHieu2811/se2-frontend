@@ -17,13 +17,6 @@ const properties: DetailedObject<string[]> = {
   sorting: ["Ascending", "Descending"],
 };
 
-// interface FilterObject {
-//   keyword?: string;
-//   brand?: string;
-//   sorting?: string;
-//   page?: number;
-// }
-
 const initialState: DetailedObject<string> = {
   keyword: '',
   sorting: '',
@@ -59,7 +52,7 @@ const Category = () => {
     } else {
       setFilterObj(initialState)
     }
-  }, [])
+  }, [window.location.href])
   return (
     <Layout>
       <>

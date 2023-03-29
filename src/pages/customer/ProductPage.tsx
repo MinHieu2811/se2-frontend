@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router";
 import Layout from "../../ui-component/customer/Layout";
 import { BiArrowBack } from "react-icons/bi";
 import { useCart } from "../../context/CartProvider";
+import { useToggleModal } from "../../context/ModalProvider";
 // import { useToastContext } from '../../ui-component/toast/ToastContext'
 // import axios from 'axios'
 // import { axiosInstance } from '../../client-api'
@@ -20,6 +21,7 @@ function ProductPage() {
   const navigate = useNavigate();
   const params = useParams();
   const { addToCartHandler } = useCart();
+  const {setOpen} = useToggleModal()
 
   const initialState = products.find(
     (item) => item?.id === params?.productId
@@ -188,7 +190,10 @@ function ProductPage() {
               <button
                 className="btn"
                 disabled={quantity === 0}
-                onClick={addToCart}
+                onClick={() => {
+                  setOpen && setOpen()
+                  addToCart()
+                }}
                 style={{ marginRight: "10px" }}
               >
                 Add to cart

@@ -1,16 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineHeart, AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
 import { HiOutlineShoppingBag } from "react-icons/hi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CartModal from "./CartModal";
 import { useToggleModal } from "../../context/ModalProvider";
 import { useCart } from "../../context/CartProvider";
 import { useSearchNavigate } from "../../hooks/useSearchNavigate";
+import { DetailedObject } from "../../model/utils";
+
+const initialState: DetailedObject<string> = {
+  keyword: "",
+  sorting: "",
+  brand: "",
+};
 
 const Navbar = () => {
   const headerRef = useRef<HTMLDivElement>(null);
+  const [filterObj, setFilterObj] = useState<DetailedObject<string>>();
 
   const searchNavigate = useSearchNavigate();
+  const location = useLocation();
 
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -37,6 +46,24 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (location?.search) {
+      const queryString = location?.search?.substring(1);
+      const result = JSON.parse(
+        '{"' +
+          decodeURI(queryString)
+            .replace(/"/g, '\\"')
+            .replace(/&/g, '","')
+            .replace(/=/g, '":"') +
+          '"}'
+      );
+      setFilterObj(result);
+    } else {
+      setFilterObj(initialState);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.href]);
 
   const logoutHandler = () => {
     navigate("/");
@@ -103,9 +130,8 @@ const Navbar = () => {
                     pathName: item?.path?.pathname,
                     queryObj: item?.path?.pathname.includes("/category")
                       ? {
+                          ...filterObj,
                           brand: item?.path?.brand,
-                          keyword: "",
-                          sorting: "",
                         }
                       : {},
                   });
@@ -118,6 +144,9 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="main-nav_right">
+        <div className="main-nav_right_item">
+          <AiOutlineHeart />
+        </div>
         <div className="main-nav_right_item">
           <span className="main-nav_right_item_qty">{totalItems}</span>
           <HiOutlineShoppingBag onClick={setOpen} />

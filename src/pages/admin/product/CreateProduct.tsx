@@ -13,7 +13,7 @@ interface ProductModel extends DetailedObject<string | number | string[]> {
   description: string;
   price: number;
   brand: string;
-  quantity: number;
+  amount: number;
   images: string[];
 }
 
@@ -22,7 +22,7 @@ const initialStates: ProductModel = {
   description: "",
   brand: "",
   price: 0,
-  quantity: 0,
+  amount: 0,
   images: [],
 };
 
@@ -269,7 +269,7 @@ const CreateProduct = () => {
                 type="number"
                 autoComplete="0"
                 placeholder="Product Quantity"
-                name="quantity"
+                name="amount"
                 value={productInfo?.quantity}
                 onChange={handleChange}
               />
