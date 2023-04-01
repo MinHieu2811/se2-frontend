@@ -4,11 +4,11 @@ import { ProductModel } from "../../model/product";
 import { ResponseType } from "../../model/utils";
 import QuantityInput from "../../ui-component/customer/QuantityInput";
 import products from "../../fake-data";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import Layout from "../../ui-component/customer/Layout";
-import { BiArrowBack } from "react-icons/bi";
 import { useCart } from "../../context/CartProvider";
 import { useToggleModal } from "../../context/ModalProvider";
+import { Breadcrumb } from "../../ui-component/customer/Breadcrumb";
 // import { useToastContext } from '../../ui-component/toast/ToastContext'
 // import axios from 'axios'
 // import { axiosInstance } from '../../client-api'
@@ -18,10 +18,9 @@ function ProductPage() {
   const btnRef = useRef<HTMLButtonElement>(null);
   const expandRef = useRef<HTMLDivElement>(null);
   const [quantity, setQuantity] = useState<number>(0);
-  const navigate = useNavigate();
   const params = useParams();
   const { addToCartHandler } = useCart();
-  const {setOpen} = useToggleModal()
+  const { setOpen } = useToggleModal();
 
   const initialState = products.find(
     (item) => item?.id === params?.productId
@@ -34,9 +33,6 @@ function ProductPage() {
       success: true,
     } || {}
   );
-  function handleBack() {
-    navigate(-1);
-  }
 
   const addToCart = () => {
     if (addToCartHandler && productInfo?.data)
@@ -134,9 +130,6 @@ function ProductPage() {
         <div className="product-info-wrapper" style={{ minHeight: "80vh" }}>
           <div className="product-info-wrapper_img_container col-7">
             <div className="product-info-wrapper_img_container_main">
-              <div className="navigate-back" onClick={handleBack}>
-                <BiArrowBack /> Back
-              </div>
               <img
                 src={productInfo?.data?.image[0]}
                 className="pic1"
@@ -169,6 +162,9 @@ function ProductPage() {
             </div>
           </div>
           <div className="product-info-wrapper_info col-5">
+            <Breadcrumb
+              replace={{ position: 2, content: productInfo?.data?.name }}
+            />
             <div className="product-info-wrapper_info_name">
               <h1 className="name">{productInfo?.data?.name}</h1>
             </div>
@@ -176,13 +172,13 @@ function ProductPage() {
               <span className="branch">{productInfo?.data?.brand}</span>
             </div>
             <div className="product-info-wrapper_info_price">
-              <span className="price">Price: ${productInfo?.data?.price}</span>
+              <span className="price">Price: </span> ${productInfo?.data?.price}
             </div>
             <div className="product-info-wrapper_info_quantity">
               <div className="product-info-wrapper_info_quantity_form">
-                <span className="product-info-wrapper_info_quantity_form_title">
+                {/* <span className="product-info-wrapper_info_quantity_form_title">
                   Quantity:{" "}
-                </span>
+                </span> */}
                 <MemoizedQtyInput />
               </div>
             </div>
@@ -191,8 +187,8 @@ function ProductPage() {
                 className="btn"
                 disabled={quantity === 0}
                 onClick={() => {
-                  setOpen && setOpen()
-                  addToCart()
+                  setOpen && setOpen();
+                  addToCart();
                 }}
                 style={{ marginRight: "10px" }}
               >

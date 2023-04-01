@@ -42,6 +42,7 @@ const CartModal = () => {
 
   const onCheckout = () => {
     setIsCheckingOut(true);
+    navigate('/checkout')
   };
 
   // const scrollToTop = () => {

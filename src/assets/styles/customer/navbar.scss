@@ -8,6 +8,7 @@
     z-index: 10;
     background-color: $main-bg;
     transition: all 0.4s ease-in-out;
+    font-family: "Antonio", sans-serif;
 
     @include flex(center, space-evenly);
 

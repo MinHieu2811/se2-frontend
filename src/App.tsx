@@ -19,6 +19,7 @@ import CreateCategory from "./pages/admin/category/CreateCategory";
 import CategoryList from "./pages/admin/category/CategoryList";
 import Category from "./pages/customer/Category";
 import ProductPage from "./pages/customer/ProductPage";
+import Checkout from "./pages/customer/Checkout";
 function App() {
 
   useEffect(() => {
@@ -112,14 +113,8 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/category" element={<Category />} />
           <Route path="/category/:productId" element={<ProductPage />} />
-          {/* <Route path="/category">
-            <Route path=":page" element={<Category />} />
-            <Route path=":sorting" element={<Category />} />
-            <Route path=":filter" element={<Category />} />
-            <Route path=":keyword" element={<Category />} />
-          </Route> */}
+          <Route path="/checkout" element={<Checkout />} />
         </>
-        {/* </Routes> */}
       </CustomRoute>
     </BrowserRouter>
   );
