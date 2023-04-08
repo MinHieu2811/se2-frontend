@@ -16,6 +16,10 @@ function Checkout() {
     initAddress({})
   )
 
+  const genOrderToken = () => {
+    return (new Date()).getTime().toString().slice(0, 8)
+  }
+
   useEffect(() => {
     ;(Object.keys(addressSyncedProps) as Array<keyof CustomerAddress>)?.forEach((key) => {
       validateAddressField(key, addressSyncedProps[key]).then(() => {
@@ -52,7 +56,7 @@ function Checkout() {
             )}
             <div className="order-warpper" key={`code-${0}`}>
               <div className="order-warpper__order">
-                Order <span className="order-warpper__code">#1923798</span>{" "}
+                Order <span className="order-warpper__code">#{genOrderToken()}</span>{" "}
                 <span className="order-warpper__length">
                   ({cart?.reduce((qty, cart) => qty + cart?.quantity, 0) || 0}{" "}
                   item
