@@ -115,7 +115,7 @@ img{
     @include tablet{
         margin: 100px 0;
     }
-    
+
     @include mobile{
         margin: 100px 0;
     }
@@ -123,6 +123,38 @@ img{
 
 .Toastify__toast-container--top-right{
     top: 9em !important;
+}
+
+.paginate-wrapper.category {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+
+    .pagination {
+        .page-item {
+            margin: 0 5px;
+            .page-link {
+                background-color: #c93429 !important;
+                color: white !important;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all 0.3s ease-in-out;
+                border: 0;
+
+                &:hover {
+                    background-color: #9B2D25 !important;
+                }
+            }
+
+            &.active {
+                .page-link {
+                    background-color: #9B2D25 !important;
+                    transform: translateY(-5px);
+                }
+            }
+        }
+    }
 }
 
 .grid {

@@ -1,93 +1,109 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Pagination } from "react-bootstrap";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { DetailedObject } from "../../model/utils";
+import { useSearchNavigate } from "../../hooks/useSearchNavigate";
 
 type PaginationProps = {
   totalPage: number;
   currentPage: number;
   isAdmin: boolean;
-  keyword?: string;
+};
+
+const initialState: DetailedObject<string | number> = {
+  keyword: "",
+  sorting: "",
+  brand: "",
+  page: 1,
 };
 
 const Paginate = ({
   totalPage,
   currentPage,
   isAdmin = false,
-  keyword = "",
 }: PaginationProps) => {
-  return (
-    totalPage > 1 ? (
-      <div className="paginate-wrapper">
-        <Pagination>
-          <Pagination.Item>
-            <Link
-              to={
-                !isAdmin
-                  ? keyword
-                    ? `/category/search/${keyword}/page/${
-                        currentPage - 1 === 0 ? 1 : currentPage - 1
-                      }`
-                    : `/category/page/${
-                        currentPage - 1 === 0 ? 1 : currentPage - 1
-                      }`
-                  : `/admin/products/all-product/${
-                      currentPage - 1 === 0 ? 1 : currentPage - 1
-                    }`
-              }
-              className="paginate-wrapper_link"
-            >
-              <BsChevronLeft />
-            </Link>
+  const location = useLocation();
+  const [filterObj, setFilterObj] = useState<DetailedObject<string | number>>();
+  const searchNavigate = useSearchNavigate();
+
+  useEffect(() => {
+    if (location?.search) {
+      const queryString = location?.search?.substring(1);
+      const result = JSON.parse(
+        '{"' +
+          decodeURI(queryString)
+            .replace(/"/g, '\\"')
+            .replace(/&/g, '","')
+            .replace(/=/g, '":"') +
+          '"}'
+      );
+      console.log("pagination", result);
+      setFilterObj(result);
+    } else {
+      setFilterObj(initialState);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.href]);
+
+  return totalPage > 1 ? (
+    <div className={`paginate-wrapper ${!isAdmin ? "category" : ""}`}>
+      <Pagination>
+        <Pagination.Item
+          onClick={() =>
+            searchNavigate({
+              pathName: "/category",
+              queryObj: {
+                ...filterObj,
+                page: `${currentPage - 1 === 0 ? 1 : currentPage - 1}`,
+              },
+            })
+          }
+        >
+          <div className="paginate-wrapper_link">
+            <BsChevronLeft />
+          </div>
+        </Pagination.Item>
+        {[...Array(totalPage).keys()].map((x) => (
+          <Pagination.Item
+            className={`paginate-wrapper_link ${
+              currentPage === x + 1 ? "active" : ""
+            }`}
+            key={`page-${x + 1}`}
+            onClick={() =>
+              searchNavigate({
+                pathName: "/category",
+                queryObj: {
+                  ...filterObj,
+                  page: `${x + 1}`,
+                },
+              })
+            }
+          >
+            <div>{x + 1}</div>
           </Pagination.Item>
-          {[...Array(totalPage).keys()].map((x) => (
-            <Pagination.Item>
-              <Link
-                key={x + 1}
-                to={
-                  !isAdmin
-                    ? keyword
-                      ? `/category/search/${keyword}/page/${x + 1}`
-                      : `/category/page/${x + 1}`
-                    : `/admin/products/all-product/${x + 1}`
-                }
-                className={`paginate-wrapper_link ${
-                  currentPage === x + 1 ? "active" : ""
-                }`}
-              >
-                {x + 1}
-              </Link>
-            </Pagination.Item>
-          ))}
-          <Pagination.Item>
-            <Link
-              to={
-                !isAdmin
-                  ? keyword
-                    ? `/category/search/${keyword}/page/${
-                        currentPage + 1 > totalPage
-                          ? totalPage
-                          : currentPage + 1
-                      }`
-                    : `/category/page/${
-                        currentPage + 1 > totalPage
-                          ? totalPage
-                          : currentPage + 1
-                      }`
-                  : `/admin/products/all-product/${
-                      currentPage + 1 > totalPage ? totalPage : currentPage + 1
-                    }`
-              }
-              className="paginate-wrapper_link"
-            >
-              <BsChevronRight />
-            </Link>
-          </Pagination.Item>
-        </Pagination>
-      </div>
-    ) : (
-        <></>
-    )
+        ))}
+        <Pagination.Item
+          onClick={() =>
+            searchNavigate({
+              pathName: "/category",
+              queryObj: {
+                ...filterObj,
+                page: `${
+                  currentPage + 1 > totalPage ? totalPage : currentPage + 1
+                }`,
+              },
+            })
+          }
+        >
+          <div className="paginate-wrapper_link">
+            <BsChevronRight />
+          </div>
+        </Pagination.Item>
+      </Pagination>
+    </div>
+  ) : (
+    <></>
   );
 };
 

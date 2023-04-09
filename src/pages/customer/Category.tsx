@@ -11,20 +11,22 @@ import ProductCard from "../../ui-component/customer/ProductCard";
 import { Breadcrumb } from '../../ui-component/customer/Breadcrumb';
 import { useDebounce } from "../../hooks/useDebounce";
 import { serializeQuery } from "../../hooks/useSearchNavigate";
+import Paginate from "../../ui-component/shared/Pagination";
 
 const properties: DetailedObject<string[]> = {
   brand: ["Tom Ford", "Loubotin", "Dior", "Gucci"],
   sorting: ["Ascending", "Descending"],
 };
 
-const initialState: DetailedObject<string> = {
+const initialState: DetailedObject<string | number> = {
   keyword: '',
   sorting: '',
-  brand: ''
+  brand: '',
+  page: 1
 }
 
 const Category = () => {
-  const [filterObj, setFilterObj] = useState<DetailedObject<string>>();
+  const [filterObj, setFilterObj] = useState<DetailedObject<string | number>>();
   const navigate = useNavigate();
   const location = useLocation()
 
@@ -35,7 +37,7 @@ const Category = () => {
     });
   }
 
-  const debouncedKeyword = useDebounce({keyword: filterObj?.keyword || '', delay: 500})
+  const debouncedKeyword = useDebounce({keyword: filterObj?.keyword as string || '', delay: 500})
 
   useEffect(() => {
     if (filterObj) {
@@ -48,6 +50,7 @@ const Category = () => {
     if(location?.search) {
       const queryString = location?.search?.substring(1)
       const result = JSON.parse('{"' + decodeURI(queryString).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+      console.log(result);
       setFilterObj(result)
     } else {
       setFilterObj(initialState)
@@ -94,6 +97,7 @@ const Category = () => {
                 </>
               </Grid>
             </div>
+            <Paginate currentPage={Number(filterObj?.page)} totalPage={5} isAdmin={false} />
           </div>
         </div>
       </>
