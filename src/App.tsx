@@ -20,6 +20,7 @@ import CategoryList from "./pages/admin/category/CategoryList";
 import Category from "./pages/customer/Category";
 import ProductPage from "./pages/customer/ProductPage";
 import Checkout from "./pages/customer/Checkout";
+import MyOrders from "./pages/customer/MyOrders";
 function App() {
   useEffect(() => {
     if (!localStorage.getItem("cart" || "")) {
@@ -120,7 +121,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/user/order" element={<></>} />
+          <Route path="/user/order" element={<MyOrders />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {/* Customer */}

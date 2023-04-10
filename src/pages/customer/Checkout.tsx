@@ -20,7 +20,7 @@ let order: Order = {
   id: genOrderToken(),
 };
 function Checkout() {
-  const { cart, totalItems, totalPrice } = useCart();
+  const { cart, totalItems, totalPrice, clearCart } = useCart();
   const [addressErrors, setAddressErrors] = useSyncedState<AddressErrors>({});
   const [addressSyncedProps, , getAddressSyncedProp] =
     useSyncedState<CustomerAddress>(initAddress({}));
@@ -36,8 +36,6 @@ function Checkout() {
     ...addressSyncedProps,
     status: OrderStatus?.PENDING,
   };
-
-  console.log(order);
 
   useEffect(() => {
     (Object.keys(addressSyncedProps) as Array<keyof CustomerAddress>)?.forEach(
@@ -67,7 +65,10 @@ function Checkout() {
     if(order.orderInfo && paymentInfo) {
       order.orderInfo.paymentInfo = paymentInfo
     }
-    await axiosInstance?.post('', order)?.then(() => navigate('/'))
+    await axiosInstance?.post('http://localhost:5000/api/order', order)?.then(() => {
+      clearCart?.()
+      navigate('/')
+    })
   }
 
   return (

@@ -260,7 +260,7 @@ function CheckoutForm({ className, errors, valueSyncedProps, label, onSubmit }: 
                     type: REMOVE_ALL_AND_ADD,
                     payload: {
                       type: "is-success",
-                      content: `Checkout successfully by ${syncedAddress?.name}!`,
+                      content: `Checkout successfully!`,
                     },
                   });
                 }) as Promise<void>;

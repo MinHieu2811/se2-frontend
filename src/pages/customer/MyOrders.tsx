@@ -1,8 +1,9 @@
 import React from 'react'
+import Layout from '../../ui-component/customer/Layout'
 
 const MyOrders = () => {
   return (
-    <div>MyOrders</div>
+    <Layout><>Hellloooooooo</></Layout>
   )
 }
 

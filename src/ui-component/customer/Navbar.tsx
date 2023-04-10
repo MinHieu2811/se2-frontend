@@ -62,7 +62,7 @@ const Navbar = () => {
     } else {
       setFilterObj(initialState);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.href]);
 
   const logoutHandler = () => {
@@ -157,7 +157,7 @@ const Navbar = () => {
         >
           <>{1 ? <span className="user-name">H</span> : <AiOutlineUser />}</>
           <div className="signin_box" ref={userMenuRef}>
-            {isLogin ? (
+            {!isLogin ? (
               <div className="signin_box_container">
                 <div className="signin_box_container_item">
                   <Link to="/profile">Profile</Link>
@@ -176,7 +176,11 @@ const Navbar = () => {
                       </div>
                     </>
                   ) : (
-                    <></>
+                    <div
+                      className="signin_box_container_item"
+                    >
+                      <Link to="/user/order">My Orders</Link>
+                    </div>
                   )}
                 </>
                 <div
