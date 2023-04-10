@@ -8,37 +8,67 @@ import { useSyncedState } from "../../hooks/useSyncedState";
 import { AddressErrors, CustomerAddress } from "../../model/address";
 import { initAddress } from "../../utils/initAddress";
 import { validateAddressField } from "../../utils/validateInput";
+import { Order, OrderStatus } from "../../model/order";
+import { axiosInstance } from "../../client-api";
+import { useNavigate } from "react-router";
 
+const genOrderToken = () => {
+  return new Date().getTime().toString().slice(0, 8);
+};
+
+let order: Order = {
+  id: genOrderToken(),
+};
 function Checkout() {
-  const { cart } = useCart();
-  const [addressErrors, setAddressErrors] = useSyncedState<AddressErrors>({})
-  const [ addressSyncedProps, ,getAddressSyncedProp] = useSyncedState<CustomerAddress>(
-    initAddress({})
-  )
+  const { cart, totalItems, totalPrice } = useCart();
+  const [addressErrors, setAddressErrors] = useSyncedState<AddressErrors>({});
+  const [addressSyncedProps, , getAddressSyncedProp] =
+    useSyncedState<CustomerAddress>(initAddress({}));
+    const navigate = useNavigate()
 
-  const genOrderToken = () => {
-    return (new Date()).getTime().toString().slice(0, 8)
-  }
+  order.cart = {
+    items: cart,
+    totalItems: totalItems,
+    totalPrice: totalPrice,
+  };
+
+  order.orderInfo = {
+    ...addressSyncedProps,
+    status: OrderStatus?.PENDING,
+  };
+
+  console.log(order);
 
   useEffect(() => {
-    ;(Object.keys(addressSyncedProps) as Array<keyof CustomerAddress>)?.forEach((key) => {
-      validateAddressField(key, addressSyncedProps[key]).then(() => {
-        setAddressErrors((prevErrors) => {
-          return {
-            ...prevErrors,
-            [key]: ''
-          }
-        })
-      }).catch((err) => {
-        setAddressErrors((prevAddrErrs) => {
-          return {
-            ...prevAddrErrs,
-            [key]: err.details?.[0]?.message
-          }
-        })
-      })
-    })
-  }, [addressSyncedProps, setAddressErrors])
+    (Object.keys(addressSyncedProps) as Array<keyof CustomerAddress>)?.forEach(
+      (key) => {
+        validateAddressField(key, addressSyncedProps[key])
+          .then(() => {
+            setAddressErrors((prevErrors) => {
+              return {
+                ...prevErrors,
+                [key]: "",
+              };
+            });
+          })
+          .catch((err) => {
+            setAddressErrors((prevAddrErrs) => {
+              return {
+                ...prevAddrErrs,
+                [key]: err.details?.[0]?.message,
+              };
+            });
+          });
+      }
+    );
+  }, [addressSyncedProps, setAddressErrors]);
+
+  const submitOrder = async (paymentInfo?: any) => {
+    if(order.orderInfo && paymentInfo) {
+      order.orderInfo.paymentInfo = paymentInfo
+    }
+    await axiosInstance?.post('', order)?.then(() => navigate('/'))
+  }
 
   return (
     <div className="checkout-wrapper">
@@ -56,13 +86,10 @@ function Checkout() {
             )}
             <div className="order-warpper" key={`code-${0}`}>
               <div className="order-warpper__order">
-                Order <span className="order-warpper__code">#{genOrderToken()}</span>{" "}
+                Order <span className="order-warpper__code">#{order?.id}</span>{" "}
                 <span className="order-warpper__length">
-                  ({cart?.reduce((qty, cart) => qty + cart?.quantity, 0) || 0}{" "}
-                  item
-                  {cart?.reduce((qty, cart) => qty + cart?.quantity, 0) > 1 &&
-                    "s"}
-                  )
+                  ({order?.cart?.totalItems} item
+                  {order?.cart?.totalItems > 1 && "s"})
                 </span>
               </div>
               {cart?.map((variant, index) => {
@@ -84,10 +111,7 @@ function Checkout() {
               <div className="item__number">
                 <>
                   <BsCurrencyDollar />
-                  {cart?.reduce(
-                    (qty, cart) => qty + cart?.product?.price * cart?.quantity,
-                    0
-                  )}
+                  {order?.cart?.totalPrice}
                 </>
               </div>
             </div>
@@ -97,11 +121,7 @@ function Checkout() {
                 {undefined ? (
                   <>
                     <BsCurrencyDollar />
-                    {cart?.reduce(
-                      (qty, cart) =>
-                        qty + cart?.product?.price * cart?.quantity,
-                      0
-                    )}
+                    {order?.cart?.totalPrice}
                   </>
                 ) : (
                   <span className="item__number__free">Free</span>
@@ -133,22 +153,13 @@ function Checkout() {
             <div className="item total-style">
               <div className="item__label item__label--bold item-label-total total-text-style">
                 Total{" "}
-                {cart?.reduce((qty, cart) => qty + cart?.quantity, 0) > 1
-                  ? `(${cart?.reduce(
-                      (qty, cart) => qty + cart?.quantity,
-                      0
-                    )} items)`
-                  : `(${cart?.reduce(
-                      (qty, cart) => qty + cart?.quantity,
-                      0
-                    )} item)`}
+                {order?.cart?.totalItems > 1
+                  ? `(${order?.cart?.totalItems} items)`
+                  : `(${order?.cart?.totalItems} item)`}
               </div>
               <div className="item__number item__number--bold item-label-total">
                 <BsCurrencyDollar />
-                {cart?.reduce(
-                  (qty, cart) => qty + cart?.product?.price * cart?.quantity,
-                  0
-                )}
+                {order?.cart?.totalPrice}
               </div>
             </div>
 
@@ -161,7 +172,9 @@ function Checkout() {
           valueSyncedProps={getAddressSyncedProp()}
           errors={addressErrors}
           className="form-block"
-          label=""/>
+          label=""
+          onSubmit={submitOrder}
+        />
       </div>
     </div>
   );
