@@ -37,6 +37,8 @@ function Checkout() {
     status: OrderStatus?.PENDING,
   };
 
+  console.log(order);
+
   useEffect(() => {
     (Object.keys(addressSyncedProps) as Array<keyof CustomerAddress>)?.forEach(
       (key) => {

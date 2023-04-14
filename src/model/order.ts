@@ -27,3 +27,10 @@ export enum OrderStatus {
   "DELIVERING" = 3,
   "DELIVERED" = 4
 }
+
+export interface Discount {
+  id: string
+  productId: string
+  expiryDate: string
+  discountAmount: number
+}

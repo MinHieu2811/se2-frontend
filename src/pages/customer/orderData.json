@@ -1,0 +1,106 @@
+{
+  "id": "16814031",
+  "cart": {
+    "items": [
+      {
+        "product": {
+          "id": "asdajdlkjaslkdjlak",
+          "name": "Christian Louboutin Rococotte",
+          "image": [
+            "/images/products/product3.png",
+            "/images/products/product3-thumb.png"
+          ],
+          "brand": "Loubotin",
+          "description": "($50.00 for 0.10 oz.) is a slightly muted, medium-dark red with subtle, cool undertones and a semi-matte finish. The pigmentation was excellent and yielded full coverage. It had a comfortable, lightweight texture that felt velvety and smooth so the color distributed evenly on the lips. On me, this shade lasted for over six hours and left a stain behind, though it was neither drying nor hydrating. MAC Opera (LE, $16.00) is a smidgen lighter. MAC Stunner (LE, $16.00) is darker. MAC Kinky (LE, $16.00) is a touch darker. NARS Deadly Catch (LE, $26.00) is glossier. MAC Frank-n-furter (LE, $16.00) is darker. Kat Von D Hexagram (P, $21.00) is cooler-toned, more matte. MAC RiRi Woo (LE, $16.00) is cooler-toned, more matte. MAC Ruby Woo (P, $16.00) is cooler-toned, more matte. MAC Ronnie Red (LE, $16.00) is darker. MAC MAC Red (P, $16.00) is cooler-toned, more matte. See comparison swatches / view dupes.",
+          "price": 150,
+          "amount": 21
+        },
+        "quantity": 1
+      }
+    ],
+    "totalItems": 1,
+    "totalPrice": 150
+  },
+  "orderInfo": {
+    "country": "United States",
+    "email": "hieu123@gmail.com",
+    "name": "Minh Hieu Nguyen",
+    "address": "Long Bien",
+    "city": "Ha Noi",
+    "phone": "(096) 181-2691",
+    "status": 0,
+    "paymentInfo": {
+      "id": "3H066634GT633545X",
+      "intent": "CAPTURE",
+      "status": "COMPLETED",
+      "purchase_units": [
+        {
+          "reference_id": "default",
+          "amount": {
+            "currency_code": "USD",
+            "value": "150.00"
+          },
+          "payee": {
+            "email_address": "sb-pw47qo15249576@business.example.com",
+            "merchant_id": "TTJ9EC2WALVNC"
+          },
+          "soft_descriptor": "PAYPAL *TEST STORE",
+          "shipping": {
+            "name": {
+              "full_name": "John Doe"
+            },
+            "address": {
+              "address_line_1": "Weingartenweg 1",
+              "address_line_2": "Rafing",
+              "admin_area_2": "PULKAU",
+              "postal_code": "3741",
+              "country_code": "AT"
+            }
+          },
+          "payments": {
+            "captures": [
+              {
+                "id": "4S864646D51129425",
+                "status": "COMPLETED",
+                "amount": {
+                  "currency_code": "USD",
+                  "value": "150.00"
+                },
+                "final_capture": true,
+                "seller_protection": {
+                  "status": "ELIGIBLE",
+                  "dispute_categories": [
+                    "ITEM_NOT_RECEIVED",
+                    "UNAUTHORIZED_TRANSACTION"
+                  ]
+                },
+                "create_time": "2023-04-13T16:28:13Z",
+                "update_time": "2023-04-13T16:28:13Z"
+              }
+            ]
+          }
+        }
+      ],
+      "payer": {
+        "name": {
+          "given_name": "John",
+          "surname": "Doe"
+        },
+        "email_address": "sb-hjbkl25396922@personal.example.com",
+        "payer_id": "EL6HMLMNLD6AU",
+        "address": {
+          "country_code": "AT"
+        }
+      },
+      "create_time": "2023-04-13T16:28:03Z",
+      "update_time": "2023-04-13T16:28:13Z",
+      "links": [
+        {
+          "href": "https://api.sandbox.paypal.com/v2/checkout/orders/3H066634GT633545X",
+          "rel": "self",
+          "method": "GET"
+        }
+      ]
+    }
+  }
+}

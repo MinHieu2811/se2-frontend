@@ -21,6 +21,7 @@ import Category from "./pages/customer/Category";
 import ProductPage from "./pages/customer/ProductPage";
 import Checkout from "./pages/customer/Checkout";
 import MyOrders from "./pages/customer/MyOrders";
+import OrderDetail from "./pages/customer/OrderDetail";
 function App() {
   useEffect(() => {
     if (!localStorage.getItem("cart" || "")) {
@@ -122,6 +123,7 @@ function App() {
             }
           />
           <Route path="/user/order" element={<MyOrders />} />
+          <Route path="/user/order/:orderId" element={<OrderDetail />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {/* Customer */}
