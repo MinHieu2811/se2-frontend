@@ -13,20 +13,21 @@ import VoucherList from "./pages/admin/voucher/VoucherList";
 import EditProduct from "./pages/admin/product/EditProduct";
 import Homepage from "./pages/customer/Homepage";
 import CustomRoute from "./utils/CustomRoute";
-import CreateDiscount from './pages/admin/discount/CreateDiscount';
+import CreateDiscount from "./pages/admin/discount/CreateDiscount";
 import DiscountList from "./pages/admin/discount/DiscountList";
 import CreateCategory from "./pages/admin/category/CreateCategory";
 import CategoryList from "./pages/admin/category/CategoryList";
 import Category from "./pages/customer/Category";
 import ProductPage from "./pages/customer/ProductPage";
 import Checkout from "./pages/customer/Checkout";
+import MyOrders from "./pages/customer/MyOrders";
+import OrderDetail from "./pages/customer/OrderDetail";
 function App() {
-
   useEffect(() => {
-    if(!localStorage.getItem("cart" || "")) {
-      localStorage.setItem("cart", JSON.stringify([]))
+    if (!localStorage.getItem("cart" || "")) {
+      localStorage.setItem("cart", JSON.stringify([]));
     }
-  }, [])
+  }, []);
   return (
     <BrowserRouter>
       <CustomRoute>
@@ -65,22 +66,22 @@ function App() {
               </ProtectedRoute>
             }
           />
-        <Route 
-        path='/admin/category/create-category'
-         element={
-         <ProtectedRoute>
-          <CreateCategory />
-          </ProtectedRoute>
-          }
-           />
-        <Route 
-        path='/admin/category/all-category' 
-        element={
-        <ProtectedRoute>
-          <CategoryList />
-          </ProtectedRoute>
-          }
-           />
+          <Route
+            path="/admin/category/create-category"
+            element={
+              <ProtectedRoute>
+                <CreateCategory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/category/all-category"
+            element={
+              <ProtectedRoute>
+                <CategoryList />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/products/create-product"
             element={
@@ -97,7 +98,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-        <Route path='/admin/voucher-discount/create-discount' element={<ProtectedRoute><CreateDiscount/></ProtectedRoute>} />
+          <Route
+            path="/admin/voucher-discount/create-discount"
+            element={
+              <ProtectedRoute>
+                <CreateDiscount />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/admin/voucher-discount/all-voucher"
             element={
@@ -106,7 +114,16 @@ function App() {
               </ProtectedRoute>
             }
           />
-        <Route path='/admin/voucher-discount/all-discount' element={<ProtectedRoute><DiscountList /></ProtectedRoute>} />
+          <Route
+            path="/admin/voucher-discount/all-discount"
+            element={
+              <ProtectedRoute>
+                <DiscountList />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/user/order" element={<MyOrders />} />
+          <Route path="/user/order/:orderId" element={<OrderDetail />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {/* Customer */}

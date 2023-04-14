@@ -16,6 +16,7 @@ interface ValueContext {
   cart: CartModel[];
   addToCartHandler?: (product: ProductModel, quantity?: number) => void;
   removeFromCart?: (product: ProductModel, all: boolean) => void;
+  clearCart?: () => void
 }
 
 const CartContext = React.createContext<ValueContext>({
@@ -95,6 +96,13 @@ export const CartProvider = ({ children }: Props) => {
     }
   };
 
+  const clearCart = () => {
+    if(localStorage?.getItem("cart")) {
+      setCart([])
+      localStorage?.setItem("cart", JSON.stringify([]))
+    }
+  }
+
   useEffect(() => {
     const cartFromLocal = JSON.parse(localStorage.getItem("cart") || "");
     if (cartFromLocal?.length) {
@@ -121,6 +129,7 @@ export const CartProvider = ({ children }: Props) => {
     cart: cart,
     removeFromCart: removeFromCart,
     addToCartHandler: addToCartHandler,
+    clearCart: clearCart
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

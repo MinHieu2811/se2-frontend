@@ -16,11 +16,8 @@ const emailSchema = Joi.string()
     'string.empty': 'Please enter your email address',
     'string.email': 'Please enter a valid email address'
   })
-const firstNameSchema = Joi.string().trim().label('First name').messages({
-  'string.empty': 'Please enter a first name'
-})
-const lastNameSchema = Joi.string().trim().label('Last name').messages({
-  'string.empty': 'Please enter a last name'
+const nameSchema = Joi.string().trim().label('Name').messages({
+  'string.empty': 'Please enter a name'
 })
 // const nameSchema = Joi.string().trim().label('Full name')
 const addressLineSchema = Joi.string().trim().label('Address').messages({
@@ -38,9 +35,8 @@ const citySchema = Joi.string().trim().label('City').messages({
 })
 
 export const addressSchema = Joi.object<CustomerAddress>({
-  email: emailSchema,
-  first_name: firstNameSchema.required(),
-  last_name: lastNameSchema.required(),
+  email: emailSchema.required(),
+  name: nameSchema.required(),
   // name: nameSchema,
   address: addressLineSchema.required(),
   city: citySchema.required(),
@@ -51,9 +47,8 @@ export const addressSchema = Joi.object<CustomerAddress>({
 
 export async function validateAddressField(field: keyof CustomerAddress, value: any) {
   const schemas = {
-    email: emailSchema,
-    first_name: firstNameSchema.required(),
-    last_name: lastNameSchema.required(),
+    email: emailSchema.required(),
+    name: nameSchema.required(),
     address: addressLineSchema.required(),
     city: citySchema.required(),
     country: countrySchema,

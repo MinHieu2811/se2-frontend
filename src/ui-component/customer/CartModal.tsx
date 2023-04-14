@@ -4,6 +4,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useToggleModal } from "../../context/ModalProvider";
 import { useCart } from "../../context/CartProvider";
 import Variants from "./Variants";
+import { useSearchNavigate } from "../../hooks/useSearchNavigate";
 
 function freeze() {
   document.documentElement.classList.add("is-clipped");
@@ -17,6 +18,7 @@ const CartModal = () => {
   const { totalItems, totalPrice } = useCart();
   const { isOpen, setOpen } = useToggleModal();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const searchNavigate = useSearchNavigate()
   const navigate = useNavigate();
   //   const [storedValue, setValue] = useLocalStorage("cart", false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -112,7 +114,15 @@ const CartModal = () => {
                 <button
                   onClick={() => {
                     setOpen && setOpen();
-                    navigate(`/category`);
+                    searchNavigate({
+                      pathName: '/category',
+                      queryObj: {
+                        brand: '',
+                        page: '1',
+                        sorting: '',
+                        keyword: ''
+                      }
+                    })
                   }}
                   className="button button--cta is-fullwidth is-primary"
                 >

@@ -4,24 +4,26 @@ import { SyncedProps } from "../../hooks/useSyncedState";
 import { useCart } from "../../context/CartProvider";
 import { AiFillLock } from "react-icons/ai";
 import { BsCurrencyDollar } from "react-icons/bs";
-import { PayPalButton } from "react-paypal-button-v2";
+// import { PayPalButton } from "react-paypal-button-v2";
 import { axiosImageInstance } from "../../client-api";
 import Loading from "../shared/Loading";
 import { useToastContext } from "../toast/ToastContext";
 import { REMOVE_ALL_AND_ADD } from "../toast";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 type Props = {
   className?: string;
   errors: AddressErrors;
   valueSyncedProps: SyncedProps<CustomerAddress>;
   label: string;
+  onSubmit: (paymentInfo?: any) => Promise<void>
 };
 
-function CheckoutForm({ className, errors, valueSyncedProps, label }: Props) {
+function CheckoutForm({ className, errors, valueSyncedProps, label, onSubmit }: Props) {
   const [syncedAddress, setSyncedAddress] = valueSyncedProps;
   const { totalPrice } = useCart();
-  const [sdkReady, setSdkReady] = useState(false);
   const { toastDispatch } = useToastContext();
+  const [clientId, setClientId] = useState("");
 
   function onCommonChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -58,62 +60,50 @@ function CheckoutForm({ className, errors, valueSyncedProps, label }: Props) {
     });
   }
 
-  const successPaymentHandler = async (paymentResult: any) => {
-    console.log(paymentResult);
-    toastDispatch({
-      type: REMOVE_ALL_AND_ADD,
-      payload: {
-        type: "is-success",
-        content: `Checkout successfully!`,
-      },
-    });
-  };
-
   useEffect(() => {
-    const addPayPalScript = async () => {
-      const { data: clientId } = await axiosImageInstance.get("/config/paypal");
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      script.async = true;
-      script.onload = () => {
-        setSdkReady(true);
-      };
-
-      document.body.appendChild(script);
-    };
     (async () => {
-      if (!window.paypal) {
-        console.log(window?.paypal);
-        await addPayPalScript();
-      } else {
-        setSdkReady(true);
-      }
+      const { data: clientId } = await axiosImageInstance.get("/config/paypal");
+      setClientId(clientId);
     })();
   }, []);
+
+  const validateFields = () => {
+    let validated
+    (Object.keys(syncedAddress) as Array<keyof CustomerAddress>)?.forEach(
+      (key) => {
+        if(syncedAddress[key] === ''){
+          validated = true;
+        } else {
+          validated = false
+        }
+      }
+    );
+
+    return validated
+  };
   return (
     <div className={`address-form ${className ? className : ""}`}>
       <div className="mb-2 has-text-weight-medium">{label}</div>
       <div className="columns is-mobile is-variable is-1 m-0 d-flex">
-        <div className="column col-6 pt-0 pb-0 pl-0 mr-2 no-pad">
+        <div className="column col-12 pt-0 pb-0 pl-0 mr-2 no-pad">
           <div className=" mb-3">
             <div className="control">
               <input
-                value={syncedAddress.first_name ?? ""}
+                value={syncedAddress.name ?? ""}
                 name="firstName"
-                className={`input ${errors.first_name ? "is-danger" : ""}`}
+                className={`input ${errors.name ? "is-danger" : ""}`}
                 type="text"
-                placeholder="First name"
-                onChange={(event) => onCommonChange(event, "first_name")}
+                placeholder="Name"
+                onChange={(event) => onCommonChange(event, "name")}
                 onKeyPress={(e) => {
                   e.key === "Enter" && e.preventDefault();
                 }}
               />
-              <p className="help is-danger">{errors.first_name}</p>
+              <p className="help is-danger">{errors.name}</p>
             </div>
           </div>
         </div>
-        <div className="column col-6 pt-0 pr-0 pb-0 no-pad">
+        {/* <div className="column col-6 pt-0 pr-0 pb-0 no-pad">
           <div className=" mb-3">
             <div className="control">
               <input
@@ -130,7 +120,7 @@ function CheckoutForm({ className, errors, valueSyncedProps, label }: Props) {
               <p className="help is-danger">{errors.last_name}</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className=" col-12 no-pad mb-3">
         <div className="control">
@@ -145,7 +135,7 @@ function CheckoutForm({ className, errors, valueSyncedProps, label }: Props) {
               e.key === "Enter" && e.preventDefault();
             }}
           />
-          <p className="help is-danger">{errors.address}</p>
+          <p className="help is-danger">{errors.email}</p>
         </div>
       </div>
       <div className=" col-12 no-pad mb-3">
@@ -225,7 +215,7 @@ function CheckoutForm({ className, errors, valueSyncedProps, label }: Props) {
       </div>
 
       <div className="columns is-mobile is-variable is-1 m-0">
-        <button className="checkout-button button is-primary col-12">
+        <button className="checkout-button button is-primary col-12" onClick={onSubmit}>
           <AiFillLock className="mr-2" /> Check out for{" "}
           <BsCurrencyDollar className="ml-2" />
           {totalPrice}
@@ -233,7 +223,7 @@ function CheckoutForm({ className, errors, valueSyncedProps, label }: Props) {
         <div className="hr">
           <p className="hr-text">Pay with Paypal</p>
         </div>
-        {sdkReady ? (
+        {/* {sdkReady ? (
           <PayPalButton
             currency="USD"
             amount={totalPrice}
@@ -241,6 +231,44 @@ function CheckoutForm({ className, errors, valueSyncedProps, label }: Props) {
           />
         ) : (
           <Loading isFullWidth={false} />
+        )} */}
+        {clientId ? (
+          <PayPalScriptProvider
+            options={{ "client-id": `${clientId}`, currency: "USD" }}
+          >
+            <PayPalButtons
+              disabled={validateFields()}
+              style={{ layout: "horizontal" }}
+              createOrder={(data, actions) => {
+                return actions?.order?.create({
+                  purchase_units: [
+                    {
+                      amount: {
+                        value: `${totalPrice}`,
+                      },
+                    },
+                  ],
+                });
+              }}
+              onApprove={(data, action): Promise<void> => {
+                return action?.order?.capture().then((details) => {
+                  // console.log("details", details);
+                  setTimeout(async() => {
+                    await onSubmit(details)
+                  }, 500)
+                  toastDispatch({
+                    type: REMOVE_ALL_AND_ADD,
+                    payload: {
+                      type: "is-success",
+                      content: `Checkout successfully!`,
+                    },
+                  });
+                }) as Promise<void>;
+              }}
+            />
+          </PayPalScriptProvider>
+        ) : (
+          <Loading />
         )}
       </div>
     </div>
