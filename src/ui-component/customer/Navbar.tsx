@@ -12,6 +12,7 @@ const initialState: DetailedObject<string> = {
   keyword: "",
   sorting: "",
   brand: "",
+  page: "1"
 };
 
 const Navbar = () => {
