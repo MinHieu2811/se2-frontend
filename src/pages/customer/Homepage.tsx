@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../../ui-component/customer/Navbar";
+import React, { useState } from "react";
 import Helmet from "../../ui-component/shared/Helmet";
 // import { ProductModel } from "../../model/product";
 // import { useToastContext } from "../../ui-component/toast/ToastContext";
@@ -15,7 +14,7 @@ import { AiOutlineShopping, AiFillCreditCard } from "react-icons/ai";
 import { BiDiamond } from "react-icons/bi";
 import SectionProduct from "../../ui-component/customer/SectionProduct";
 import Banner from "../../ui-component/customer/Banner";
-import Footer from "../../ui-component/customer/Footer";
+import Layout from "../../ui-component/customer/Layout";
 
 type PolicyCard = {
   name: string;
@@ -84,53 +83,50 @@ function Homepage() {
   // }, []);
 
   return (
-    <>
-      <Helmet title="SolStore" />
-      {loading && <Loading />}
-      <Navbar />
-
+    <Layout>
       <>
-        <HeroSlider productList={products} />
-      </>
+        <Helmet title="SolStore" />
+        {loading && <Loading />}
 
-      <div style={{ margin: "50px 50px" }}>
-        <Grid col={3} mdCol={2} smCol={1} gap={20}>
-          <>
-            {policy?.map((item, index) => (
-              <div className="policy-card" key={`card-${index}`}>
-                <div className="policy-card_item">{item.icon}</div>
-                <div className="policy-card_info">
-                  <div className="policy-card_info_title">{item.name}</div>
-                  <div className="policy-card_info_description">
-                    {item.description}
+        <>
+          <HeroSlider productList={products} />
+        </>
+
+        <div style={{ margin: "50px 50px" }}>
+          <Grid col={3} mdCol={2} smCol={1} gap={20}>
+            <>
+              {policy?.map((item, index) => (
+                <div className="policy-card" key={`card-${index}`}>
+                  <div className="policy-card_item">{item.icon}</div>
+                  <div className="policy-card_info">
+                    <div className="policy-card_info_title">{item.name}</div>
+                    <div className="policy-card_info_description">
+                      {item.description}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </>
-        </Grid>
-      </div>
+              ))}
+            </>
+          </Grid>
+        </div>
 
-      <>
-        <Collection />
-      </>
+        <>
+          <Collection />
+        </>
 
-      <>
-        <SectionProduct title="New Arrivals" products={products} />
-      </>
+        <>
+          <SectionProduct title="New Arrivals" products={products} />
+        </>
 
-      <>
-        <Banner />
-      </>
+        <>
+          <Banner />
+        </>
 
-      <>
-        <SectionProduct title="Best Sellers" products={products} />
+        <>
+          <SectionProduct title="Best Sellers" products={products} />
+        </>
       </>
-      
-      <>
-        <Footer />
-      </>
-    </>
+    </Layout>
   );
 }
 

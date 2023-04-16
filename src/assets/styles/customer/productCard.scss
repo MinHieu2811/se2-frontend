@@ -31,14 +31,12 @@ i.active{
                 transition: transform .5s ease;
             }
 
-            
         }
 
         &:hover img{
             &:nth-child(1){
                 transform: translateX(-50%) scale(0);
             }
-    
             &:nth-child(2){
                 transform: translateX(-50%) scale(1);
             }
@@ -95,7 +93,6 @@ i.active{
                 cursor: pointer;
                 @include flex(center, center);
                 margin-left: 10px;
-                
                 transform: translateX(10px);
                 opacity: 0;
                 transition: all 0.3s ease-in-out;

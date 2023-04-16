@@ -7,6 +7,7 @@ import { useToggleModal } from "../../context/ModalProvider";
 import { useCart } from "../../context/CartProvider";
 import { useSearchNavigate } from "../../hooks/useSearchNavigate";
 import { DetailedObject } from "../../model/utils";
+import { useToggleAuthModal } from "../../context/AuthModalProvider";
 
 const initialState: DetailedObject<string> = {
   keyword: "",
@@ -18,6 +19,7 @@ const initialState: DetailedObject<string> = {
 const Navbar = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const [filterObj, setFilterObj] = useState<DetailedObject<string>>();
+  const { setOpenModal } = useToggleAuthModal()
 
   const searchNavigate = useSearchNavigate();
   const location = useLocation();
@@ -158,7 +160,7 @@ const Navbar = () => {
         >
           <>{1 ? <span className="user-name">H</span> : <AiOutlineUser />}</>
           <div className="signin_box" ref={userMenuRef}>
-            {!isLogin ? (
+            {isLogin ? (
               <div className="signin_box_container">
                 <div className="signin_box_container_item">
                   <Link to="/profile">Profile</Link>
@@ -194,10 +196,10 @@ const Navbar = () => {
             ) : (
               <div className="signin_box_container">
                 <div className="signin_box_container_item">
-                  <Link to="/login">Sign In</Link>
+                  <div onClick={() => setOpenModal?.("LOGIN")}>Sign In</div>
                 </div>
                 <div className="signin_box_container_item">
-                  <Link to="/register">Sign Up</Link>
+                  <div onClick={() => setOpenModal?.("REGISTER")}>Sign Up</div>
                 </div>
               </div>
             )}
