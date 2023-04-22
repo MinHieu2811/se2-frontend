@@ -4,7 +4,6 @@ import { SyncedProps } from "../../hooks/useSyncedState";
 import { useCart } from "../../context/CartProvider";
 import { AiFillLock } from "react-icons/ai";
 import { BsCurrencyDollar } from "react-icons/bs";
-// import { PayPalButton } from "react-paypal-button-v2";
 import { axiosImageInstance } from "../../client-api";
 import Loading from "../shared/Loading";
 import { useToastContext } from "../toast/ToastContext";
