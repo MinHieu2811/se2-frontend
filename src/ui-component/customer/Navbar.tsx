@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineHeart, AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
 import { HiOutlineShoppingBag } from "react-icons/hi";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CartModal from "./CartModal";
 import { useToggleModal } from "../../context/ModalProvider";
 import { useCart } from "../../context/CartProvider";
 import { useSearchNavigate } from "../../hooks/useSearchNavigate";
 import { DetailedObject } from "../../model/utils";
+import { useToggleAuthModal } from "../../context/AuthModalProvider";
+import { useAuth } from "../../context/AuthProvider";
 
 const initialState: DetailedObject<string> = {
   keyword: "",
@@ -17,7 +19,9 @@ const initialState: DetailedObject<string> = {
 
 const Navbar = () => {
   const headerRef = useRef<HTMLDivElement>(null);
+  const { token, onLogout } = useAuth()
   const [filterObj, setFilterObj] = useState<DetailedObject<string>>();
+  const { setOpenModal } = useToggleAuthModal()
 
   const searchNavigate = useSearchNavigate();
   const location = useLocation();
@@ -25,9 +29,8 @@ const Navbar = () => {
   const userMenuRef = useRef<HTMLDivElement>(null);
 
   const { setOpen } = useToggleModal();
-  const navigate = useNavigate();
 
-  const [isLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
   const [isAdmin] = useState(false);
 
   const handleScroll = () => {
@@ -65,10 +68,6 @@ const Navbar = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.href]);
-
-  const logoutHandler = () => {
-    navigate("/");
-  };
 
   const handlerUserMenu = () => {
     userMenuRef?.current?.classList?.toggle("show");
@@ -158,7 +157,7 @@ const Navbar = () => {
         >
           <>{1 ? <span className="user-name">H</span> : <AiOutlineUser />}</>
           <div className="signin_box" ref={userMenuRef}>
-            {!isLogin ? (
+            {token ? (
               <div className="signin_box_container">
                 <div className="signin_box_container_item">
                   <Link to="/profile">Profile</Link>
@@ -186,7 +185,7 @@ const Navbar = () => {
                 </>
                 <div
                   className="signin_box_container_item"
-                  onClick={logoutHandler}
+                  onClick={onLogout}
                 >
                   Logout
                 </div>
@@ -194,10 +193,10 @@ const Navbar = () => {
             ) : (
               <div className="signin_box_container">
                 <div className="signin_box_container_item">
-                  <Link to="/login">Sign In</Link>
+                  <div onClick={() => setOpenModal?.("LOGIN")}>Sign In</div>
                 </div>
                 <div className="signin_box_container_item">
-                  <Link to="/register">Sign Up</Link>
+                  <div onClick={() => setOpenModal?.("REGISTER")}>Sign Up</div>
                 </div>
               </div>
             )}

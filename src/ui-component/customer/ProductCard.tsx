@@ -51,7 +51,7 @@ function ProductCard({ productInfo }: Props) {
           </div>
         </div>
         <div className="productCart-wrapper_action_add action-wrapper">
-          <div className="productCart-wrapper_action_save_icon action-wrapper_icon delay-4">
+          <div className="productCart-wrapper_action_save_icon action-wrapper_icon delay-2">
             {/* {link === null ? (
               <i className="bx bxs-cart-alt" onClick={() => addToCart(_id)}></i>
             ) : (
@@ -68,7 +68,7 @@ function ProductCard({ productInfo }: Props) {
           </div>
         </div>
         <div className="productCart-wrapper_action_save action-wrapper">
-          <div className="productCart-wrapper_action_save_icon action-wrapper_icon delay-6">
+          <div className="productCart-wrapper_action_save_icon action-wrapper_icon delay-2">
             {/* {link === null ? (
               <Link to={`/category/${_id}`}>
                 <i className="bx bxs-show"></i>

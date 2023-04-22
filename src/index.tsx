@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthProvider";
 import { ToastProvider } from "./ui-component/toast/ToastContext";
 import { ModalProvider } from "./context/ModalProvider";
 import { CartProvider } from "./context/CartProvider";
+import { AuthenModalProvider } from "./context/AuthModalProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,9 +18,11 @@ root.render(
       <CartProvider>
         <ToastProvider>
           <ModalProvider>
-            <>
-              <App />
-            </>
+            <AuthenModalProvider>
+              <>
+                <App />
+              </>
+            </AuthenModalProvider>
           </ModalProvider>
         </ToastProvider>
       </CartProvider>

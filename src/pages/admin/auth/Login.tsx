@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Form } from 'react-bootstrap'
-import { UserLogin } from '../../../model/user'
+import { AuthProps } from '../../../model/user'
 
 const Login = () => {
-    const [userLogin, setUserLogin] = useState<UserLogin>({email: '', password: ''})
+    const [userLogin, setUserLogin] = useState<AuthProps>({email: '', password: ''})
 
     const handleChange = (e: any) => {
         e.preventDefault();
