@@ -1,14 +1,16 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Heading from "./Heading";
 import Input from "./Input";
 import Modal from "./Modal";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { axiosInstance } from "../../client-api";
 import { useToastContext } from "../toast/ToastContext";
 import { REMOVE_ALL_AND_ADD } from "../toast";
 import { useToggleAuthModal } from "../../context/AuthModalProvider";
+import { useAuth } from "../../context/AuthProvider";
+import { AuthProps } from "../../model/user";
+import { AxiosError, AxiosResponse } from "axios";
 
-interface UserInfo {
+export interface UserInfo {
   email: string;
   password: string;
   confirmPass?: string;
@@ -18,6 +20,7 @@ const AuthenModal = () => {
   const { isOpen, setOpenModal, typeModal } = useToggleAuthModal();
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
+  const { onLogin, onRegister } = useAuth();
 
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: "",
@@ -58,7 +61,6 @@ const AuthenModal = () => {
           content: `Check your password!`,
         },
       });
-      setOpenModal?.();
       return;
     }
 
@@ -66,26 +68,67 @@ const AuthenModal = () => {
 
     setLoading(true);
 
-    await axiosInstance
-      .post(
-        typeModal === "REGISTER" ? "/customer/register" : "/customer/login",
-        data
-      )
-      .then(() => {
-        setOpenModal?.();
-      })
-      .catch((err) => {
-        toastDispatch({
-          type: REMOVE_ALL_AND_ADD,
-          payload: {
-            type: "is-danger",
-            content: `Something went wrong! ${err.toString()}`,
-          },
+    if (typeModal === "REGISTER") {
+      onRegister?.(data as AuthProps)
+        .then((res: AxiosResponse) => {
+          setUserInfo({
+            email: "",
+            password: "",
+          });
+          setOpenModal?.();
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: res?.data?.success ? "is-success" : "is-danger",
+              content: res?.data?.success
+                ? `${res?.data?.message}`
+                : `Something went wrong!`,
+            },
+          });
+        })
+        .catch((err: any) => {
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-danger",
+              content: `Something went wrong!`,
+            },
+          });
+        })
+        .finally(() => {
+          setLoading(false);
         });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    } else {
+      onLogin?.(data as AuthProps)
+        .then((res: AxiosResponse) => {
+          setUserInfo({
+            email: "",
+            password: "",
+          });
+          setOpenModal?.();
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: res?.data?.success ? "is-success" : "is-danger",
+              content: res?.data?.success
+                ? `${res?.data?.message}`
+                : `Something went wrong!`,
+            },
+          });
+        })
+        .catch((err: AxiosError) => {
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-danger",
+              content: `Something went wrong!`,
+            },
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   };
 
   const loginFooter = (
@@ -115,8 +158,6 @@ const AuthenModal = () => {
       </div>
     </div>
   );
-
-  console.log(userInfo);
 
   const loginContent = (
     <div className="input-wrap">
@@ -187,6 +228,15 @@ const AuthenModal = () => {
     setOpenModal?.();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setOpenModal, isOpen]);
+
+  useEffect(() => {
+    const rootContainer = document.querySelector("html");
+    if (isOpen) {
+      rootContainer?.classList?.add("is-overflow");
+    } else {
+      rootContainer?.classList?.remove("is-overflow");
+    }
+  }, [isOpen]);
 
   return (
     <Modal

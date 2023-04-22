@@ -3,8 +3,6 @@ import "./App.scss";
 import { BrowserRouter } from "react-router-dom";
 import { Route } from "react-router";
 import Home from "./pages/admin/Home";
-import Register from "./pages/admin/auth/Register";
-import Login from "./pages/admin/auth/Login";
 import ProtectedRoute from "./ui-component/shared/ProtectedRoute";
 import CreateProduct from "./pages/admin/product/CreateProduct";
 import ProductList from "./pages/admin/product/ProductList";
@@ -122,15 +120,36 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/user/order" element={<MyOrders />} />
-          <Route path="/user/order/:orderId" element={<OrderDetail />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/user/order"
+            element={
+              <ProtectedRoute>
+                <MyOrders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/order/:orderId"
+            element={
+              <ProtectedRoute>
+                <OrderDetail />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} /> */}
           {/* Customer */}
           <Route path="/" element={<Homepage />} />
           <Route path="/category" element={<Category />} />
           <Route path="/category/:productId" element={<ProductPage />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
         </>
       </CustomRoute>
     </BrowserRouter>

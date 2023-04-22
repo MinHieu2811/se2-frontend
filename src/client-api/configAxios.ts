@@ -22,27 +22,41 @@ axiosInstance.interceptors.request.use((req: InternalAxiosRequestConfig) => {
     return Promise.reject(err)
 })
 
-const fetchRefreshToken = async () => {
-    return await axiosInstance.get("/auth/access-token").then((res) => res.data)
-}
+// const fetchRefreshToken = async () => {
+//     return await axiosInstance.get("/auth/access-token").then((res) => res.data)
+// }
+
+// axiosInstance.interceptors.response.use((res: AxiosResponse) => {
+//     return res
+// }, async (err: AxiosError) => {
+//     const originalConfig = err.config
+//     if(err.response) {
+//         if(err.response.status === 401 && !originalConfig?.method) {
+//             const accessToken = await fetchRefreshToken()
+//             if(window) window.localStorage.setItem("access_token", accessToken)
+//             axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+
+//             return axiosInstance({
+//                 baseURL: "http://localhost:3000/api",
+//                 timeout: 30000,
+//                 headers: {
+//                     'Authorization': `Bearer ${accessToken}`
+//                 }
+//             })
+//         }
+//     }
+// })
 
 axiosInstance.interceptors.response.use((res: AxiosResponse) => {
+    if(res?.config?.url?.includes("/login") || res?.config?.url?.includes("/register")) {
+        localStorage.setItem("access_token", res?.data?.data?.id)
+    }
     return res
 }, async (err: AxiosError) => {
     const originalConfig = err.config
     if(err.response) {
         if(err.response.status === 401 && !originalConfig?.method) {
-            const accessToken = await fetchRefreshToken()
-            if(window) window.localStorage.setItem("access_token", accessToken)
-            axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`
-
-            return axiosInstance({
-                baseURL: "http://localhost:3000/api",
-                timeout: 30000,
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            })
+            window.location.replace("/")
         }
     }
 })
