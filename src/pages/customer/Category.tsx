@@ -12,6 +12,30 @@ import { Breadcrumb } from "../../ui-component/customer/Breadcrumb";
 import { useDebounce } from "../../hooks/useDebounce";
 import { serializeQuery } from "../../hooks/useSearchNavigate";
 import Paginate from "../../ui-component/shared/Pagination";
+import { axiosInstance } from "../../client-api";
+import { useToastContext } from "../../ui-component/toast/ToastContext";
+import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
+import Loading from "./Loading";
+import axios from "axios";
+// import { useUpdateEffect } from "../../hooks/useUpdateEffect";
+
+function shallowEqual(object1: DetailedObject<string | number>, object2: DetailedObject<string | number>) {
+  const keys1 = Object.keys(object1);
+  const keys2 = Object.keys(object2);
+  console.log(keys1, keys2);
+
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+
+  for (let key of keys1) {
+    if (object1[key] !== object2[key]) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 const properties: DetailedObject<string[]> = {
   brand: ["Tom Ford", "Loubotin", "Dior", "Gucci"],
@@ -29,6 +53,8 @@ const Category = () => {
   const [filterObj, setFilterObj] = useState<DetailedObject<string | number>>();
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading, setLoading] = useState<boolean>(false);
+  const { toastDispatch } = useToastContext();
 
   function onPropertyChanged(property: string, name: string) {
     setFilterObj({
@@ -43,15 +69,15 @@ const Category = () => {
   });
 
   useEffect(() => {
-    if (filterObj) {
+    if (filterObj && shallowEqual(filterObj as DetailedObject<number | string>, initialState)) {
       const query = serializeQuery({ ...filterObj, keyword: debouncedKeyword });
       navigate({
         pathname: "/category",
         search:
-          filterObj?.keyword ||
-          filterObj?.sorting ||
           filterObj?.brand ||
-          filterObj?.page
+          filterObj?.page ||
+          filterObj?.sorting ||
+          filterObj?.keyword
             ? query
             : "",
       });
@@ -69,16 +95,67 @@ const Category = () => {
             .replace(/=/g, '":"') +
           '"}'
       );
-      console.log(result);
       setFilterObj(result);
     } else {
       setFilterObj(initialState);
     }
-  }, [window.location.href]);
+  }, [window.location.search]);
+
+  useEffect(() => {
+    const cancelToken = axios.CancelToken.source();
+    const query = serializeQuery(filterObj || initialState)
+    ;(async () => {
+      setLoading(true);
+      filterObj && await axiosInstance
+        .get(`/product?${query}`, {
+          cancelToken: cancelToken.token,
+        })
+        .then((res) => res?.data)
+        .then((res) => console.log(res))
+        .finally(() => setLoading(false))
+        .catch((err) => {
+          console.log(err);
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-danger",
+              content: "Something went wrong!",
+            },
+          });
+        });
+    })();
+
+    return () => {
+      cancelToken.cancel();
+    };
+  }, [filterObj]);
+
+  // useUpdateEffect(() => {
+  //   console.log('second run');
+  //   const query = serializeQuery(filterObj || initialState)
+  //   ;(async () => {
+  //     setLoading(true);
+  //     await axiosInstance
+  //       .get(`/product?${query}`)
+  //       .then((res) => res.data)
+  //       .then((res) => console.log(res))
+  //       .finally(() => setLoading(false))
+  //       .catch((err) =>
+  //         toastDispatch({
+  //           type: REMOVE_ALL_AND_ADD,
+  //           payload: {
+  //             type: "is-danger",
+  //             content: "Something went wrong!",
+  //           },
+  //         })
+  //       );
+  //   })();
+  // }, [filterObj])
   return (
     <Layout>
       <>
         <Helmet title="Category" />
+        {loading && <Loading />}
         <div className="category-wrapper">
           <div className="container">
             <Breadcrumb />

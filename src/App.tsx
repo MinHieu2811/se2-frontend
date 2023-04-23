@@ -136,8 +136,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} /> */}
           {/* Customer */}
           <Route path="/" element={<Homepage />} />
           <Route path="/category" element={<Category />} />

@@ -3,12 +3,12 @@ import { DetailedObject } from "../model/utils"
 
 interface QueryObject {
     pathName: string
-    queryObj: DetailedObject<string>
+    queryObj: DetailedObject<string | number>
 }
 
-export const serializeQuery = (obj: DetailedObject<string>) => {
+export const serializeQuery = (obj: DetailedObject<string | number>) => {
     return Object.keys(obj).map(function(key) {
-      return [key, obj[key]].map(encodeURIComponent).join("=");
+      return [key, obj[key].toString()].map(encodeURIComponent).join("=");
     }).join("&");
   };
 
