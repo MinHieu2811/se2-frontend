@@ -5,6 +5,7 @@ import { useToggleModal } from "../../context/ModalProvider";
 import { useCart } from "../../context/CartProvider";
 import Variants from "./Variants";
 import { useSearchNavigate } from "../../hooks/useSearchNavigate";
+import VoucherCard from "./Voucher";
 
 function freeze() {
   document.documentElement.classList.add("is-clipped");
@@ -14,11 +15,32 @@ function unFreeze() {
   document.documentElement.classList.remove("is-clipped");
 }
 
+const fakeVoucher = [
+  {
+    code: "save30",
+    quantity: 12,
+    expiredAt: "",
+    discountAmount: {
+      value: 0.3,
+      minimumApplicable: 200,
+    },
+  },
+  {
+    code: "save20",
+    quantity: 12,
+    expiredAt: "",
+    discountAmount: {
+      value: 0.2,
+      minimumApplicable: 200,
+    },
+  }
+]
+
 const CartModal = () => {
   const { totalItems, totalPrice } = useCart();
   const { isOpen, setOpen } = useToggleModal();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const searchNavigate = useSearchNavigate()
+  const searchNavigate = useSearchNavigate();
   const navigate = useNavigate();
   //   const [storedValue, setValue] = useLocalStorage("cart", false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -34,17 +56,17 @@ const CartModal = () => {
   };
 
   useEffect(() => {
-    const rootContainer = document.querySelector("html")
-    if(isOpen) {
-      rootContainer?.classList?.add("is-overflow")
-    }else {
-      rootContainer?.classList?.remove("is-overflow")
+    const rootContainer = document.querySelector("html");
+    if (isOpen) {
+      rootContainer?.classList?.add("is-overflow");
+    } else {
+      rootContainer?.classList?.remove("is-overflow");
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const onCheckout = () => {
     setIsCheckingOut(true);
-    navigate('/checkout')
+    navigate("/checkout");
   };
 
   // const scrollToTop = () => {
@@ -88,6 +110,9 @@ const CartModal = () => {
                 <div className="scrollable-content" ref={scrollRef}>
                   <Variants />
                 </div>
+                {fakeVoucher.map((item, index) => (
+                  <VoucherCard {...item} index={index} />
+                ))}
                 <div className="fixed-bottom">
                   <div className="total">You have total {totalItems} items</div>
                   <hr className="mt-0" />
@@ -115,14 +140,14 @@ const CartModal = () => {
                   onClick={() => {
                     setOpen && setOpen();
                     searchNavigate({
-                      pathName: '/category',
+                      pathName: "/category",
                       queryObj: {
-                        brand: '',
-                        page: '1',
-                        sorting: '',
-                        keyword: ''
-                      }
-                    })
+                        brand: "",
+                        page: "1",
+                        sorting: "",
+                        keyword: "",
+                      },
+                    });
                   }}
                   className="button button--cta is-fullwidth is-primary"
                 >
