@@ -12,7 +12,7 @@ function VariantOrder({order}: Props) {
         <div className="variant--top columns is-mobile is-variable is-2">
           <div className={`column`}>
             <figure className="variant__image image is-square">
-              <img src={product?.image[0]} alt="" />
+              <img src={product?.images[0]} alt="" />
             </figure>
           </div>
           <div className="column">

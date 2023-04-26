@@ -36,7 +36,7 @@ function Variant({ variant }: VariantType) {
         <div className="variant--top columns is-mobile is-variable is-2">
           <div className="column col-4">
             <figure className="variant__image image is-square">
-              <img src={variant?.product?.image[0]} alt="" />
+              {/* <img src={variant?.product?.images[1]} alt="" /> */}
             </figure>
           </div>
           <div className="column col-8">
@@ -66,6 +66,7 @@ function Variant({ variant }: VariantType) {
                 <div className="variant__remove">
                   {removeFromCart && (
                     <button
+                     title="remove"
                       className={`button is-text has-text-link`}
                       onClick={() => removeFromCart(variant?.product, true)}
                     >
@@ -101,6 +102,7 @@ function Variant({ variant }: VariantType) {
             <div className="variant__remove">
               {removeFromCart && (
                 <button
+                title="remove"
                   className={`button is-text has-text-link`}
                   onClick={() => removeFromCart(variant?.product, true)}
                 >
