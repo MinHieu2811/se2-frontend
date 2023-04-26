@@ -8,7 +8,7 @@ import { useSearchNavigate } from "../../hooks/useSearchNavigate";
 type PaginationProps = {
   totalPage: number;
   currentPage: number;
-  pathName: string;
+  isAdmin: boolean;
 };
 
 const initialState: DetailedObject<string | number> = {
@@ -21,12 +21,10 @@ const initialState: DetailedObject<string | number> = {
 const Paginate = ({
   totalPage,
   currentPage,
-  pathName,
+  isAdmin = false,
 }: PaginationProps) => {
   const location = useLocation();
-  const [filterObj, setFilterObj] = useState<DetailedObject<string | number>>(
-    {}
-  );
+  const [filterObj, setFilterObj] = useState<DetailedObject<string | number>>();
   const searchNavigate = useSearchNavigate();
 
   useEffect(() => {
@@ -40,26 +38,26 @@ const Paginate = ({
             .replace(/=/g, '":"') +
           '"}'
       );
-
+      console.log("pagination", result);
       setFilterObj(result);
     } else {
       setFilterObj(initialState);
     }
-  }, [location?.search]);
-  return (
-    <div className={`paginate-wrapper ${"category" }`}>
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.href]);
+
+  return totalPage > 1 ? (
+    <div className={`paginate-wrapper ${!isAdmin ? "category" : ""}`}>
       <Pagination>
         <Pagination.Item
           onClick={() =>
             searchNavigate({
-              pathName: pathName,
+              pathName: "/category",
               queryObj: {
                 ...filterObj,
-                page: `${
-                  currentPage <= 1 ? 1 : currentPage - 1
-                }`,
+                page: `${currentPage - 1 === 0 ? 1 : currentPage - 1}`,
               },
-            }) 
+            })
           }
         >
           <div className="paginate-wrapper_link">
@@ -74,7 +72,7 @@ const Paginate = ({
             key={`page-${x + 1}`}
             onClick={() =>
               searchNavigate({
-                pathName: pathName,
+                pathName: "/category",
                 queryObj: {
                   ...filterObj,
                   page: `${x + 1}`,
@@ -82,13 +80,13 @@ const Paginate = ({
               })
             }
           >
-            <div>{x+1}</div>
+            <div>{x + 1}</div>
           </Pagination.Item>
         ))}
         <Pagination.Item
           onClick={() =>
             searchNavigate({
-              pathName: pathName,
+              pathName: "/category",
               queryObj: {
                 ...filterObj,
                 page: `${
@@ -104,6 +102,8 @@ const Paginate = ({
         </Pagination.Item>
       </Pagination>
     </div>
+  ) : (
+    <></>
   );
 };
 

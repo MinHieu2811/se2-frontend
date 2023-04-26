@@ -5,7 +5,7 @@ const products: ProductModel[] = [
   {
     id: "asdjakjshdk",
     name: "Dior Rouge Matte",
-    images: [
+    image: [
       "/images/products/product1.png",
       "/images/products/product1-thumb.png",
     ],
@@ -18,7 +18,7 @@ const products: ProductModel[] = [
   {
     id: "asjdhkajshdkja",
     name: "Christian Sotango",
-    images: [
+    image: [
       "/images/products/product2.png",
       "/images/products/product2-thumb.png",
     ],
@@ -31,7 +31,7 @@ const products: ProductModel[] = [
   {
     id: "asdajdlkjaslkdjlak",
     name: "Christian Louboutin Rococotte",
-    images: [
+    image: [
       "/images/products/product3.png",
       "/images/products/product3-thumb.png",
     ],
@@ -44,7 +44,7 @@ const products: ProductModel[] = [
   {
     id: "askjdhkajshdkjashd",
     name: "Christian Louboutin Sotango",
-    images: [
+    image: [
       "/images/products/product4.png",
       "/images/products/product4-thumb.png",
     ],
@@ -57,7 +57,7 @@ const products: ProductModel[] = [
   {
     id: "asdkjhaksjhdkjashd",
     name: "Janet Rust Mat Lipstick 2",
-    images: [
+    image: [
       "/images/products/product5.png",
       "/images/products/product5-thumb.png",
     ],
@@ -70,7 +70,7 @@ const products: ProductModel[] = [
   {
     id: "asdkjhaksjhdshgashd",
     name: "Christian Loubotin Goyetta",
-    images: [
+    image: [
       "/images/products/product6.png",
       "/images/products/product6-thumb.png",
     ],

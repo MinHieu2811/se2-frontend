@@ -67,7 +67,7 @@ const OrderDetail = () => {
               ({ product, quantity }: CartModel, index) => (
                 <div className="order-info__item" key={`item-${index}`}>
                   <img
-                    src={product?.images[0]}
+                    src={product?.image[0]}
                     alt={product?.name}
                     className="order-info__img "
                   />

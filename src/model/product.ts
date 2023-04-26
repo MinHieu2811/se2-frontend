@@ -4,7 +4,7 @@ export interface ProductModel {
     description: string
     price: number
     amount: number
-    images: string[]
+    image: string[]
     brand: string
 }
 
