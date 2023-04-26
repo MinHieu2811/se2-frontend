@@ -155,7 +155,7 @@ const Navbar = () => {
           className="main-nav_right_item login-box"
           onClick={handlerUserMenu}
         >
-          <>{1 ? <span className="user-name">H</span> : <AiOutlineUser />}</>
+          <>{token ? <span className="user-name">H</span> : <AiOutlineUser />}</>
           <div className="signin_box" ref={userMenuRef}>
             {token ? (
               <div className="signin_box_container">

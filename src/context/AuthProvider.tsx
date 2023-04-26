@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { AuthProps, UserModel } from '../model/user';
 import { axiosInstance } from "../client-api";
 
@@ -58,6 +58,14 @@ export const AuthProvider = ({children}: Props) => {
             // window.location.replace("/")
         }
     }
+
+    useEffect(() => {
+        if(localStorage.getItem("access_token")) {
+            setToken(localStorage.getItem("access_token") || "")
+        } else {
+            localStorage.setItem("access_token", token || "")
+        }
+    }, [token])
 
     const value: ValueContext = {
         userProfile,
