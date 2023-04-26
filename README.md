@@ -2,7 +2,7 @@
 
 # Production Link
 
-Open [https://se2-frontend-one.vercel.app/] to see our product
+Open https://se2-frontend-one.vercel.app/ to see our product
 
 ## Account for purchase product
 User email: hieu123@gmail.com
