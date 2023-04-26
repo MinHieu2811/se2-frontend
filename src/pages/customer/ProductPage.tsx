@@ -131,12 +131,12 @@ function ProductPage() {
           <div className="product-info-wrapper_img_container col-7">
             <div className="product-info-wrapper_img_container_main">
               <img
-                src={productInfo?.data?.image[0]}
+                src={productInfo?.data?.images[0]}
                 className="pic1"
                 alt={productInfo?.data?.name}
               />
               <img
-                src={productInfo?.data?.image[1]}
+                src={productInfo?.data?.images[1]}
                 className="pic2"
                 alt={productInfo?.data?.name}
               />

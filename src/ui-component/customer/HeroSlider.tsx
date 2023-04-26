@@ -38,7 +38,7 @@ function HeroSlider({ productList }: Props) {
               <div className="heroslider-wrapper_item_img">
                 <div className="heroslider-wrapper_item_img_wrapper">
                   <img
-                    src={product.image[1]}
+                    src={product.images[1]}
                     alt=""
                     className={` slider-img-wrapper_item`}
                   />

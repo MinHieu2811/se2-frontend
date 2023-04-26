@@ -31,7 +31,7 @@ const MyOrders = () => {
                   {item?.cart?.items?.map((item: CartModel) => (
                     <div key={item?.product?.id}>
                       <img
-                        src={item?.product?.image[0]}
+                        src={item?.product?.images[0]}
                         alt={item?.product?.name}
                         className="order-table__img"
                       />

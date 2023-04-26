@@ -25,9 +25,9 @@ function ProductCard({ productInfo }: Props) {
   return (
     <div className="productCart-wrapper">
       <div className="productCart-wrapper_img">
-        <img src={productInfo.image[0]} alt={productInfo.name} />
+        <img src={productInfo.images[0]} alt={productInfo.name} />
         <img
-          src={productInfo.image[1]}
+          src={productInfo.images[1]}
           className="img"
           alt={productInfo.name}
         />
