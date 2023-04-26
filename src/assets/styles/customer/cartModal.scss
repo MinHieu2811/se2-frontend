@@ -42,7 +42,7 @@
       background-color: white;
       // border-bottom: 0;
       border-radius: 0;
-      padding: 40px $padding $padding;
+      padding: 15px 30px 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -55,6 +55,7 @@
       .modal-card-title {
         font-size: 20px;
         font-weight: bold;
+        margin-bottom: 0px;
       }
 
       .delete {
@@ -100,7 +101,7 @@
 
       .scrollable-content {
         max-height: calc(100vh - 363px);
-        padding: $padding $padding 20px;
+        padding: 15px $padding 20px;
         position: absolute;
         width: 100%;
         top: 0;
@@ -109,13 +110,23 @@
         z-index: 100;
         overflow-x: hidden;
         overflow-y: auto;
+
+        &::-webkit-scrollbar {
+          background-color: $main-bg;
+          width: 8px;
+          visibility: hidden;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: $main-color-hover;
+        }
       }
 
       .fixed-bottom {
-        padding: 0 $padding $padding;
+        padding: 0 30px 15px;
         position: absolute;
         width: 100%;
-        bottom: 100px;
+        bottom: 70px;
         z-index: 101;
         border-top: 1px solid gray;
         background-color: white;
@@ -496,7 +507,13 @@
   }
 }
 
-.voucher-wrapper {
+.voucher-section {
+  position: absolute;
+  width: 100%;
+  max-height: 100px;
+  overflow-y: auto;
+  bottom: 250px;
+  .voucher-wrapper {
     font-family: Lato;
     display: flex;
     justify-content: space-between;
@@ -504,26 +521,29 @@
     border: 1px dashed green;
     background: #bcefbc;
     align-items: center;
-    position: absolute;
     width: 100%;
-    bottom: 295px;
-    // height: 50px;
+    margin-bottom: 10px;
 
-  &__content {
-    span {
-      font-weight: bolder;
-      margin: 0 2px;
-      font-size: 16px;
+    &__content {
+      span {
+        font-weight: bolder;
+        margin: 0 2px;
+        font-size: 16px;
+      }
     }
-  }
 
-  &__btn {
-    outline: none;
-    border: none;
-    padding: 5px 20px;
-    background: #5cab5c;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
+    &__btn {
+      outline: none;
+      border: none;
+      padding: 5px 20px;
+      background: #5cab5c;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+
+      &.is-remove {
+        background-color: #c93429;
+      }
+    }
   }
 }

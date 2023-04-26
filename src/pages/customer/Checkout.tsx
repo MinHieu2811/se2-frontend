@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useCart } from "../../context/CartProvider";
 import VariantOrder from "../../ui-component/customer/VariantOrder";
 import { BsCurrencyDollar } from "react-icons/bs";
@@ -8,28 +8,67 @@ import { useSyncedState } from "../../hooks/useSyncedState";
 import { AddressErrors, CustomerAddress } from "../../model/address";
 import { initAddress } from "../../utils/initAddress";
 import { validateAddressField } from "../../utils/validateInput";
-import { Order, OrderStatus } from "../../model/order";
+import { Order, OrderStatus, VoucherOrder } from "../../model/order";
 import { axiosInstance } from "../../client-api";
 import { useNavigate } from "react-router";
+// import VoucherCard from "../../ui-component/customer/Voucher";
 
 const genOrderToken = () => {
   return new Date().getTime().toString().slice(0, 8);
 };
 
+// const fakeVoucher = [
+//   {
+//     code: "save30",
+//     quantity: 12,
+//     expiredAt: "2023-08-12 00:00:00",
+//     discountAmount: {
+//       value: 0.3,
+//       minimumApplicable: 200,
+//     },
+//   },
+//   {
+//     code: "save20",
+//     quantity: 12,
+//     expiredAt: "2022-08-12 00:00:00",
+//     discountAmount: {
+//       value: 0.2,
+//       minimumApplicable: 200,
+//     },
+//   },
+// ];
+
 let order: Order = {
   id: genOrderToken(),
 };
 function Checkout() {
-  const { cart, totalItems, totalPrice, clearCart } = useCart();
+  const { cart, totalItems, totalPrice, clearCart, voucher } = useCart();
   const [addressErrors, setAddressErrors] = useSyncedState<AddressErrors>({});
   const [addressSyncedProps, , getAddressSyncedProp] =
     useSyncedState<CustomerAddress>(initAddress({}));
-    const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const subtotal = useMemo(
+    () =>
+      cart.reduce(
+        (total, item) =>
+          total + Number(item?.quantity) * Number(item?.product.price),
+        0
+      ),
+    [cart]
+  );
+  const [voucherSyncedProps, , ] =
+    useSyncedState<VoucherOrder>({
+      code: "",
+      expiredAt: "",
+      discountAmount: 0,
+    });
 
   order.cart = {
     items: cart,
     totalItems: totalItems,
     totalPrice: totalPrice,
+    voucher: voucher || null,
   };
 
   order.orderInfo = {
@@ -37,7 +76,13 @@ function Checkout() {
     status: OrderStatus?.PENDING,
   };
 
-  console.log(order);
+  useEffect(() => {
+    console.log("run here");
+    if (localStorage.getItem("order")) {
+      localStorage.setItem("order", JSON.stringify(order));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [voucher]);
 
   useEffect(() => {
     (Object.keys(addressSyncedProps) as Array<keyof CustomerAddress>)?.forEach(
@@ -63,15 +108,31 @@ function Checkout() {
     );
   }, [addressSyncedProps, setAddressErrors]);
 
-  const submitOrder = async (paymentInfo?: any) => {
-    if(order.orderInfo && paymentInfo) {
-      order.orderInfo.paymentInfo = paymentInfo
+  useEffect(() => {
+    if (voucherSyncedProps?.code && voucher && order?.cart) {
+      order.cart.voucher = voucher ;
+      order.cart.totalPrice =
+        totalPrice - totalPrice * voucherSyncedProps?.discountAmount;
     }
-    await axiosInstance?.post('http://localhost:5000/api/order', order)?.then(() => {
-      clearCart?.()
-      navigate('/')
-    })
-  }
+  }, [voucherSyncedProps, totalPrice, voucher]);
+
+  const submitOrder = async (paymentInfo?: any) => {
+    if (order.orderInfo && paymentInfo) {
+      order.orderInfo.paymentInfo = paymentInfo;
+    }
+    if (voucherSyncedProps?.code && order?.cart) {
+      order.cart.voucher = voucherSyncedProps;
+      order.cart.totalPrice =
+        totalPrice - totalPrice * voucherSyncedProps?.discountAmount;
+    }
+    debugger;
+    await axiosInstance
+      ?.post("http://localhost:5000/api/order", order)
+      ?.then(() => {
+        clearCart?.();
+        navigate("/");
+      });
+  };
 
   return (
     <div className="checkout-wrapper">
@@ -79,14 +140,6 @@ function Checkout() {
       <div className="order-variants col-5">
         <div className="hide-on-mobile">
           <>
-            {cart.length > 1 && (
-              <div className="multi-order">
-                <div className="multi-order__content">
-                  You’ve ordered multiple products and parcels may arrive
-                  separately.
-                </div>
-              </div>
-            )}
             <div className="order-warpper" key={`code-${0}`}>
               <div className="order-warpper__order">
                 Order <span className="order-warpper__code">#{order?.id}</span>{" "}
@@ -106,6 +159,18 @@ function Checkout() {
             </div>
           </>
         </div>
+        <hr />
+
+        {/* <div className="voucher-section">
+          {fakeVoucher.map((item, index) => (
+            <VoucherCard
+              {...item}
+              index={index}
+              key={`voucher-${index}`}
+              voucherSyncedProps={getVoucherSyncedProps()}
+            />
+          ))}
+        </div> */}
 
         {1 ? (
           <div className="order-variants__summary bg-change-dynamic-total">
@@ -114,20 +179,29 @@ function Checkout() {
               <div className="item__number">
                 <>
                   <BsCurrencyDollar />
-                  {order?.cart?.totalPrice}
+                  {subtotal}
                 </>
               </div>
             </div>
             <div className="item">
-              <div className="item__label">Discount Code</div>
+              <div className="item__label">
+                Voucher Code{" "}
+                <span style={{ marginLeft: "5px" }}>
+                  ({voucher?.code ? "#" : ""}
+                  {voucher?.code.toUpperCase()}
+                </span>
+                )
+              </div>
               <div className="item__number">
-                {undefined ? (
+                {voucher?.code ? (
                   <>
                     <BsCurrencyDollar />
-                    {order?.cart?.totalPrice}
+                    {(voucher?.discountAmount * subtotal).toFixed(2)}
                   </>
                 ) : (
-                  <span className="item__number__free">Free</span>
+                  <span className="item__number__free">
+                    <BsCurrencyDollar />0{" "}
+                  </span>
                 )}
               </div>
             </div>
@@ -150,6 +224,7 @@ function Checkout() {
                 {/* {(isCollect && order?.tax_engine) || !isCheckingOut
                   ? getCurrency(tax_amount ?? 0)
                   : "--"} */}
+                <BsCurrencyDollar />0
               </div>
             </div>
 
@@ -162,7 +237,11 @@ function Checkout() {
               </div>
               <div className="item__number item__number--bold item-label-total">
                 <BsCurrencyDollar />
-                {order?.cart?.totalPrice}
+                {/* {(voucher?.code
+                  ? totalPrice - voucher?.discountAmount * totalPrice
+                  : totalPrice
+                ).toFixed()} */}
+                {totalPrice}
               </div>
             </div>
 

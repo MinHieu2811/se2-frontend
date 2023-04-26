@@ -19,7 +19,7 @@ const fakeVoucher = [
   {
     code: "save30",
     quantity: 12,
-    expiredAt: "",
+    expiredAt: "2023-08-12 00:00:00",
     discountAmount: {
       value: 0.3,
       minimumApplicable: 200,
@@ -28,13 +28,13 @@ const fakeVoucher = [
   {
     code: "save20",
     quantity: 12,
-    expiredAt: "",
+    expiredAt: "2022-08-12 00:00:00",
     discountAmount: {
       value: 0.2,
       minimumApplicable: 200,
     },
-  }
-]
+  },
+];
 
 const CartModal = () => {
   const { totalItems, totalPrice } = useCart();
@@ -110,9 +110,17 @@ const CartModal = () => {
                 <div className="scrollable-content" ref={scrollRef}>
                   <Variants />
                 </div>
-                {fakeVoucher.map((item, index) => (
-                  <VoucherCard {...item} index={index} />
-                ))}
+                <hr />
+                <div className="voucher-section">
+                  {fakeVoucher.map((item, index) => (
+                    <VoucherCard
+                      {...item}
+                      index={index}
+                      key={`voucher-${index}`}
+                      // voucherSyncedProps={getVoucherSyncedProps()}
+                    />
+                  ))}
+                </div>
                 <div className="fixed-bottom">
                   <div className="total">You have total {totalItems} items</div>
                   <hr className="mt-0" />
