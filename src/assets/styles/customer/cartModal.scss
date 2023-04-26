@@ -100,7 +100,7 @@
       }
 
       .scrollable-content {
-        max-height: calc(100vh - 363px);
+        max-height: calc(100vh - 250px);
         padding: 15px $padding 20px;
         position: absolute;
         width: 100%;
@@ -507,12 +507,12 @@
   }
 }
 
-.voucher-section {
-  position: absolute;
-  width: 100%;
-  max-height: 100px;
-  overflow-y: auto;
-  bottom: 250px;
+// .voucher-section {
+//   position: absolute;
+//   width: 100%;
+//   max-height: 100px;
+//   overflow-y: auto;
+//   bottom: 250px;
   .voucher-wrapper {
     font-family: Lato;
     display: flex;
@@ -522,7 +522,7 @@
     background: #bcefbc;
     align-items: center;
     width: 100%;
-    margin-bottom: 10px;
+    margin: 10px 0px;
 
     &__content {
       span {
@@ -546,4 +546,4 @@
       }
     }
   }
-}
+// }

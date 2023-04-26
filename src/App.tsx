@@ -147,9 +147,9 @@ function App() {
           <Route
             path="/checkout"
             element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <Checkout />
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
           />
         </>
