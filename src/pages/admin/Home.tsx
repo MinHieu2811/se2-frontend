@@ -5,20 +5,27 @@ import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
 import { useToastContext } from "../../ui-component/toast/ToastContext";
 
 const Home = () => {
-  const { toastDispatch } = useToastContext()
-  
+  const { toastDispatch } = useToastContext();
+
   return (
     <Layout>
       <>
         <Helmet title="Home" />
         <div className="container height-full">
-          <button onClick={() => toastDispatch({
-            type: REMOVE_ALL_AND_ADD,
-            payload: {
-              type: 'is-danger',
-              content: `Please login!`
+          <button
+            onClick={() =>
+              toastDispatch({
+                type: REMOVE_ALL_AND_ADD,
+                payload: {
+                  type: "is-danger",
+                  content: `Please login!`,
+                },
+              })
             }
-          })} style={{marginTop: '100px'}}>Toast</button>
+            style={{ marginTop: "100px" }}
+          >
+            Toast
+          </button>
         </div>
       </>
     </Layout>

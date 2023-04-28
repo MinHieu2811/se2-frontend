@@ -118,16 +118,6 @@ const CartModal = () => {
                     />
                   ))}
                 </div>
-                {/* <div className="voucher-section">
-                  {fakeVoucher.map((item, index) => (
-                    <VoucherCard
-                      {...item}
-                      index={index}
-                      key={`voucher-${index}`}
-                      // voucherSyncedProps={getVoucherSyncedProps()}
-                    />
-                  ))}
-                </div> */}
                 <div className="fixed-bottom">
                   <div className="total">You have total {totalItems} items</div>
                   <hr className="mt-0" />
