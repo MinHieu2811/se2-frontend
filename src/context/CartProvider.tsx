@@ -138,13 +138,15 @@ export const CartProvider = ({ children }: Props) => {
     setTotalItems(
       cart.reduce((total, item) => total + Number(item?.quantity), 0)
     );
+    const totalPrice = cart.reduce(
+      (total, item) =>
+        total + Number(item?.quantity) * Number(item?.product.price),
+      0
+    )
     setTotalPrice(
-      cart.reduce(
-        (total, item) =>
-          total + Number(item?.quantity) * Number(item?.product.price),
-        0
-      )
+      voucher?.code ? totalPrice - totalPrice * voucher?.discountAmount : totalPrice
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
 
   useEffect(() => {

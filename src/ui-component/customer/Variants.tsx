@@ -36,31 +36,13 @@ function Variant({ variant }: VariantType) {
         <div className="variant--top columns is-mobile is-variable is-2">
           <div className="column col-4">
             <figure className="variant__image image is-square">
-              <img src={variant?.product?.image[0]} alt="" />
+              <img src={variant?.product?.images[0]} alt="" />
             </figure>
           </div>
           <div className="column col-8">
             <div className="columns is-vcentered is-variable mb-0">
               <div className="column pb-1-mobile">
                 <div className="variant__title">{variant?.product?.name}</div>
-                {/* <div className="size--small">
-                  <div className="variant__property expand-on-mobile">
-                    <p className="property mr-0">
-                      {Object.entries(variant.properties ?? {}).map(
-                        (property: any, i: number, arr: any[]) => {
-                          return (
-                            <span
-                              key={`${variant.id}_${i}`}
-                              className={i != arr.length - 1 ? "mr-6" : ""}
-                            >
-                              <strong>{property[0]}</strong>: {property[1]}
-                            </span>
-                          );
-                        }
-                      )}
-                    </p>
-                  </div>
-                </div> */}
               </div>
               <div className="column pt-1-mobile pb-1-mobile is-hidden-mobile">
                 <div className="variant__remove">

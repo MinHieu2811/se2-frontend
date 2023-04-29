@@ -9,6 +9,11 @@ import Layout from "../../ui-component/customer/Layout";
 import { useCart } from "../../context/CartProvider";
 import { useToggleModal } from "../../context/ModalProvider";
 import { Breadcrumb } from "../../ui-component/customer/Breadcrumb";
+import { axiosInstance } from "../../client-api";
+import { useToastContext } from "../../ui-component/toast/ToastContext";
+import axios from "axios";
+import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
+import LoadingCustomer from "./Loading";
 // import { useToastContext } from '../../ui-component/toast/ToastContext'
 // import axios from 'axios'
 // import { axiosInstance } from '../../client-api'
@@ -18,21 +23,47 @@ function ProductPage() {
   const btnRef = useRef<HTMLButtonElement>(null);
   const expandRef = useRef<HTMLDivElement>(null);
   const [quantity, setQuantity] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
   const params = useParams();
   const { addToCartHandler } = useCart();
   const { setOpen } = useToggleModal();
+  const { toastDispatch } = useToastContext();
 
-  const initialState = products.find(
-    (item) => item?.id === params?.productId
-  ) as ProductModel;
   const [productInfo, setProductInfo] = useState<
     ResponseType<ProductModel> | undefined
-  >(
-    {
-      data: initialState,
-      success: true,
-    } || {}
-  );
+  >();
+
+  useEffect(() => {
+    const cancelToken = axios.CancelToken.source();
+    (async () => {
+      setLoading(true);
+      await axiosInstance
+        .get(`/product/${params?.productId}`, {
+          cancelToken: cancelToken.token,
+        })
+        .then((res) => res?.data)
+        .then((res) => {
+          console.log(res);
+          setProductInfo(res);
+        })
+        .finally(() => setLoading(false))
+        .catch((err) => {
+          console.log(err);
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-danger",
+              content: "Something went wrong!",
+            },
+          });
+        });
+    })();
+
+    return () => {
+      cancelToken.cancel();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params?.productId]);
 
   const addToCart = () => {
     if (addToCartHandler && productInfo?.data)
@@ -127,16 +158,17 @@ function ProductPage() {
     <Layout>
       <>
         <Helmet title={productInfo?.data?.name || ""} />
+        {loading && <LoadingCustomer />}
         <div className="product-info-wrapper" style={{ minHeight: "80vh" }}>
           <div className="product-info-wrapper_img_container col-7">
             <div className="product-info-wrapper_img_container_main">
               <img
-                src={productInfo?.data?.image[0]}
+                src={productInfo?.data?.images[0]}
                 className="pic1"
                 alt={productInfo?.data?.name}
               />
               <img
-                src={productInfo?.data?.image[1]}
+                src={productInfo?.data?.images[1]}
                 className="pic2"
                 alt={productInfo?.data?.name}
               />

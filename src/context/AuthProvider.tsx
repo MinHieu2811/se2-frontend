@@ -81,7 +81,6 @@ export const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (localStorage.getItem("profile")) {
-      console.log(localStorage.getItem("profile"));
       setUserProfile(
         JSON.parse(
           localStorage.getItem("profile") || JSON.stringify(initialState)
