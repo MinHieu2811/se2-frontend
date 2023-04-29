@@ -1,6 +1,12 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Production Link
+
+Open https://se2-frontend-one.vercel.app/ to see our product
+
+## Account for purchase product
+User email: hieu123@gmail.com
+Password: 123456
 
 ## Available Scripts
 

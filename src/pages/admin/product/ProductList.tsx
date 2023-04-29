@@ -7,7 +7,7 @@ import Loading from "../../../ui-component/shared/Loading";
 import { AiOutlineEdit, AiFillDelete } from "react-icons/ai";
 import { ResponseData } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
-import Pagination from "../../../ui-component/shared/Pagination";
+import AdminPagination from "../AdminPagination";
 
 const fakeData = [
   {
@@ -48,10 +48,14 @@ const fakeData = [
 ]
 
 const ProductList = () => {
+  const itemsPerPage = 2;
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [productData, setProductData] = useState<ResponseData>();
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
-
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
 
@@ -80,18 +84,12 @@ const ProductList = () => {
     };
   }, [toastDispatch]);
 
-  return (
-    <Layout>
-      <div className="w-100">
-        {loading && <Loading />}
-        <div className="list-header d-flex">
-          <h1 style={{flex: 1}}>All Products</h1>
-          <InputGroup style={{flex: 3, margin: "0px 20px"}}>
-            <Form.Control type="text" placeholder="Keyword"/>
-          </InputGroup>
-          <Button style={{ flex: 1}}>Create New Product</Button>
-        </div>
-        <Table striped="column" bordered hover>
+  const generateCateGrid = (products: any[], currentPage: number, productsPerPage: number) => {
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
+    
+    return (
+      <Table striped="column" bordered hover>
           <thead>
             <tr>
               <th>ID</th>
@@ -102,7 +100,7 @@ const ProductList = () => {
               <th>Edit/Delete</th>
             </tr>
           </thead>
-          {fakeData.length ? fakeData.map((item) => (
+          {fakeData.length ? fakeData.slice(startIndex, endIndex).map((item) => (
             <tr key={item?._id}>
               <td>{item?._id}</td>
               <td>{item?.name}</td>
@@ -122,8 +120,26 @@ const ProductList = () => {
             <></>
           )}
         </Table>
+    );
+  };
+  return (
+    <Layout>
+      <div className="w-100">
+        {loading && <Loading />}
+        <div className="list-header d-flex">
+          <h1 style={{flex: 1}}>All Products</h1>
+          <InputGroup style={{flex: 3, margin: "0px 20px"}}>
+            <Form.Control type="text" placeholder="Keyword"/>
+          </InputGroup>
+          <Button style={{ flex: 1}}>Create New Product</Button>
+        </div>
+        {generateCateGrid(fakeData,currentPage,itemsPerPage)}
         <div className="pagination-wrapper" style={{margin: "20px auto"}}>
-          <Pagination totalPage={5} currentPage={2} isAdmin />
+        <AdminPagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(fakeData.length / itemsPerPage)}
+          onPageChange={handlePageChange}
+        />
         </div>
       </div>
     </Layout>
