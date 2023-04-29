@@ -38,7 +38,6 @@ const Paginate = ({
             .replace(/=/g, '":"') +
           '"}'
       );
-      console.log("pagination", result);
       setFilterObj(result);
     } else {
       setFilterObj(initialState);

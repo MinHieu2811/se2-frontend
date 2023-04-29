@@ -358,7 +358,7 @@
           }
         }
       }
-      padding: 50px;
+      padding: 20px 30px;
       .item {
         .item-label-total {
           font-weight: 600;
@@ -580,5 +580,19 @@
       line-height: 24px;
       color: #282828;
     }
+  }
+}
+
+.voucher-section {
+  // max-height: 75px;
+  // overflow-y: auto;
+  &::-webkit-scrollbar {
+    background-color: $main-bg;
+    width: 8px;
+    visibility: hidden;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $main-color-hover;
   }
 }

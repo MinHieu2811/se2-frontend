@@ -15,19 +15,20 @@ type Props = {
 };
 
 function ProductCard({ productInfo }: Props) {
+  console.log(productInfo);
   const { addToCartHandler } = useCart();
   const {setOpen} = useToggleModal()
 
   const addToCart = (product: ProductModel, quantity: number) => {
     addToCartHandler && addToCartHandler(product, quantity);
-    setOpen && setOpen()
+    setOpen?.()
   };
   return (
     <div className="productCart-wrapper">
       <div className="productCart-wrapper_img">
-        <img src={productInfo.image[0]} alt={productInfo.name} />
+        <img src={productInfo.images[0]} alt={productInfo.name} />
         <img
-          src={productInfo.image[1]}
+          src={productInfo.images[1]}
           className="img"
           alt={productInfo.name}
         />
@@ -45,21 +46,12 @@ function ProductCard({ productInfo }: Props) {
         <div className="productCart-wrapper_action_save action-wrapper">
           <div
             className={`productCart-wrapper_action_save_icon action-wrapper_icon delay-2`}
-            // onClick={() => addToWishListHandler(_id)}
           >
             <AiOutlineHeart />
           </div>
         </div>
         <div className="productCart-wrapper_action_add action-wrapper">
           <div className="productCart-wrapper_action_save_icon action-wrapper_icon delay-2">
-            {/* {link === null ? (
-              <i className="bx bxs-cart-alt" onClick={() => addToCart(_id)}></i>
-            ) : (
-              <i
-                className="bx bxs-cart-alt"
-                // onClick={() => addToCart(link)}
-              ></i>
-            )} */}
             {addToCartHandler && (
               <AiOutlineShoppingCart
                 onClick={() => addToCart(productInfo, 1)}
@@ -69,15 +61,6 @@ function ProductCard({ productInfo }: Props) {
         </div>
         <div className="productCart-wrapper_action_save action-wrapper">
           <div className="productCart-wrapper_action_save_icon action-wrapper_icon delay-2">
-            {/* {link === null ? (
-              <Link to={`/category/${_id}`}>
-                <i className="bx bxs-show"></i>
-              </Link>
-            ) : (
-              <Link to={`/category/${link}`}>
-                <i className="bx bxs-show"></i>
-              </Link>
-            )} */}
             <Link to={`/category/${productInfo.id}`}>
               <BiShow />
             </Link>

@@ -25,6 +25,10 @@ function App() {
     if (!localStorage.getItem("cart" || "")) {
       localStorage.setItem("cart", JSON.stringify([]));
     }
+
+    if (!localStorage.getItem("order" || "")) {
+      localStorage.setItem("order", JSON.stringify({}));
+    }
   }, []);
   return (
     <BrowserRouter>
@@ -136,8 +140,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} /> */}
           {/* Customer */}
           <Route path="/" element={<Homepage />} />
           <Route path="/category" element={<Category />} />

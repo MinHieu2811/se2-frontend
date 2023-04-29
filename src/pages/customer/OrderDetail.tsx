@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+// import { useParams } from "react-router";
 import Layout from "../../ui-component/customer/Layout";
 import * as OrderData from "./orderData.json";
 import { Order, OrderStatus } from "../../model/order";
@@ -7,7 +7,7 @@ import { BsPaypal } from "react-icons/bs";
 import { CartModel } from "../../context/CartProvider";
 
 const OrderDetail = () => {
-  const params = useParams();
+  // const params = useParams();
   const orderData = JSON.parse(JSON.stringify(OrderData)) as Order;
 
   return (
@@ -67,7 +67,7 @@ const OrderDetail = () => {
               ({ product, quantity }: CartModel, index) => (
                 <div className="order-info__item" key={`item-${index}`}>
                   <img
-                    src={product?.image[0]}
+                    src={product?.images[0]}
                     alt={product?.name}
                     className="order-info__img "
                   />
