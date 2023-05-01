@@ -3,7 +3,7 @@ import Helmet from "../../ui-component/shared/Helmet";
 import { ProductModel } from "../../model/product";
 import { ResponseType } from "../../model/utils";
 import QuantityInput from "../../ui-component/customer/QuantityInput";
-import products from "../../fake-data";
+// import products from "../../fake-data";
 import { useParams } from "react-router";
 import Layout from "../../ui-component/customer/Layout";
 import { useCart } from "../../context/CartProvider";

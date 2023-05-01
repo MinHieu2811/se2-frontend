@@ -15,9 +15,9 @@ import Paginate from "../../ui-component/shared/Pagination";
 import { axiosInstance } from "../../client-api";
 import { useToastContext } from "../../ui-component/toast/ToastContext";
 import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
-import Loading from "./Loading";
 import axios from "axios";
 import { ProductModel } from "../../model/product";
+import LoadingCustomer from "./Loading";
 // import { useUpdateEffect } from "../../hooks/useUpdateEffect";
 
 function shallowEqual(
@@ -184,7 +184,7 @@ const Category = () => {
     <Layout>
       <>
         <Helmet title="Category" />
-        {loading && <Loading />}
+        {loading && <LoadingCustomer />}
         <div className="category-wrapper">
           <div className="container">
             <Breadcrumb />
