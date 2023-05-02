@@ -218,11 +218,15 @@ const Category = () => {
             <div className="product-list">
               <Grid col={3} mdCol={2} smCol={1} gap={20}>
                 <>
-                  {productList && productList?.map((item, index) => (
+                  {!loading ? productList?.map((item, index) => (
                     <div key={index}>
                       <ProductCard productInfo={item} />
                     </div>
-                  ))}
+                  )) : (
+                    <div style={{minHeight: "50vh"}}>
+                      <></>
+                    </div>
+                  )}
                 </>
               </Grid>
             </div>

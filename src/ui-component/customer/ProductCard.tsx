@@ -15,7 +15,6 @@ type Props = {
 };
 
 function ProductCard({ productInfo }: Props) {
-  console.log(productInfo);
   const { addToCartHandler } = useCart();
   const {setOpen} = useToggleModal()
 

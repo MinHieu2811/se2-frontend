@@ -12,6 +12,8 @@ const ProtectedRoute = ({children}: Props) => {
     const { token } = useAuth()
     const { toastDispatch } = useToastContext()
 
+    console.log(token);
+
     if(!token) {
         toastDispatch({
             type: REMOVE_ALL_AND_ADD,

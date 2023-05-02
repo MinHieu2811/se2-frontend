@@ -77,7 +77,6 @@ function Checkout() {
   };
 
   useEffect(() => {
-    console.log("run here");
     if (localStorage.getItem("order")) {
       localStorage.setItem("order", JSON.stringify(order));
     }

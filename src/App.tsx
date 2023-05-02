@@ -124,6 +124,19 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Customer */}
+          <Route path="/" element={<Homepage />} />
+          <Route path="/category" element={<Category />} />
+          <Route path="/category/:productId" element={<ProductPage />} />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/user/order"
             element={
@@ -137,18 +150,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <OrderDetail />
-              </ProtectedRoute>
-            }
-          />
-          {/* Customer */}
-          <Route path="/" element={<Homepage />} />
-          <Route path="/category" element={<Category />} />
-          <Route path="/category/:productId" element={<ProductPage />} />
-          <Route
-            path="/checkout"
-            element={
-              <ProtectedRoute>
-                <Checkout />
               </ProtectedRoute>
             }
           />

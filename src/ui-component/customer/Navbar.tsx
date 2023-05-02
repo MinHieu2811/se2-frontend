@@ -19,7 +19,7 @@ const initialState: DetailedObject<string> = {
 
 const Navbar = () => {
   const headerRef = useRef<HTMLDivElement>(null);
-  const { token, onLogout } = useAuth()
+  const { token, onLogout, userProfile } = useAuth()
   const [filterObj, setFilterObj] = useState<DetailedObject<string>>();
   const { setOpenModal } = useToggleAuthModal()
 
@@ -31,7 +31,6 @@ const Navbar = () => {
   const { setOpen } = useToggleModal();
 
   // const [isLogin, setIsLogin] = useState(false);
-  const [isAdmin] = useState(false);
 
   const handleScroll = () => {
     if (
@@ -163,16 +162,22 @@ const Navbar = () => {
                   <Link to="/profile">Profile</Link>
                 </div>
                 <>
-                  {isAdmin ? (
+                  {userProfile ? (
                     <>
                       <div className="signin_box_container_item">
-                        <Link to="/admin/userlist">Users</Link>
+                        <Link to="/admin/home">Dashboard</Link>
                       </div>
                       <div className="signin_box_container_item">
-                        <Link to="/admin/productlist">Products</Link>
+                        <Link to="/admin/voucher-discount/all-voucher">Vouchers</Link>
                       </div>
                       <div className="signin_box_container_item">
-                        <Link to="/admin/orderlist">Orders</Link>
+                        <Link to="/admin/products/all-product">Products</Link>
+                      </div>
+                      <div className="signin_box_container_item">
+                        <Link to="/admin/order/all-order">Orders</Link>
+                      </div>
+                      <div className="signin_box_container_item">
+                        <Link to="/admin/voucher-discount/all-discount">Discount</Link>
                       </div>
                     </>
                   ) : (
