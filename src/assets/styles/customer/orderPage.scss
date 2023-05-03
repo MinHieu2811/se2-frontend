@@ -48,6 +48,9 @@
   display: flex;
   align-items: center;
   margin: auto;
+  &.admin {
+    color: white;
+  }
 
   .order-info__user {
     height: 70vh;

@@ -66,8 +66,8 @@ function ProductPage() {
   }, [params?.productId]);
 
   const addToCart = () => {
-    if (addToCartHandler && productInfo?.data)
-      addToCartHandler(productInfo?.data, quantity);
+    if (productInfo?.data)
+      addToCartHandler?.(productInfo?.data, quantity);
   };
 
   const increase = useCallback(() => {
