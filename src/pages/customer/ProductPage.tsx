@@ -32,38 +32,80 @@ function ProductPage() {
   const [productInfo, setProductInfo] = useState<
     ResponseType<ProductModel> | undefined
   >();
+  const [prevPrice, setPrevPrice] = useState<number>();
+  const [haveDiscount, setHaveDiscount] = useState<boolean>(false);
 
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
-    (async () => {
-      setLoading(true);
-      await axiosInstance
-        .get(`/product/${params?.productId}`, {
-          cancelToken: cancelToken.token,
-        })
-        .then((res) => res?.data)
-        .then((res) => {
-          console.log(res);
-          setProductInfo(res);
-        })
-        .finally(() => setLoading(false))
-        .catch((err) => {
-          console.log(err);
-          toastDispatch({
-            type: REMOVE_ALL_AND_ADD,
-            payload: {
-              type: "is-danger",
-              content: "Something went wrong!",
-            },
-          });
+    setLoading(true);
+  
+    Promise.allSettled([
+      axiosInstance.get(`/product/${params?.productId}`, {
+        cancelToken: cancelToken.token,
+      }),
+      axiosInstance.get(`/${params?.productId}/discount`, {
+        cancelToken: cancelToken.token,
+      }),
+    ])
+      .then((results) => {
+        const [productResult, discountResult] = results;
+  
+        if (productResult.status === "rejected") {
+          throw productResult.reason;
+        }else{
+        const productData = productResult?.value?.data;
+        setProductInfo(productData);
+        }
+        if (discountResult.status === "fulfilled") {
+          const discountData = discountResult?.value?.data;
+          if(discountData?.data[0]?.discountAmount){
+            setHaveDiscount(true);
+          }
+          const  discountAmount = discountData?.data[0]?.discountAmount;
+          const  expiryDate  = discountData?.data[0]?.expiryDate;
+          const today = new Date();
+          const discountExpiryDate = new Date(expiryDate);
+          const productData = productResult?.value?.data;
+          setPrevPrice(productData?.data?.price)
+          if (today < discountExpiryDate) {
+            const discountedPrice = productData?.data?.price * (1-discountAmount);
+            console.log(discountedPrice);
+            setProductInfo({
+              success: productData.success,
+              message: productData.message,
+              data: {
+                ...productData.data,
+                price: discountedPrice
+              }
+            });
+            return () => {
+              cancelToken.cancel();
+            };
+          }else{
+            setHaveDiscount(false);
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toastDispatch({
+          type: REMOVE_ALL_AND_ADD,
+          payload: {
+            type: "is-danger",
+            content: "Something went wrong!",
+          },
         });
-    })();
-
+      })
+      .finally(() => setLoading(false));
+      
+  
     return () => {
       cancelToken.cancel();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params?.productId]);
+ 
+  
 
   const addToCart = () => {
     if (addToCartHandler && productInfo?.data)
@@ -204,7 +246,20 @@ function ProductPage() {
               <span className="branch">{productInfo?.data?.brand}</span>
             </div>
             <div className="product-info-wrapper_info_price">
-              <span className="price">Price: </span> ${productInfo?.data?.price}
+            {
+              haveDiscount ?
+                <div>
+                  <span className="price">Price: </span>
+                  <span className="original-price">$<del>{prevPrice}</del></span>
+                  <span> </span>
+                  <span className="discounted-price">{productInfo?.data?.price}</span>
+                </div>
+              :
+                <div>
+                  <span className="price">Price: </span>
+                  <span>${productInfo?.data?.price}</span>
+                </div>
+            }
             </div>
             <div className="product-info-wrapper_info_quantity">
               <div className="product-info-wrapper_info_quantity_form">
