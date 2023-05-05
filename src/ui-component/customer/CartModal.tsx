@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { useToggleModal } from "../../context/ModalProvider";
@@ -6,6 +6,9 @@ import { useCart } from "../../context/CartProvider";
 import Variants from "./Variants";
 import { useSearchNavigate } from "../../hooks/useSearchNavigate";
 import VoucherCard from "./Voucher";
+import { useVoucher } from "../../context/VoucherContext";
+import { useAuth } from "../../context/AuthProvider";
+import { Voucher } from '../../model/order';
 
 function freeze() {
   document.documentElement.classList.add("is-clipped");
@@ -15,33 +18,15 @@ function unFreeze() {
   document.documentElement.classList.remove("is-clipped");
 }
 
-const fakeVoucher = [
-  {
-    code: "save30",
-    quantity: 12,
-    expiredAt: "2023-08-12 00:00:00",
-    discountAmount: {
-      value: 0.3,
-      minimumApplicable: 200,
-    },
-  },
-  {
-    code: "save20",
-    quantity: 12,
-    expiredAt: "2022-08-12 00:00:00",
-    discountAmount: {
-      value: 0.2,
-      minimumApplicable: 200,
-    },
-  },
-];
-
 const CartModal = () => {
   const { totalItems, totalPrice } = useCart();
   const { isOpen, setOpen } = useToggleModal();
   const scrollRef = useRef<HTMLDivElement>(null);
   const searchNavigate = useSearchNavigate();
   const navigate = useNavigate();
+  const { voucher, listVoucher } = useVoucher();
+  const { token } = useAuth();
+
   //   const [storedValue, setValue] = useLocalStorage("cart", false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const scrollToBottom = () => {
@@ -54,6 +39,13 @@ const CartModal = () => {
       }, 100);
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      listVoucher?.(token || "");
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   useEffect(() => {
     const rootContainer = document.querySelector("html");
@@ -69,13 +61,16 @@ const CartModal = () => {
     navigate("/checkout");
   };
 
-  // const scrollToTop = () => {
-  //   if (scrollRef?.current) {
-  //     scrollRef?.current.scrollTo({
-  //       top: 0,
-  //     });
-  //   }
-  // };
+  const listVouchers = useMemo(() => {
+    // eslint-disable-next-line array-callback-return
+    const list = voucher?.map((item) => {
+      console.log(item?.minimumApplicablePrice <= totalPrice);
+      if (item?.minimumApplicablePrice <= totalPrice) {
+        return item;
+      }
+    });
+    return list;
+  }, [voucher, totalPrice]);
 
   useEffect(() => {
     if (isOpen) {
@@ -85,6 +80,8 @@ const CartModal = () => {
       unFreeze();
     }
   }, [isOpen]);
+
+  console.log(listVouchers);
 
   return (
     <>
@@ -109,9 +106,9 @@ const CartModal = () => {
               <section className="modal-card-body">
                 <div className="scrollable-content" ref={scrollRef}>
                   <Variants />
-                  {fakeVoucher.map((item, index) => (
+                  {listVouchers?.map((item, index) => (
                     <VoucherCard
-                      {...item}
+                      {...item as Voucher}
                       index={index}
                       key={`voucher-${index}`}
                       // voucherSyncedProps={getVoucherSyncedProps()}

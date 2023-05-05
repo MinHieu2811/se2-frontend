@@ -13,7 +13,7 @@ const VoucherCard: React.FC<VoucherCardProps> = ({
   code,
   quantity,
   expiredAt,
-  discountAmount,
+  value,
   index,
   voucherSyncedProps,
 }) => {
@@ -48,7 +48,7 @@ const VoucherCard: React.FC<VoucherCardProps> = ({
     }
     handleVoucher?.({
       code: code,
-      discountAmount: discountAmount.value,
+      discountAmount: value,
       expiredAt: expiredAt,
     });
   };
@@ -66,8 +66,8 @@ const VoucherCard: React.FC<VoucherCardProps> = ({
       style={{ bottom: `${295 + index * 50}px` }}
     >
       <div className="voucher-wrapper__content">
-        Apply <span>{code.toUpperCase()}</span> for saving{" "}
-        {discountAmount.value * 100}%
+        Apply <span>#{code.substring(0, 5).toUpperCase()}</span> for saving{" "}
+        {value * 100}%
       </div>
       {voucher?.code === code ? (
         <div

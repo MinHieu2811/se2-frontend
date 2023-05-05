@@ -51,6 +51,8 @@ const initialState: DetailedObject<string | number> = {
   page: 1,
 };
 
+const PRODUCT_PER_PAGE = 9
+
 const Category = () => {
   const [filterObj, setFilterObj] = useState<DetailedObject<string | number>>();
   const navigate = useNavigate();
@@ -58,6 +60,7 @@ const Category = () => {
   const [productList, setProductList] = useState<ProductModel[]>([])
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
+  const [totalPage, setTotalPage] = useState(0)
 
   function onPropertyChanged(property: string, name: string) {
     setFilterObj({
@@ -138,6 +141,7 @@ const Category = () => {
           .then((res) => res?.data)
           .then((res) => {
             const list = res?.data
+            setTotalPage(Math.ceil(list?.length/PRODUCT_PER_PAGE))
             setProductList(list)
           })
           .finally(() => setLoading(false))
@@ -231,7 +235,7 @@ const Category = () => {
             </div>
             <Paginate
               currentPage={Number(filterObj?.page)}
-              totalPage={5}
+              totalPage={totalPage}
               isAdmin={false}
             />
           </div>

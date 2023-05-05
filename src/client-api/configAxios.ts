@@ -17,7 +17,7 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (req: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("access_token") || "";
+    // const token = localStorage.getItem("access_token") || "";
 
     if (req?.url?.includes("login") || req?.url?.includes("register")) {
       if (req?.data?.email === "superadmin@gmail.com" && req?.data?.password === "1234") {
@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
       }
     }
 
-    if (token) req.headers.Authorization = `Bearer ${token}`;
+    // if (token) req.headers.Authorization = `Bearer ${token}`;
     req.headers["Content-Type"] = "application/json";
     return req;
   },
