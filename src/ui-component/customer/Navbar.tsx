@@ -19,9 +19,16 @@ const initialState: DetailedObject<string> = {
 
 const Navbar = () => {
   const headerRef = useRef<HTMLDivElement>(null);
-  const { token, onLogout, userProfile } = useAuth()
+  const { token, onLogout } = useAuth()
   const [filterObj, setFilterObj] = useState<DetailedObject<string>>();
   const { setOpenModal } = useToggleAuthModal()
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    if(localStorage?.getItem('isAdmin')) {
+      setIsAdmin(JSON.parse(localStorage?.getItem('isAdmin') || ''))
+    }
+  }, [])
 
   const searchNavigate = useSearchNavigate();
   const location = useLocation();
@@ -162,7 +169,7 @@ const Navbar = () => {
                   <Link to="/profile">Profile</Link>
                 </div>
                 <>
-                  {userProfile ? (
+                  {isAdmin ? (
                     <>
                       <div className="signin_box_container_item">
                         <Link to="/admin/home">Dashboard</Link>
