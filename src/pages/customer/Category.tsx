@@ -137,8 +137,7 @@ const Category = () => {
           })
           .then((res) => res?.data)
           .then((res) => {
-            const list = res?.data?.slice(1)
-            console.log(list);
+            const list = res?.data
             setProductList(list)
           })
           .finally(() => setLoading(false))

@@ -20,7 +20,7 @@ axiosInstance.interceptors.request.use(
     const token = localStorage.getItem("access_token") || "";
 
     if (req?.url?.includes("login") || req?.url?.includes("register")) {
-      if (req?.data?.email === "superadmin@gmail.com" && req?.data?.password === "admin") {
+      if (req?.data?.email === "superadmin@gmail.com" && req?.data?.password === "1234") {
         localStorage?.setItem("isAdmin", JSON.stringify(true));
       }
     }
