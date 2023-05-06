@@ -1,107 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Form, InputGroup, Table } from "react-bootstrap";
-import axios from "axios";
-import { axiosInstance } from "../../../client-api";
-import { useToastContext } from "../../../ui-component/toast/ToastContext";
-import Loading from "../../../ui-component/shared/Loading";
 import { AiOutlineEdit, AiFillDelete } from "react-icons/ai";
-import { ResponseData } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
 import AdminPagination from "../AdminPagination";
+import { useNavigate } from "react-router";
+import { useVoucher } from "../../../context/VoucherContext";
 
-const fakeData = [
-  {
-    _id: "1",
-    code: "String",
-    decrease_amount: "10%",
-    quantity: 21
-  },
-  {
-    _id: "2",
-    code: "String",
-    decrease_amount: "50%",
-    quantity: 21
-  },
-  {
-    _id: "3",
-    code: "String",
-    decrease_amount: "25%",
-    quantity: 21
-  },
-  {
-    _id: "4",
-    code: "String",
-    decrease_amount: "45%",
-    quantity: 21
-  },
-  {
-    _id: "5",
-    code: "String",
-    decrease_amount: "22%",
-    quantity: 21
-  },
-
-]
 
 const VoucherList = () => {
-  const itemsPerPage = 2;
+  const itemsPerPage = 3;
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [productData, setProductData] = useState<ResponseData>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const { toastDispatch } = useToastContext();
+  const { voucher } = useVoucher();
+  const navigate = useNavigate();
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-  useEffect(() => {
-    const cancelToken = axios.CancelToken.source();
-
-    const fetchProductList = async () => {
-      setLoading(true);
-      await axiosInstance
-        .get("/products/get-all?page=1&skip=0&take=30", {
-          cancelToken: cancelToken.token,
-        })
-        .then((res: any) => {
-          toastDispatch({
-            type: "REMOVE_ALL_AND_ADD",
-            payload: {
-              type: "is-success",
-              content: res.data.msg,
-            },
-          });
-          setLoading(false);
-          setProductData(res.data);
-        });
-    };
-    fetchProductList();
-
-    return () => {
-      cancelToken.cancel();
-    };
-  }, [toastDispatch]);
-  const generateCateGrid = (products: any[], currentPage: number, productsPerPage: number) => {
+  const generateCateGrid = (
+    products: any[],
+    currentPage: number,
+    productsPerPage: number
+  ) => {
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
-    
     return (
       <Table striped="column" bordered hover>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Voucher Code</th>
-              <th>Voucher Decrease Amount</th>
-              <th>Voucher Quantity</th>
-              <th>Edit/Delete</th>
-            </tr>
-          </thead>
-          {fakeData.length ? fakeData.slice(startIndex, endIndex).map((item) => (
-            <tr key={item?._id}>
-              <td>{item?._id}</td>
-              <td>{item?.code}</td>
-              <td>{item?.decrease_amount}</td>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Voucher Code</th>
+            <th>Voucher Decrease Amount</th>
+            <th>Voucher Quantity</th>
+            <th>Voucher Expired</th>
+            <th>Edit/Delete</th>
+          </tr>
+        </thead>
+        {voucher?.length ? (
+          voucher.slice(startIndex, endIndex).map((item) => (
+            <tr key={item?.code}>
+              <td>{item?.code.substring(0, 5)}</td>
+              <td>{item?.code.substring(0, 5)}</td>
+              <td>{item?.value}</td>
               <td>{item?.quantity}</td>
+              <td>{item?.expiredAt}</td>
+
               <td className="d-flex justify-center">
-                <Button href={`/admin/products/edit/${item?._id}`} style={{marginRight: "5px"}}>
+                <Button
+                  href={`/admin/products/edit/${item?.code}`}
+                  style={{ marginRight: "5px" }}
+                >
                   <AiOutlineEdit />
                 </Button>
                 <Button>
@@ -109,10 +55,11 @@ const VoucherList = () => {
                 </Button>
               </td>
             </tr>
-          )) : (
-            <></>
-          )}
-        </Table>
+          ))
+        ) : (
+          <></>
+        )}
+      </Table>
     );
   };
   return (
@@ -120,19 +67,24 @@ const VoucherList = () => {
       <div className="w-100">
         {/* {loading && <Loading />} */}
         <div className="list-header d-flex">
-          <h1 style={{flex: 1}}>All Voucher</h1>
-          <InputGroup style={{flex: 2, margin: "0px 20px"}}>
-            <Form.Control type="text" placeholder="Keyword"/>
+          <h1 style={{ flex: 1 }}>All Voucher</h1>
+          <InputGroup style={{ flex: 2, margin: "0px 20px" }}>
+            <Form.Control type="text" placeholder="Keyword" />
           </InputGroup>
-          <Button style={{ flex: 1}}>Create New Voucher</Button>
+          <Button
+            style={{ flex: 1 }}
+            onClick={() => navigate("/admin/voucher-discount/create-voucher")}
+          >
+            Create New Voucher
+          </Button>
         </div>
-        {generateCateGrid(fakeData,currentPage,itemsPerPage)}
-        <div className="pagination-wrapper" style={{margin: "20px auto"}}>
-        <AdminPagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(fakeData.length / itemsPerPage)}
-          onPageChange={handlePageChange}
-        />
+        {generateCateGrid(voucher, currentPage, itemsPerPage)}
+        <div className="pagination-wrapper" style={{ margin: "20px auto" }}>
+          <AdminPagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(voucher.length / itemsPerPage)}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
     </Layout>
