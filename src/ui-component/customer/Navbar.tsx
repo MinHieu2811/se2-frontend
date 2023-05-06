@@ -165,9 +165,6 @@ const Navbar = () => {
           <div className="signin_box" ref={userMenuRef}>
             {token ? (
               <div className="signin_box_container">
-                <div className="signin_box_container_item">
-                  <Link to="/profile">Profile</Link>
-                </div>
                 <>
                   {isAdmin ? (
                     <>
