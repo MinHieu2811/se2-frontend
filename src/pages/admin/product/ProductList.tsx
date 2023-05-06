@@ -33,13 +33,6 @@ const ProductList = () => {
           setProductData(res.data?.data);
         })
         .catch(() => {
-          toastDispatch({
-            type: REMOVE_ALL_AND_ADD,
-            payload: {
-              type: "is-danger",
-              content: "Something went wrong!",
-            },
-          });
         })
         .finally(() => {
           setLoading(false);
@@ -104,7 +97,7 @@ const ProductList = () => {
         <div className="list-header d-flex">
           <h1 style={{ flex: 1 }}>All Products</h1>
           <InputGroup style={{ flex: 3, margin: "0px 20px" }}>
-            <Form.Control type="text" placeholder="Keyword" />
+            {/* <Form.Control type="text" placeholder="Keyword" /> */}
           </InputGroup>
           <Button style={{ flex: 1 }}>Create New Product</Button>
         </div>

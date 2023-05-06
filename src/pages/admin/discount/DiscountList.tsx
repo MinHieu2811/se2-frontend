@@ -129,7 +129,7 @@ const DiscountList = () => {
         <div className="list-header d-flex">
           <h1 style={{flex: 1}}>All Discount</h1>
           <InputGroup style={{flex: 2, margin: "0px 20px"}}>
-            <Form.Control type="text" placeholder="Keyword"/>
+            {/* <Form.Control type="text" placeholder="Keyword"/> */}
           </InputGroup>
           <Button style={{ flex: 0.5}}>Create New Discount</Button>
         </div>

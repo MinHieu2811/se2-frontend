@@ -172,7 +172,7 @@ const Navbar = () => {
                   {isAdmin ? (
                     <>
                       <div className="signin_box_container_item">
-                        <Link to="/admin/home">Dashboard</Link>
+                        <Link to="/admin/products/all-product">Dashboard</Link>
                       </div>
                       <div className="signin_box_container_item">
                         <Link to="/admin/voucher-discount/all-voucher">Vouchers</Link>
