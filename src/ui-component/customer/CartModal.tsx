@@ -63,13 +63,17 @@ const CartModal = () => {
 
   const listVouchers = useMemo(() => {
     // eslint-disable-next-line array-callback-return
-    const list = voucher?.map((item) => {
-      console.log(item?.minimumApplicablePrice <= totalPrice);
+    let lists: Voucher[] = []
+    voucher?.forEach((item) => {
       if (item?.minimumApplicablePrice <= totalPrice) {
-        return item;
+        console.log('run up');
+        lists = [...lists, item];
+      } else {
+        console.log('run down');
+        lists = [...lists]
       }
     });
-    return list;
+    return lists;
   }, [voucher, totalPrice]);
 
   useEffect(() => {
@@ -80,7 +84,6 @@ const CartModal = () => {
       unFreeze();
     }
   }, [isOpen]);
-
   console.log(listVouchers);
 
   return (

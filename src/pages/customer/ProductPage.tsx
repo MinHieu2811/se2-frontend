@@ -38,7 +38,7 @@ function ProductPage() {
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
     setLoading(true);
-  
+
     Promise.allSettled([
       axiosInstance.get(`/product/${params?.productId}`, {
         cancelToken: cancelToken.token,
@@ -49,39 +49,40 @@ function ProductPage() {
     ])
       .then((results) => {
         const [productResult, discountResult] = results;
-  
+
         if (productResult.status === "rejected") {
           throw productResult.reason;
-        }else{
-        const productData = productResult?.value?.data;
-        setProductInfo(productData);
+        } else {
+          const productData = productResult?.value?.data;
+          setProductInfo(productData);
         }
         if (discountResult.status === "fulfilled") {
           const discountData = discountResult?.value?.data;
-          if(discountData?.data[0]?.discountAmount){
+          if (discountData?.data[0]?.discountAmount) {
             setHaveDiscount(true);
           }
-          const  discountAmount = discountData?.data[0]?.discountAmount;
-          const  expiryDate  = discountData?.data[0]?.expiryDate;
+          const discountAmount = discountData?.data[0]?.discountAmount;
+          const expiryDate = discountData?.data[0]?.expiryDate;
           const today = new Date();
           const discountExpiryDate = new Date(expiryDate);
           const productData = productResult?.value?.data;
-          setPrevPrice(productData?.data?.price)
+          setPrevPrice(productData?.data?.price);
           if (today < discountExpiryDate) {
-            const discountedPrice = productData?.data?.price * (1-discountAmount);
+            const discountedPrice =
+              productData?.data?.price * (1 - discountAmount);
             console.log(discountedPrice);
             setProductInfo({
               success: productData.success,
               message: productData.message,
               data: {
                 ...productData.data,
-                price: discountedPrice
-              }
+                price: discountedPrice.toFixed(2),
+              },
             });
             return () => {
               cancelToken.cancel();
             };
-          }else{
+          } else {
             setHaveDiscount(false);
           }
         }
@@ -97,19 +98,15 @@ function ProductPage() {
         });
       })
       .finally(() => setLoading(false));
-      
-  
+
     return () => {
       cancelToken.cancel();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params?.productId]);
- 
-  
 
   const addToCart = () => {
-    if (productInfo?.data)
-      addToCartHandler?.(productInfo?.data, quantity);
+    if (productInfo?.data) addToCartHandler?.(productInfo?.data, quantity);
   };
 
   const increase = useCallback(() => {
@@ -246,20 +243,23 @@ function ProductPage() {
               <span className="branch">{productInfo?.data?.brand}</span>
             </div>
             <div className="product-info-wrapper_info_price">
-            {
-              haveDiscount ?
+              {haveDiscount ? (
                 <div>
                   <span className="price">Price: </span>
-                  <span className="original-price">$<del>{prevPrice}</del></span>
+                  <span className="original-price">
+                    $<del>{prevPrice}</del>
+                  </span>
                   <span> </span>
-                  <span className="discounted-price">{productInfo?.data?.price}</span>
+                  <span className="discounted-price">
+                    ${productInfo?.data?.price}
+                  </span>
                 </div>
-              :
+              ) : (
                 <div>
                   <span className="price">Price: </span>
                   <span>${productInfo?.data?.price}</span>
                 </div>
-            }
+              )}
             </div>
             <div className="product-info-wrapper_info_quantity">
               <div className="product-info-wrapper_info_quantity_form">
