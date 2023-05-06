@@ -34,7 +34,7 @@ export default function Banner() {
               ipsum minima error exercitationem, nostrum excepturi!
             </p>
             <button className="banner-wrapper_right_info_btn">
-              <Link to="/category">Shop Now</Link>
+              <Link to="/category?brand=&page=1&sorting=&keyword=">Shop Now</Link>
             </button>
           </div>
           <div className="banner-wrapper_right_img">

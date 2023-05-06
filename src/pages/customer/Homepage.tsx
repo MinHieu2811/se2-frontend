@@ -58,21 +58,14 @@ function Homepage() {
             setAllProducts(res.data?.data);
           });
       } catch (error: any) {
-        toastDispatch({
-          type: REMOVE_ALL_AND_ADD,
-          payload: {
-            type: "is-warning",
-            content: 'Something went wrong',
-            timeout: 50000
-          },
-        });
+        console.log(error);
       }
     })();
 
     return () => {
       cancelToken.cancel();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -108,7 +101,10 @@ function Homepage() {
         </>
 
         <>
-          <SectionProduct title="New Arrivals" products={products} />
+          <SectionProduct
+            title="New Arrivals"
+            products={allProducts?.slice(4, 10)}
+          />
         </>
 
         <>
@@ -116,7 +112,10 @@ function Homepage() {
         </>
 
         <>
-          <SectionProduct title="Best Sellers" products={products} />
+          <SectionProduct
+            title="Best Sellers"
+            products={allProducts?.slice(0, 6)}
+          />
         </>
       </>
     </Layout>

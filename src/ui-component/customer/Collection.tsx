@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const content = [
     {
@@ -36,7 +37,7 @@ function Collection() {
               <h1>{item.title}</h1>
             </div>
             <div className="collection-wrapper_items_text_btn">
-              <button className="btn">Shop now</button>
+              <button className="btn"><Link to="/category?brand=&page=1&sorting=&keyword=">Shop now</Link></button>
             </div>
           </div>
         </div>
