@@ -19,10 +19,12 @@ const initialState: DetailedObject<string> = {
 
 const Navbar = () => {
   const headerRef = useRef<HTMLDivElement>(null);
-  const { token, onLogout } = useAuth()
+  const { token, onLogout, admin } = useAuth()
   const [filterObj, setFilterObj] = useState<DetailedObject<string>>();
   const { setOpenModal } = useToggleAuthModal()
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(localStorage?.getItem('isAdmin') || false)
+  console.log(isAdmin, admin);
+
 
   useEffect(() => {
     if(localStorage?.getItem('isAdmin')) {

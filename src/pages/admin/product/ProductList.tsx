@@ -33,13 +33,13 @@ const ProductList = () => {
           setProductData(res.data?.data);
         })
         .catch(() => {
-          toastDispatch({
-            type: REMOVE_ALL_AND_ADD,
-            payload: {
-              type: "is-danger",
-              content: "Something went wrong!",
-            },
-          });
+          // toastDispatch({
+          //   type: REMOVE_ALL_AND_ADD,
+          //   payload: {
+          //     type: "is-danger",
+          //     content: "Something went wrong!",
+          //   },
+          // });
         })
         .finally(() => {
           setLoading(false);
