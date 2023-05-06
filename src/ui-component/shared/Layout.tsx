@@ -20,7 +20,7 @@ const Layout = ({ children }: Props) => {
         </div>
         <div className="content" style={{ width: "100%" }}>
           <MemoizedNavbar />
-          <div className="main-panel">
+          <div className="main-panel" style={{background: 'black'}}>
             <div className="content-wrapper"  style={{ width: "100%" }}>
               {children}
             </div>

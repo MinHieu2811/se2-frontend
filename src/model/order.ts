@@ -46,7 +46,9 @@ export interface Voucher {
   code: string;
   quantity: number;
   expiredAt: string;
-  discountAmount: DiscountAmount;
+  value: number;
+  minimumApplicablePrice: number;
+  visibility?: "public" | "protected"
 }
 
 export interface DiscountAmount {
