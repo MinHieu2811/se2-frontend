@@ -9,6 +9,7 @@ import { ProductModel } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
 import AdminPagination from "../AdminPagination";
 import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
+import { Link } from "react-router-dom";
 
 const ProductList = () => {
   const itemsPerPage = 5;
@@ -79,11 +80,10 @@ const ProductList = () => {
               <td>{item?.price}</td>
               <td>{item?.amount}</td>
               <td className="d-flex justify-center">
-                <Button
-                  href={`/admin/products/edit/${item?.id}`}
-                  style={{ marginRight: "5px" }}
-                >
-                  <AiOutlineEdit />
+                <Button style={{ marginRight: "5px" }}>
+                  <Link to={`/admin/products/edit/${item?.id}`}>
+                    <AiOutlineEdit />
+                  </Link>
                 </Button>
                 <Button>
                   <AiFillDelete />

@@ -4,46 +4,40 @@ import Layout from "../../../ui-component/shared/Layout";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
 import axios from "axios";
 import { axiosInstance } from "../../../client-api";
-import { ResponseType } from "../../../model/utils";
-import { ProductModel } from "../../../model/product";
 import Helmet from "../../../ui-component/shared/Helmet";
-import Loading from "../../../ui-component/shared/Loading";
 import ProductForm from "../../../ui-component/form/ProductForm";
 
 const EditProduct = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [, setLoading] = useState<boolean>(false);
   const router = useLocation();
-  const [productData, setProductData] = useState<ResponseType<ProductModel>>();
+  const [productData, setProductData] = useState();
   const { toastDispatch } = useToastContext();
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
     const productId = router.pathname.split("/");
 
-    ;(async () => {
+    (async () => {
       setLoading(true);
       await axiosInstance
-        .get(`/products/${productId[productId.length - 1]}`, {
+        .get(`/product/${productId[productId.length - 1]}`, {
           cancelToken: cancelToken.token,
         })
         .then((res) => {
-          toastDispatch({
-            type: "REMOVE_ALL_AND_ADD",
-            payload: {
-              type: "is-success",
-              content: res.data.msg,
-            },
-          });
+          setProductData(res?.data?.data);
+        })
+        .catch(() => {
+          console.log("Something went wrong");
+        })
+        .finally(() => {
           setLoading(false);
-          setProductData(res.data);
         });
-    })()
+    })();
 
     return () => {
       cancelToken.cancel();
     };
   }, [toastDispatch, router.pathname]);
 
-  async function handleSubmit() {}
 
   return (
     <Layout>
@@ -51,10 +45,11 @@ const EditProduct = () => {
         {/* {loading && <Loading isFullWidth />} */}
         <Helmet title="Edit" />
         <div className="form-wrapper">
-          <ProductForm
-            initialData={productData?.data}
-            handleSubmit={handleSubmit}
-          />
+          {productData && (
+            <ProductForm
+              initialData={productData}
+            />
+          )}
         </div>
       </>
     </Layout>
