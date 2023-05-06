@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, InputGroup, Table } from "react-bootstrap";
+import { Button, InputGroup, Table } from "react-bootstrap";
 import axios from "axios";
 import { axiosInstance } from "../../../client-api";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
@@ -8,7 +8,6 @@ import { AiOutlineEdit, AiFillDelete } from "react-icons/ai";
 import { ProductModel } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
 import AdminPagination from "../AdminPagination";
-import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
 import { Link } from "react-router-dom";
 
 const ProductList = () => {
@@ -33,6 +32,13 @@ const ProductList = () => {
           setProductData(res.data?.data);
         })
         .catch(() => {
+          // toastDispatch({
+          //   type: REMOVE_ALL_AND_ADD,
+          //   payload: {
+          //     type: "is-danger",
+          //     content: "Something went wrong!",
+          //   },
+          // });
         })
         .finally(() => {
           setLoading(false);

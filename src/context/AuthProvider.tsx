@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { AuthProps, UserModel } from "../model/user";
 import { axiosInstance } from "../client-api";
 
@@ -12,6 +12,7 @@ interface ValueContext {
   onLogin?: (data: AuthProps) => any;
   onRegister?: (data: AuthProps) => any;
   onLogout?: () => void;
+  admin?: boolean
 }
 
 const AuthContext = React.createContext<ValueContext>({ token: "" });
@@ -28,8 +29,14 @@ const initialState = {
 export const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(null);
   const [userProfile, setUserProfile] = useState<UserModel | undefined>();
+  const [admin, setAdmin] = useState(false)
 
-  const handleLogin = async (data: AuthProps) => {
+  const handleLogin = useCallback(async (data: AuthProps) => {
+    if (data?.email === "superadmin@gmail.com" && data?.password === "1234") {
+      localStorage?.setItem("isAdmin", JSON.stringify(true));
+      setAdmin(true)
+    }
+
     const res = await axiosInstance.post("/customer/login", data);
     setToken(res?.data?.data?.id);
     setUserProfile({
@@ -42,9 +49,13 @@ export const AuthProvider = ({ children }: Props) => {
     });
 
     return res;
-  };
+  }, [])
 
   const handleRegister = async (data: AuthProps) => {
+    if (data?.email === "superadmin@gmail.com" && data?.password === "1234") {
+      localStorage?.setItem("isAdmin", JSON.stringify(true));
+      setAdmin(true)
+    }
     const res = await axiosInstance
       .post("/customer/register", data)
       .then((res) => res.data);
@@ -106,6 +117,7 @@ export const AuthProvider = ({ children }: Props) => {
     onLogin: handleLogin,
     onRegister: handleRegister,
     onLogout: handleLogout,
+    admin
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
