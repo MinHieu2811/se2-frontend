@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, Form, InputGroup, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import axios from "axios";
 import { axiosInstance } from "../../../client-api";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
@@ -83,8 +83,6 @@ const OrderList = () => {
     currentPage: number,
     productsPerPage: number
   ) => {
-    const startIndex = (currentPage - 1) * productsPerPage;
-    const endIndex = startIndex + productsPerPage;
 
     return (
       <Table bordered size="xl">
@@ -135,10 +133,6 @@ const OrderList = () => {
         {loading && <Loading />}
         <div className="list-header d-flex">
           <h1 style={{ flex: 1 }}>All Products</h1>
-          <InputGroup style={{ flex: 3, margin: "0px 20px" }}>
-            <Form.Control type="text" placeholder="Keyword" />
-          </InputGroup>
-          <Button style={{ flex: 1 }}>Create New Product</Button>
         </div>
         {generateCateGrid(orderList, currentPage, itemsPerPage)}
         <div className="pagination-wrapper" style={{ margin: "20px auto" }}>

@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Helmet from "../../ui-component/shared/Helmet";
-// import { ProductModel } from "../../model/product";
-// import { useToastContext } from "../../ui-component/toast/ToastContext";
-// import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
-// import { axiosInstance } from "../../client-api";
-// import axios from "axios";
+import { useToastContext } from "../../ui-component/toast/ToastContext";
+import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
+import { axiosInstance } from "../../client-api";
+import axios from "axios";
 import Loading from "../../ui-component/shared/Loading";
 import products from "../../fake-data";
 import HeroSlider from "../../ui-component/customer/HeroSlider";
@@ -41,46 +40,40 @@ const policy: PolicyCard = [
 ];
 
 function Homepage() {
-  // const [allProducts, setAllProducts] = useState<ProductModel[]>([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
-  // const { toastDispatch } = useToastContext();
-  // useEffect(() => {
-  //   const cancelToken = axios.CancelToken.source();
-  //   setLoading(true);
-  //   (async () => {
-  //     try {
-  //       setLoading(true);
-  //       await axiosInstance
-  //         .get("/products/get-all?page=1&skip=0&take=30", {
-  //           cancelToken: cancelToken.token,
-  //         })
-  //         .then((res) => {
-  //           toastDispatch({
-  //             type: "REMOVE_ALL_AND_ADD",
-  //             payload: {
-  //               type: "is-success",
-  //               content: res.data.msg,
-  //             },
-  //           });
-  //           setLoading(false);
-  //           setAllProducts(res.data);
-  //         });
-  //     } catch (error: any) {
-  //       toastDispatch({
-  //         type: REMOVE_ALL_AND_ADD,
-  //         payload: {
-  //           type: "is-warning",
-  //           content: error.msg,
-  //         },
-  //       });
-  //     }
-  //   })();
+  const { toastDispatch } = useToastContext();
+  useEffect(() => {
+    const cancelToken = axios.CancelToken.source();
+    setLoading(true);
+    (async () => {
+      try {
+        setLoading(true);
+        await axiosInstance
+          .get("/product?brand=&page=1&sorting=&keyword=", {
+            cancelToken: cancelToken.token,
+          })
+          .then((res) => {
+            setLoading(false);
+            setAllProducts(res.data?.data);
+          });
+      } catch (error: any) {
+        toastDispatch({
+          type: REMOVE_ALL_AND_ADD,
+          payload: {
+            type: "is-warning",
+            content: 'Something went wrong',
+            timeout: 50000
+          },
+        });
+      }
+    })();
 
-  //   return () => {
-  //     cancelToken.cancel();
-  //   };
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+    return () => {
+      cancelToken.cancel();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Layout>
@@ -89,7 +82,7 @@ function Homepage() {
         {loading && <Loading />}
 
         <>
-          <HeroSlider productList={products} />
+          <HeroSlider productList={allProducts} />
         </>
 
         <div style={{ margin: "50px 50px" }}>
