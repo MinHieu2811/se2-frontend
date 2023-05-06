@@ -11,7 +11,7 @@ const MemoizedNavbar = React.memo(() => <Navbar />)
 
 const Layout = ({ children }: Props) => {
   return (
-    <>
+    <div className="admin">
       <div className="d-flex">
         <div style={{ position: "relative", width: "275px" }}>
           {/* <div className="container-scroller"> */}
@@ -28,7 +28,7 @@ const Layout = ({ children }: Props) => {
           <Footer />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

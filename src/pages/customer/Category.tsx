@@ -51,16 +51,16 @@ const initialState: DetailedObject<string | number> = {
   page: 1,
 };
 
-const PRODUCT_PER_PAGE = 9
+const PRODUCT_PER_PAGE = 9;
 
 const Category = () => {
   const [filterObj, setFilterObj] = useState<DetailedObject<string | number>>();
   const navigate = useNavigate();
   const location = useLocation();
-  const [productList, setProductList] = useState<ProductModel[]>([])
+  const [productList, setProductList] = useState<ProductModel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
-  const [totalPage, setTotalPage] = useState(0)
+  const [, setTotalPage] = useState(0);
 
   function onPropertyChanged(property: string, name: string) {
     setFilterObj({
@@ -221,12 +221,14 @@ const Category = () => {
             <div className="product-list">
               <Grid col={3} mdCol={2} smCol={1} gap={20}>
                 <>
-                  {!loading ? productList?.map((item, index) => (
-                    <div key={index}>
-                      <ProductCard productInfo={item} />
-                    </div>
-                  )) : (
-                    <div style={{minHeight: "50vh"}}>
+                  {!loading ? (
+                    productList?.map((item, index) => (
+                      <div key={index}>
+                        <ProductCard productInfo={item} />
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{ minHeight: "50vh" }}>
                       <></>
                     </div>
                   )}
@@ -235,7 +237,7 @@ const Category = () => {
             </div>
             <Paginate
               currentPage={Number(filterObj?.page)}
-              totalPage={totalPage}
+              totalPage={2}
               isAdmin={false}
             />
           </div>

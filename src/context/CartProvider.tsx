@@ -125,6 +125,9 @@ export const CartProvider = ({ children }: Props) => {
       setCart([]);
       localStorage?.setItem("cart", JSON.stringify([]));
     }
+    if(voucher?.code) {
+      setVoucher(undefined)
+    }
   };
 
   useEffect(() => {

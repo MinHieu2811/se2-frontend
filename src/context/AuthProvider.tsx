@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }: Props) => {
     if (localStorage.getItem("access_token")) {
       localStorage.setItem("access_token", "");
       localStorage.setItem("profile", "");
+      localStorage.setItem("isAdmin", "");
       setToken("");
       window.location.href = "/";
       // window.location.replace("/")

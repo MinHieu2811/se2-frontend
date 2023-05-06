@@ -21,7 +21,6 @@ import Checkout from "./pages/customer/Checkout";
 import MyOrders from "./pages/customer/MyOrders";
 import OrderDetail from "./pages/customer/OrderDetail";
 import OrderList from "./pages/admin/order/AllOrder";
-import AdminOrderDetail from "./pages/admin/order/OrderDetail";
 function App() {
   useEffect(() => {
     if (!localStorage.getItem("cart" || "")) {
@@ -59,14 +58,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <OrderList />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/order/:orderId"
-            element={
-              <ProtectedRoute>
-                <AdminOrderDetail />
               </ProtectedRoute>
             }
           />

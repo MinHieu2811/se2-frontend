@@ -4,16 +4,14 @@ import FilesUploader from "../shared/UploadFiles";
 import { Form } from "react-bootstrap";
 import { REMOVE_ALL_AND_ADD } from "../toast";
 import { useToastContext } from "../toast/ToastContext";
+import { axiosInstance } from "../../client-api";
 
 type Props = {
-  initialData?: ProductModel;
-  handleSubmit: () => Promise<void>;
+  initialData: ProductModel;
 };
 
-function ProductForm({ handleSubmit, initialData }: Props) {
-  const [productInfo, setProductInfo] = useState<ProductModel>(
-    initialData as ProductModel
-  );
+function ProductForm({ initialData }: Props) {
+  const [productInfo, setProductInfo] = useState(initialData);
   const [reviewImagesBlob, setReviewImagesBlob] = useState<File[]>([]);
   const { toastDispatch } = useToastContext();
 
@@ -45,91 +43,121 @@ function ProductForm({ handleSubmit, initialData }: Props) {
     });
   };
 
-  console.log(productInfo)
+  const handleSubmit = async () => {
+    let payload = {
+      name: productInfo?.name,
+      price: productInfo?.price,
+      description: productInfo?.description,
+      images: productInfo?.images,
+      brand: productInfo?.brand
+    }
+    await axiosInstance
+      ?.put(`/product/${productInfo?.id}`, payload)
+      .then((res) => {
+        if (res?.data?.success) {
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-success",
+              content: `Edited successfully!`,
+            },
+          });
+        }
+      })
+      .catch(() => {
+        toastDispatch({
+          type: REMOVE_ALL_AND_ADD,
+          payload: {
+            type: "is-danger",
+            content: `Something went wrong!`,
+          },
+        });
+      });
+  };
   return (
     <>
       {/* {!productInfo && <Loading />} */}
       <div className="card mt-5">
         <div className="card-body height-full">
-          <form>
-            <Form.Group className="mb-4 width-all">
-              <label htmlFor="ProductName">Product Name</label>
-              <Form.Control
-                type="text"
-                name="ProductName"
-                className="form-control"
-                id="ProductName"
-                placeholder="Product Name"
-                value={productInfo?.name}
-                onChange={handleChange}
+          <Form.Group className="mb-4 width-all">
+            <label htmlFor="name">Product Name</label>
+            <Form.Control
+              type="text"
+              name="name"
+              className="form-control"
+              id="ProductName"
+              placeholder="Product Name"
+              value={productInfo?.name}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-4 width-all">
+            <label htmlFor="description">Product Description</label>
+            <textarea
+              className="form-control text-area mr-2"
+              onChange={handleChange}
+              placeholder="Product Description"
+              style={{ width: "100%", resize: "vertical" }}
+              name="description"
+              value={productInfo?.description}
+              id="ProductDesc"
+            />
+          </Form.Group>
+          <Form.Group className="mb-4 width-all">
+            <label htmlFor="price">Product Price</label>
+            <Form.Control
+              type="text"
+              name="price"
+              className="form-control"
+              id="ProductPrice"
+              placeholder="Product Price"
+              value={productInfo?.price}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          {/* <Form.Group className="mb-4 width-all">
+            <label htmlFor="amount">Product Quantity</label>
+            <Form.Control
+              type="number"
+              name="amount"
+              className="form-control"
+              id="ProductQuantity"
+              placeholder="Product Quantity"
+              value={productInfo?.amount}
+              onChange={handleChange}
+            />
+          </Form.Group> */}
+          <div className={`image-container`}>
+            <div
+              className={`${
+                reviewImagesBlob?.length
+                  ? "after-upload-boarder"
+                  : "before-upload-boarder"
+              }`}
+            >
+              <FilesUploader
+                className="img-wrapper mb-4 width-all"
+                multiple={true}
+                allowedTypes="image/*"
+                onFilesChanged={(f) => onImageChanged(f)}
               />
-            </Form.Group>
-            <Form.Group className="mb-4 width-all">
-              <label htmlFor="ProductDesc">Product Description</label>
-              <textarea
-                className="form-control text-area mr-2"
-                onChange={handleChange}
-                placeholder="Product Description"
-                style={{ width: "100%", resize: "vertical" }}
-                name="ProductDesc"
-                value={productInfo?.description}
-                id="ProductDesc"
-              />
-            </Form.Group>
-            <Form.Group className="mb-4 width-all">
-              <label htmlFor="ProductPrice">Product Price</label>
-              <Form.Control
-                type="text"
-                name="ProductPrice"
-                className="form-control"
-                id="ProductPrice"
-                placeholder="Product Price"
-                value={productInfo?.price}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-4 width-all">
-              <label htmlFor="ProductQuantity">Product Quantity</label>
-              <Form.Control
-                type="number"
-                name="ProductQuantity"
-                className="form-control"
-                id="ProductQuantity"
-                placeholder="Product Quantity"
-                value={productInfo?.amount}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <div className={`image-container`}>
-              <div
-                className={`${
-                  reviewImagesBlob?.length
-                    ? "after-upload-boarder"
-                    : "before-upload-boarder"
-                }`}
-              >
-                <FilesUploader
-                  className="img-wrapper mb-4 width-all"
-                  multiple={true}
-                  allowedTypes="image/*"
-                  onFilesChanged={(f) => onImageChanged(f)}
-                />
-                {reviewImagesBlob?.length ? (
-                  reviewImagesBlob?.map((image, key) => (
-                    <img
-                      className="preview-image"
-                      src={URL.createObjectURL(image)}
-                      key={key}
-                      alt=""
-                    />
-                  ))
-                ) : (
-                  <></>
-                )}
-              </div>
+              {reviewImagesBlob?.length ? (
+                reviewImagesBlob?.map((image, key) => (
+                  <img
+                    className="preview-image"
+                    src={URL.createObjectURL(image)}
+                    key={key}
+                    alt=""
+                  />
+                ))
+              ) : (
+                <></>
+              )}
             </div>
-            <button className="btn btn-primary mr-2 mt-4">Submit</button>
-          </form>
+          </div>
+          <button className="btn btn-primary mr-2 mt-4" onClick={handleSubmit}>
+            Submit
+          </button>
         </div>
       </div>
     </>
