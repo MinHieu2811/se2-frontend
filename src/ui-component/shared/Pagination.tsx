@@ -102,7 +102,24 @@ const Paginate = ({
       </Pagination>
     </div>
   ) : (
-    <></>
+    <div className={`paginate-wrapper ${!isAdmin ? "category" : ""}`}>
+      <Pagination>
+        <Pagination.Item
+          className={`paginate-wrapper_link`}
+          onClick={() =>
+            searchNavigate({
+              pathName: "/category",
+              queryObj: {
+                ...filterObj,
+                page: `${currentPage - 1 <= 0 ? 1 : currentPage - 1}`,
+              },
+            })
+          }
+        >
+          Back
+        </Pagination.Item>
+      </Pagination>
+    </div>
   );
 };
 
