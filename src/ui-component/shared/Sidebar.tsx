@@ -112,15 +112,15 @@ const Sidebar = () => {
           <div className="profile-desc">
             <div className="profile-pic">
               <div className="count-indicator">
-                <div className="avatar">H</div>
+                <div className="avatar">A</div>
                 <span className="count bg-success"></span>
               </div>
               <div className="profile-name">
-                <h5 className="mb-0 font-weight-normal">Henry Klein</h5>
-                <span>Gold Member</span>
+                <h5 className="mb-0 font-weight-normal">Super Admin</h5>
+                <span>Manage website</span>
               </div>
             </div>
-            <Dropdown>
+            {/* <Dropdown>
               <Dropdown.Toggle as="a" className="cursor-pointer no-caret">
                 <GrMoreVertical />
               </Dropdown.Toggle>
@@ -176,7 +176,7 @@ const Sidebar = () => {
                   </div>
                 </a>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
           </div>
         </li>
         <li className="nav-item nav-category">
@@ -296,17 +296,6 @@ const Sidebar = () => {
                     to="/admin/order/all-order"
                   >
                     All Orders
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  {" "}
-                  <Link
-                    className={
-                      "nav-link"
-                    }
-                    to="/admin/orders/shipping"
-                  >
-                    Shipping
                   </Link>
                 </li>
               </ul>
@@ -518,7 +507,7 @@ const Sidebar = () => {
         <li className="nav-item nav-category">
           <span className="nav-link">More</span>
         </li> */}
-        <li
+        {/* <li
           className={
             "nav-item menu-items"
           }
@@ -564,7 +553,7 @@ const Sidebar = () => {
               </ul>
             </div>
           </Collapse>
-        </li>
+        </li> */}
         {/* <li className="nav-item menu-items">
           <a
             className="nav-link"

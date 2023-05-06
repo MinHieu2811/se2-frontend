@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, InputGroup, Table } from "react-bootstrap";
+import { Button, InputGroup, Table } from "react-bootstrap";
 import axios from "axios";
 import { axiosInstance } from "../../../client-api";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
@@ -8,7 +8,6 @@ import { AiOutlineEdit, AiFillDelete } from "react-icons/ai";
 import { ProductModel } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
 import AdminPagination from "../AdminPagination";
-import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
 import { Link } from "react-router-dom";
 
 const ProductList = () => {
@@ -104,7 +103,7 @@ const ProductList = () => {
         <div className="list-header d-flex">
           <h1 style={{ flex: 1 }}>All Products</h1>
           <InputGroup style={{ flex: 3, margin: "0px 20px" }}>
-            <Form.Control type="text" placeholder="Keyword" />
+            {/* <Form.Control type="text" placeholder="Keyword" /> */}
           </InputGroup>
           <Button style={{ flex: 1 }}>Create New Product</Button>
         </div>
