@@ -60,7 +60,7 @@ const Category = () => {
   const [productList, setProductList] = useState<ProductModel[]>([])
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
-  const [totalPage, setTotalPage] = useState(0)
+  const [, setTotalPage] = useState(0)
 
   function onPropertyChanged(property: string, name: string) {
     setFilterObj({
@@ -235,7 +235,7 @@ const Category = () => {
             </div>
             <Paginate
               currentPage={Number(filterObj?.page)}
-              totalPage={totalPage}
+              totalPage={2}
               isAdmin={false}
             />
           </div>

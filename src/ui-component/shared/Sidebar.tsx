@@ -293,7 +293,7 @@ const Sidebar = () => {
                     className={
                       "nav-link"
                     }
-                    to="/admin/orders/all-orders"
+                    to="/admin/order/all-order"
                   >
                     All Orders
                   </Link>

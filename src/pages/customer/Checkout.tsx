@@ -8,9 +8,10 @@ import { useSyncedState } from "../../hooks/useSyncedState";
 import { AddressErrors, CustomerAddress } from "../../model/address";
 import { initAddress } from "../../utils/initAddress";
 import { validateAddressField } from "../../utils/validateInput";
-import { Order, OrderStatus, VoucherOrder } from "../../model/order";
+import { VoucherOrder } from "../../model/order";
 import { axiosInstance } from "../../client-api";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../context/AuthProvider";
 // import VoucherCard from "../../ui-component/customer/Voucher";
 
 const genOrderToken = () => {
@@ -38,15 +39,16 @@ const genOrderToken = () => {
 //   },
 // ];
 
-let order: Order = {
+let order: any = {
   id: genOrderToken(),
 };
 function Checkout() {
-  const { cart, totalItems, totalPrice, clearCart, voucher } = useCart();
+  const { cart, totalPrice, clearCart, voucher } = useCart();
   const [addressErrors, setAddressErrors] = useSyncedState<AddressErrors>({});
   const [addressSyncedProps, , getAddressSyncedProp] =
     useSyncedState<CustomerAddress>(initAddress({}));
   const navigate = useNavigate();
+  const { token } = useAuth()
 
   const subtotal = useMemo(
     () =>
@@ -63,18 +65,25 @@ function Checkout() {
       expiredAt: "",
       discountAmount: 0,
     });
+  // order.cart = {
+  //   items: cart,
+  //   totalItems: totalItems,
+  //   totalPrice: totalPrice,
+  //   voucher: voucher || null,
+  // };
 
-  order.cart = {
-    items: cart,
-    totalItems: totalItems,
-    totalPrice: totalPrice,
-    voucher: voucher || null,
-  };
+  order.products = cart.map((item) => ({
+    id: item?.product?.id,
+    amount: item?.quantity
+  }))
+  order.voucherCode = voucher && voucher?.code
 
-  order.orderInfo = {
-    ...addressSyncedProps,
-    status: OrderStatus?.PENDING,
-  };
+  order.customerId = token || localStorage.getItem('access_token')
+  order.payment = "COD"
+  order.address = addressSyncedProps?.address
+  order.name = addressSyncedProps?.name
+  order.phone = addressSyncedProps?.phone
+  order.email = addressSyncedProps?.email
 
   useEffect(() => {
     if (localStorage.getItem("order")) {
@@ -116,17 +125,18 @@ function Checkout() {
   }, [voucherSyncedProps, totalPrice, voucher]);
 
   const submitOrder = async (paymentInfo?: any) => {
-    if (order.orderInfo && paymentInfo) {
-      order.orderInfo.paymentInfo = paymentInfo;
+    if (order && paymentInfo) {
+      // order.orderInfo.paymentInfo = paymentInfo;
+      order.payment = "PAYPAL"
     }
-    if (voucherSyncedProps?.code && order?.cart) {
-      order.cart.voucher = voucherSyncedProps;
-      order.cart.totalPrice =
-        totalPrice - totalPrice * voucherSyncedProps?.discountAmount;
-    }
-    debugger;
+    // if (voucherSyncedProps?.code && order?.cart) {
+    //   order.cart.voucher = voucherSyncedProps;
+    //   order.cart.totalPrice =
+    //     totalPrice - totalPrice * voucherSyncedProps?.discountAmount;
+    // }
+    localStorage.setItem("order", JSON.stringify(order))
     await axiosInstance
-      ?.post("http://localhost:5000/api/order", order)
+      ?.post("/order", order)
       ?.then(() => {
         clearCart?.();
         navigate("/");
@@ -187,7 +197,7 @@ function Checkout() {
                 Voucher Code{" "}
                 <span style={{ marginLeft: "5px" }}>
                   ({voucher?.code ? "#" : ""}
-                  {voucher?.code.toUpperCase()}
+                  {voucher?.code.toUpperCase().substring(0, 5)}
                 </span>
                 )
               </div>

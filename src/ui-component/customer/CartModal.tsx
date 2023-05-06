@@ -26,6 +26,7 @@ const CartModal = () => {
   const navigate = useNavigate();
   const { voucher, listVoucher } = useVoucher();
   const { token } = useAuth();
+  const {voucher: selectedVoucher} = useCart()
 
   //   const [storedValue, setValue] = useLocalStorage("cart", false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -64,13 +65,12 @@ const CartModal = () => {
   const listVouchers = useMemo(() => {
     // eslint-disable-next-line array-callback-return
     const list = voucher?.map((item) => {
-      console.log(item?.minimumApplicablePrice <= totalPrice);
-      if (item?.minimumApplicablePrice <= totalPrice) {
+      if (item?.minimumApplicablePrice <= totalPrice || item?.code === selectedVoucher?.code) {
         return item;
       }
-    });
+    }).filter((item) => item)
     return list;
-  }, [voucher, totalPrice]);
+  }, [voucher, totalPrice, selectedVoucher?.code]);
 
   useEffect(() => {
     if (isOpen) {
@@ -80,8 +80,6 @@ const CartModal = () => {
       unFreeze();
     }
   }, [isOpen]);
-
-  console.log(listVouchers);
 
   return (
     <>
