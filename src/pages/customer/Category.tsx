@@ -51,16 +51,16 @@ const initialState: DetailedObject<string | number> = {
   page: 1,
 };
 
-const PRODUCT_PER_PAGE = 9
+const PRODUCT_PER_PAGE = 9;
 
 const Category = () => {
   const [filterObj, setFilterObj] = useState<DetailedObject<string | number>>();
   const navigate = useNavigate();
   const location = useLocation();
-  const [productList, setProductList] = useState<ProductModel[]>([])
+  const [productList, setProductList] = useState<ProductModel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
-  const [, setTotalPage] = useState(0)
+  const [, setTotalPage] = useState(0);
 
   function onPropertyChanged(property: string, name: string) {
     setFilterObj({
@@ -132,61 +132,75 @@ const Category = () => {
         '"}'
     );
     setLoading(true);
-    filterObj && shallowEqual(filterObj as DetailedObject<number | string>, result) &&
-    Promise.allSettled([
-      axiosInstance.get(`/product?${query}`, {
-        cancelToken: cancelToken.token,
-      }),
-      axiosInstance.get(`/discount?${query}`, {
-        cancelToken: cancelToken.token,
-      }),
-    ])
-      .then((results) => {
-        const [productResult, discountResult] = results;
-    
-        if (productResult.status === "rejected") {
-          throw productResult.reason;
-        } else {
-          const productList = productResult?.value?.data;
-    
-          if (discountResult.status === "fulfilled") {
-            const discountData = discountResult?.value?.data;
-            const today = new Date();
-            const productListWithDiscounts = productList?.data?.map((product: { id: any; price: number; }) => {
-              const discount = discountData?.data.find((discount: { expiryDate: string | number | Date; productId: string | any[]; }) => {
-                const expiryDate = new Date(discount.expiryDate);
-                return today < expiryDate && discount.productId.includes(product.id);
-              });
-    
-              if (discount) {
-                const discountAmount = discount.discountAmount;
-                const discountedPrice = product.price * (1 - discountAmount);
-    
-                return {
-                  ...product,
-                  price: discountedPrice.toFixed(2),
-                };
-              } else {
-                return product;
-              }
-            });
-    
-            setTotalPage(Math.ceil(productListWithDiscounts?.length / PRODUCT_PER_PAGE));
-            setProductList(productListWithDiscounts);
+    filterObj &&
+      shallowEqual(filterObj as DetailedObject<number | string>, result) &&
+      Promise.allSettled([
+        axiosInstance.get(`/product?${query}`, {
+          cancelToken: cancelToken.token,
+        }),
+        axiosInstance.get(`/discount`, {
+          cancelToken: cancelToken.token,
+        }),
+      ])
+        .then((results) => {
+          const [productResult, discountResult] = results;
+
+          if (productResult.status === "rejected") {
+            throw productResult.reason;
+          } else {
+            const productList = productResult?.value?.data;
+
+            if (discountResult.status === "fulfilled") {
+              const discountData = discountResult?.value?.data;
+              const today = new Date();
+              const productListWithDiscounts = productList?.data?.map(
+                (product: { id: any; price: number }) => {
+                  const discount = discountData?.data.find(
+                    (discount: {
+                      expiryDate: string | number | Date;
+                      productId: string | any[];
+                    }) => {
+                      const expiryDate = new Date(discount.expiryDate);
+                      return (
+                        today < expiryDate &&
+                        discount.productId.includes(product.id)
+                      );
+                    }
+                  );
+
+                  if (discount) {
+                    const discountAmount = discount.discountAmount;
+                    const discountedPrice =
+                      product.price * (1 - discountAmount);
+
+                    return {
+                      ...product,
+                      price: discountedPrice.toFixed(2),
+                    };
+                  } else {
+                    return product;
+                  }
+                }
+              );
+
+              setTotalPage(
+                Math.ceil(productListWithDiscounts?.length / PRODUCT_PER_PAGE)
+              );
+              setProductList(productListWithDiscounts);
+            }
           }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toastDispatch({
-          type: REMOVE_ALL_AND_ADD,
-          payload: {
-            type: "is-danger",
-            content: "Something went wrong!",
-          },
-        });
-      })
-      .finally(() => setLoading(false));
+        })
+        .catch((error) => {
+          console.log(error);
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-danger",
+              content: "Something went wrong!",
+            },
+          });
+        })
+        .finally(() => setLoading(false));
 
     return () => {
       cancelToken.cancel();
@@ -252,12 +266,14 @@ const Category = () => {
             <div className="product-list">
               <Grid col={3} mdCol={2} smCol={1} gap={20}>
                 <>
-                  {!loading ? productList?.map((item, index) => (
-                    <div key={index}>
-                      <ProductCard productInfo={item} />
-                    </div>
-                  )) : (
-                    <div style={{minHeight: "50vh"}}>
+                  {!loading ? (
+                    productList?.map((item, index) => (
+                      <div key={index}>
+                        <ProductCard productInfo={item} />
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{ minHeight: "50vh" }}>
                       <></>
                     </div>
                   )}

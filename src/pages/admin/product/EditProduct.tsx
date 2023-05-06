@@ -19,7 +19,7 @@ const EditProduct = () => {
     const cancelToken = axios.CancelToken.source();
     const productId = router.pathname.split("/");
 
-    const fetchProductList = async () => {
+    ;(async () => {
       setLoading(true);
       await axiosInstance
         .get(`/products/${productId[productId.length - 1]}`, {
@@ -36,8 +36,7 @@ const EditProduct = () => {
           setLoading(false);
           setProductData(res.data);
         });
-    };
-    fetchProductList();
+    })()
 
     return () => {
       cancelToken.cancel();
