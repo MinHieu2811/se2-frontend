@@ -5,7 +5,7 @@ import { BsFillCameraFill } from "react-icons/bs"
 import { FileDrop } from "react-file-drop";
 
 type UploadFilesProps = {
-  onFilesChanged?: (files: File[]) => void;
+  onFilesChanged?: (files: File) => void;
   enableUploadSameFileTwice?: boolean;
   multiple?: boolean;
   error?: boolean;
@@ -17,15 +17,9 @@ type UploadFilesProps = {
   uploadTitle?: string;
 };
 
-const getFileList = (files: FileList | null): File[] => {
-  if (!files || files.length === 0) return [];
-
-  const fileList: File[] = [];
-  for (let i = 0; i < files.length; i++) {
-    const file = files.item(i);
-    if (file) fileList.push(file);
-  }
-  return fileList;
+const getFileList = (files: File | null): File | null => {
+  if (!files) return null;
+  return files;
 };
 
 const sleep = (ms: number) => {
@@ -52,10 +46,11 @@ const FilesUploader: React.FC<UploadFilesProps> = ({
     sleep(500).then(() => setIsLoading(false))
   }
 
-  function validateFileType(files: FileList, allowedTypes: string) {
+  function validateFileType(files: File, allowedTypes: string) {
+    let fileList = [files]
     const arrTypes = allowedTypes.split(',')
     let isValid = false
-    for (const file of files) {
+    for (const file of fileList) {
       isValid = arrTypes.filter((type) => file.type.match(type)).length > 0
       if (!isValid) {
         fakeLoading()
@@ -73,9 +68,10 @@ const FilesUploader: React.FC<UploadFilesProps> = ({
     return isValid
   }
 
-  function validateFileSize(files: FileList, maxSizeMB: number) {
+  function validateFileSize(files: File, maxSizeMB: number) {
+    let fileList = [files]
     let isValid = false
-    for (const file of files) {
+    for (const file of fileList) {
       const size = file.size
       isValid = Math.round(size / 1024) < maxSizeMB * 1024
       if (!isValid) {
@@ -100,17 +96,17 @@ const FilesUploader: React.FC<UploadFilesProps> = ({
     if (!files) {
       return
     }
-    const isValidSize = validateFileSize(files, maxSizeMB)
-    if (isValidSize) {
-      onFilesChanged!(getFileList(files))
+    const isValidSize = validateFileSize(files[0], maxSizeMB)
+    if (isValidSize && files[0]) {
+      onFilesChanged!(getFileList(files[0]) as File)
     }
   }
 
-  const onDrop = (files: FileList) => {
+  const onDrop = (files: File) => {
     const isValidType = validateFileType(files, allowedTypes)
     const isValidSize = validateFileSize(files, maxSizeMB)
-    if (isValidType && isValidSize) {
-      onFilesChanged!(getFileList(files))
+    if (isValidType && isValidSize && files) {
+      onFilesChanged!(getFileList(files) as File)
     }
   }
 
@@ -121,7 +117,7 @@ const FilesUploader: React.FC<UploadFilesProps> = ({
   return (
     <>
       {isLoading && <Loading isFullWidth />}
-      <FileDrop onDrop={(files) => files && onDrop(files)}>
+      <FileDrop onDrop={(files) => files && onDrop(files[0])}>
         <div className={`field ${className}`}>
           <span
             className={`file-uploads${error ? " is-error" : ""}`}
@@ -149,7 +145,7 @@ const FilesUploader: React.FC<UploadFilesProps> = ({
               id="file"
               onChange={onChange}
               accept={allowedTypes}
-              multiple={multiple}
+              multiple={false}
             />
           </span>
         </div>

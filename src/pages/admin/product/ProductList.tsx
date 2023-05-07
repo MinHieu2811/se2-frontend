@@ -9,7 +9,7 @@ import { ProductModel } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
 import AdminPagination from "../AdminPagination";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router";
+import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
 
 const ProductList = () => {
   const itemsPerPage = 5;
@@ -17,7 +17,6 @@ const ProductList = () => {
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
-  const navigate = useNavigate();
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
@@ -51,6 +50,21 @@ const ProductList = () => {
       cancelToken.cancel();
     };
   }, [toastDispatch]);
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Do you want to delete this product?")) {
+      return;
+    }
+    await axiosInstance.delete(`/product/${id}`).catch(() => {
+      toastDispatch({
+        type: REMOVE_ALL_AND_ADD,
+        payload: {
+          type: "is-danger",
+          content: "Something went wrong!",
+        },
+      });
+    });
+  };
 
   const generateCateGrid = (
     products: any[],
@@ -86,7 +100,7 @@ const ProductList = () => {
                     <AiOutlineEdit />
                   </Link>
                 </Button>
-                <Button>
+                <Button onClick={() => handleDelete(item?.id)}>
                   <AiFillDelete />
                 </Button>
               </td>
@@ -107,9 +121,9 @@ const ProductList = () => {
           <InputGroup style={{ flex: 3, margin: "0px 20px" }}>
             {/* <Form.Control type="text" placeholder="Keyword" /> */}
           </InputGroup>
-          <Button style={{ flex: 1 }}
-                  onClick={() => navigate("/admin/products/create-product")}
-          >Create New Product</Button>
+          <Button style={{ flex: 1 }}>
+            <Link to="/admin/products/create-product">Create New Product</Link>
+          </Button>
         </div>
         {generateCateGrid(productData, currentPage, itemsPerPage)}
         <div className="pagination-wrapper" style={{ margin: "20px auto" }}>
