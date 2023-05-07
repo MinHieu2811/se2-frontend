@@ -116,7 +116,7 @@ const OrderList = () => {
               <td className="order-table__body">{item?.address}</td>
               <td className="order-table__body">{item?.status as STATUS}</td>
               <td className="order-table__body">
-                <button className="order-table__button" style={{padding: "10px", width: "100%"}}
+                <button className="order-table__button" style={{padding: "10px", width: "100%"}} disabled={item?.status === "DELIVERED"}
                 onClick={() => handleFinishOrder(item?.id)}>
                     <AiFillCheckSquare /> Accept
                 </button>
