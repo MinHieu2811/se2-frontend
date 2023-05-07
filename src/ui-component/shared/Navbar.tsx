@@ -28,13 +28,13 @@ const Navbar: React.FC = () => {
       <div className="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
         <ul className="navbar-nav w-100">
           <li className="nav-item w-100">
-            <form className="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+            {/* <form className="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
               <input
                 type="text"
                 className="form-control"
                 placeholder="Search products"
               />
-            </form>
+            </form> */}
           </li>
         </ul>
         <ul className="navbar-nav navbar-nav-right">
@@ -206,36 +206,21 @@ const Navbar: React.FC = () => {
               </Dropdown.Menu>
             </Dropdown> */}
           <Dropdown as="li" className="nav-item">
-            <Dropdown.Toggle
+            {/* <Dropdown.Toggle
               as="a"
               className="nav-link cursor-pointer no-caret"
             >
               <div className="navbar-profile">
-                <div className="avatar">H</div>
+                <div className="avatar">A</div>
                 <p className="mb-0 d-none d-sm-block navbar-profile-name">
-                  Henry Klein
+                  Super Admin
                 </p>
                 <i className="mdi mdi-menu-down d-none d-sm-block"></i>
               </div>
-            </Dropdown.Toggle>
+            </Dropdown.Toggle> */}
 
-            <Dropdown.Menu className="navbar-dropdown preview-list navbar-profile-dropdown-menu">
-              <h6 className="p-3 mb-0">Profile</h6>
+            {/* <Dropdown.Menu className="navbar-dropdown preview-list navbar-profile-dropdown-menu">
               <Dropdown.Divider />
-              <Dropdown.Item
-                href="!#"
-                onClick={(evt) => evt.preventDefault()}
-                className="preview-item"
-              >
-                <div className="preview-thumbnail">
-                  <div className="preview-icon bg-dark rounded-circle">
-                    <AiFillSetting />
-                  </div>
-                </div>
-                <div className="preview-item-content">
-                  <p className="preview-subject mb-1">Settings</p>
-                </div>
-              </Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item
                 href="!#"
@@ -252,8 +237,7 @@ const Navbar: React.FC = () => {
                 </div>
               </Dropdown.Item>
               <Dropdown.Divider />
-              <p className="p-3 mb-0 text-center">Advanced settings</p>
-            </Dropdown.Menu>
+            </Dropdown.Menu> */}
           </Dropdown>
         </ul>
       </div>

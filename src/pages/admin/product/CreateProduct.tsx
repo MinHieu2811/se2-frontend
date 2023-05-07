@@ -27,49 +27,44 @@ const initialStates: ProductModel = {
 };
 
 const CreateProduct = () => {
-  const [reviewImagesBlob, setReviewImagesBlob] = useState<Blob[]>([]);
+  const [reviewImagesBlob, setReviewImagesBlob] = useState<Blob | null>();
   const { toastDispatch } = useToastContext();
   const [productInfo, setProductInfo] = useState<ProductModel>(initialStates);
 
-  const onImageChanged = (file: File[]) => {
-    if (file && file?.length) {
+  const onImageChanged = (file: File) => {
+    if (file) {
       const arrayCheck = [".jpg", ".jpeg", ".png", "tiff", "webp", "gif"];
-      let images: string[] = [];
-      file.forEach((image) => {
-        const nameFile = image?.name;
-        images = [...images, `/images/products/${nameFile}`];
-        if (!arrayCheck.some((v) => nameFile.includes(v))) {
-          toastDispatch({
-            type: REMOVE_ALL_AND_ADD,
-            payload: {
-              type: "is-danger",
-              content: `Please upload .jpg / .jpeg / .png / .tiff / .webp / .gif file only`,
-            },
-          });
+      // let images: string[] = [];
+      const nameFile = file?.name;
+      // images = [...images, `/images/products/${nameFile}`];
+      if (!arrayCheck.some((v) => nameFile.includes(v))) {
+        toastDispatch({
+          type: REMOVE_ALL_AND_ADD,
+          payload: {
+            type: "is-danger",
+            content: `Please upload .jpg / .jpeg / .png / .tiff / .webp / .gif file only`,
+          },
+        });
 
-          return;
-        }
-        setProductInfo({ ...productInfo, images: images });
-        setReviewImagesBlob(file);
-      });
+        return;
+      }
+
+      setReviewImagesBlob(file);
     }
   };
 
   const handleSubmitImage = async () => {
     try {
       const formData = new FormData();
-      if (reviewImagesBlob.length > 0) {
-        reviewImagesBlob?.forEach((image) => {
-          formData.append("product", image);
-        });
+      formData.append("file", reviewImagesBlob as Blob);
+      formData.append("upload_preset", "eyf8dpkh");
+      if (reviewImagesBlob) {
         await axiosImageInstance
-          .post("/uploads", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data; ",
-            },
-          })
-          .then((res) => res.data)
-          .then((res) => console.log("api Image", res));
+          .post(
+            "https://api.cloudinary.com/v1_1/dp9xqwrsz/image/upload",
+            formData
+          )
+          .then((res) => res)
       } else {
         toastDispatch({
           type: REMOVE_ALL_AND_ADD,
@@ -90,7 +85,7 @@ const CreateProduct = () => {
     }
   };
 
-  const handlePostInfo = async () => {
+  const handlePostInfo = async (images: string[]) => {
     try {
       let checked: boolean = true;
       Object.keys(productInfo).forEach((item: string) => {
@@ -131,35 +126,44 @@ const CreateProduct = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await Promise.allSettled([handleSubmitImage(), handlePostInfo()])
-      .then(([resultPostInfo, resultSubmitImage]) => {
+    // await Promise.allSettled([handleSubmitImage(), handlePostInfo()])
+    //   .then(([resultPostInfo, resultSubmitImage]) => {
+    //     if (
+    //       resultPostInfo?.status === "fulfilled" &&
+    //       resultSubmitImage?.status === "fulfilled"
+    //     ) {
+    //       toastDispatch({
+    //         type: REMOVE_ALL_AND_ADD,
+    //         payload: {
+    //           type: "is-success",
+    //           content: "Created successfully",
+    //         },
+    //       });
+    //       setProductInfo(initialStates);
+    //       setReviewImagesBlob(null);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     toastDispatch({
+    //       type: REMOVE_ALL_AND_ADD,
+    //       payload: {
+    //         type: "is-danger",
+    //         content: err.msg,
+    //       },
+    //     });
+    //   });
 
-        console.log(resultPostInfo, 'post');
-        console.log(resultSubmitImage, 'image');
-        if (
-          resultPostInfo?.status === "fulfilled" &&
-          resultSubmitImage?.status === "fulfilled"
-        ) {
-          toastDispatch({
-            type: REMOVE_ALL_AND_ADD,
-            payload: {
-              type: "is-success",
-              content: "Created successfully",
-            },
-          });
-          setProductInfo(initialStates);
-          setReviewImagesBlob([]);
-        }
-      })
-      .catch((err) => {
+    await handleSubmitImage().then(async (res: any) => {
+      await handlePostInfo([res?.data?.secure_url]).catch((err) => {
         toastDispatch({
           type: REMOVE_ALL_AND_ADD,
           payload: {
             type: "is-danger",
-            content: err.msg,
+            content: "Something went wrong!",
           },
         });
       });
+    });
   };
 
   // await handleSubmitImage()
@@ -277,26 +281,23 @@ const CreateProduct = () => {
             <div className={`image-container`}>
               <div
                 className={`${
-                  reviewImagesBlob?.length
+                  reviewImagesBlob
                     ? "after-upload-boarder"
                     : "before-upload-boarder"
                 }`}
               >
                 <FilesUploader
                   className="img-wrapper mb-4 width-all"
-                  multiple={true}
                   allowedTypes="image/*"
                   onFilesChanged={(f) => onImageChanged(f)}
+                  multiple={false}
                 />
-                {reviewImagesBlob?.length ? (
-                  reviewImagesBlob?.map((image, key) => (
-                    <img
-                      className="preview-image"
-                      src={URL.createObjectURL(image)}
-                      key={key}
-                      alt=""
-                    />
-                  ))
+                {reviewImagesBlob ? (
+                  <img
+                    className="preview-image"
+                    src={URL.createObjectURL(reviewImagesBlob)}
+                    alt=""
+                  />
                 ) : (
                   <></>
                 )}

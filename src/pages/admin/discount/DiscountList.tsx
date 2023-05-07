@@ -17,6 +17,7 @@ const DiscountList = () => {
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
+  const navigate = useNavigate();
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };

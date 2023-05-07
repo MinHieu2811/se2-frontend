@@ -43,7 +43,7 @@ let order: any = {
   id: genOrderToken(),
 };
 function Checkout() {
-  const { cart, totalPrice, clearCart, voucher } = useCart();
+  const { cart, totalPrice, totalItems, clearCart, voucher } = useCart();
   const [addressErrors, setAddressErrors] = useSyncedState<AddressErrors>({});
   const [addressSyncedProps, , getAddressSyncedProp] =
     useSyncedState<CustomerAddress>(initAddress({}));
@@ -153,8 +153,8 @@ function Checkout() {
               <div className="order-warpper__order">
                 Order <span className="order-warpper__code">#{order?.id}</span>{" "}
                 <span className="order-warpper__length">
-                  ({order?.cart?.totalItems} item
-                  {order?.cart?.totalItems > 1 && "s"})
+                  ({totalItems} item
+                  {totalItems > 1 && "s"})
                 </span>
               </div>
               {cart?.map((variant, index) => {
@@ -240,9 +240,9 @@ function Checkout() {
             <div className="item total-style">
               <div className="item__label item__label--bold item-label-total total-text-style">
                 Total{" "}
-                {order?.cart?.totalItems > 1
-                  ? `(${order?.cart?.totalItems} items)`
-                  : `(${order?.cart?.totalItems} item)`}
+                {totalItems > 1
+                  ? `(${totalItems} items)`
+                  : `(${totalItems} item)`}
               </div>
               <div className="item__number item__number--bold item-label-total">
                 <BsCurrencyDollar />

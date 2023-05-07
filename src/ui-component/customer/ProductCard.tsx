@@ -16,21 +16,34 @@ type Props = {
 
 function ProductCard({ productInfo }: Props) {
   const { addToCartHandler } = useCart();
-  const {setOpen} = useToggleModal()
+  const { setOpen } = useToggleModal();
 
   const addToCart = (product: ProductModel, quantity: number) => {
     addToCartHandler && addToCartHandler(product, quantity);
-    setOpen?.()
+    setOpen?.();
   };
   return (
     <div className="productCart-wrapper">
       <div className="productCart-wrapper_img">
-        <img src={productInfo.images[0]} alt={productInfo.name} />
-        <img
-          src={productInfo.images[1]}
-          className="img"
-          alt={productInfo.name}
-        />
+        {productInfo?.images.length > 1 ? (
+          <>
+            <img src={productInfo.images[0]} alt={productInfo.name} />
+            <img
+              src={productInfo.images[1]}
+              className="img"
+              alt={productInfo.name}
+            />
+          </>
+        ) : (
+          <>
+            <img src={productInfo.images[0]} alt={productInfo.name} />
+            <img
+              src={productInfo.images[0]}
+              className="img"
+              alt={productInfo.name}
+            />
+          </>
+        )}
       </div>
       <div className="productCart-wrapper_info">
         <span className="productCart-wrapper_info_branch">

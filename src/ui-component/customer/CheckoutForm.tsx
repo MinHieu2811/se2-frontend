@@ -233,7 +233,7 @@ function CheckoutForm({ className, errors, valueSyncedProps, label, onSubmit }: 
         )} */}
         {clientId ? (
           <PayPalScriptProvider
-            options={{ "client-id": `${clientId}`, currency: "USD" }}
+            options={{ "client-id": `ATngXdphPho9msckiEPa0rD1PCunfyGlBMKYgBnUZxvogf6pappDOgScSb_DQVp4F4z5Xti60VsSxtOf`, currency: "USD" }}
           >
             <PayPalButtons
               disabled={validateFields()}

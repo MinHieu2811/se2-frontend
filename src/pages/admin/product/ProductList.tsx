@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, InputGroup, Table } from "react-bootstrap";
+import { Button, InputGroup, Table } from "react-bootstrap";
 import axios from "axios";
 import { axiosInstance } from "../../../client-api";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
@@ -8,8 +8,8 @@ import { AiOutlineEdit, AiFillDelete } from "react-icons/ai";
 import { ProductModel } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
 import AdminPagination from "../AdminPagination";
-import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
 import { Link } from "react-router-dom";
+import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
 
 const ProductList = () => {
   const itemsPerPage = 5;
@@ -33,13 +33,13 @@ const ProductList = () => {
           setProductData(res.data?.data);
         })
         .catch(() => {
-          toastDispatch({
-            type: REMOVE_ALL_AND_ADD,
-            payload: {
-              type: "is-danger",
-              content: "Something went wrong!",
-            },
-          });
+          // toastDispatch({
+          //   type: REMOVE_ALL_AND_ADD,
+          //   payload: {
+          //     type: "is-danger",
+          //     content: "Something went wrong!",
+          //   },
+          // });
         })
         .finally(() => {
           setLoading(false);
@@ -50,6 +50,21 @@ const ProductList = () => {
       cancelToken.cancel();
     };
   }, [toastDispatch]);
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Do you want to delete this product?")) {
+      return;
+    }
+    await axiosInstance.delete(`/product/${id}`).catch(() => {
+      toastDispatch({
+        type: REMOVE_ALL_AND_ADD,
+        payload: {
+          type: "is-danger",
+          content: "Something went wrong!",
+        },
+      });
+    });
+  };
 
   const generateCateGrid = (
     products: any[],
@@ -85,7 +100,7 @@ const ProductList = () => {
                     <AiOutlineEdit />
                   </Link>
                 </Button>
-                <Button>
+                <Button onClick={() => handleDelete(item?.id)}>
                   <AiFillDelete />
                 </Button>
               </td>
@@ -104,9 +119,11 @@ const ProductList = () => {
         <div className="list-header d-flex">
           <h1 style={{ flex: 1 }}>All Products</h1>
           <InputGroup style={{ flex: 3, margin: "0px 20px" }}>
-            <Form.Control type="text" placeholder="Keyword" />
+            {/* <Form.Control type="text" placeholder="Keyword" /> */}
           </InputGroup>
-          <Button style={{ flex: 1 }}>Create New Product</Button>
+          <Button style={{ flex: 1 }}>
+            <Link to="/admin/products/create-product">Create New Product</Link>
+          </Button>
         </div>
         {generateCateGrid(productData, currentPage, itemsPerPage)}
         <div className="pagination-wrapper" style={{ margin: "20px auto" }}>

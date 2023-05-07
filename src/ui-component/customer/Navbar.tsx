@@ -19,10 +19,12 @@ const initialState: DetailedObject<string> = {
 
 const Navbar = () => {
   const headerRef = useRef<HTMLDivElement>(null);
-  const { token, onLogout } = useAuth()
+  const { token, onLogout, admin } = useAuth()
   const [filterObj, setFilterObj] = useState<DetailedObject<string>>();
   const { setOpenModal } = useToggleAuthModal()
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(localStorage?.getItem('isAdmin') || false)
+  console.log(isAdmin, admin);
+
 
   useEffect(() => {
     if(localStorage?.getItem('isAdmin')) {
@@ -165,14 +167,11 @@ const Navbar = () => {
           <div className="signin_box" ref={userMenuRef}>
             {token ? (
               <div className="signin_box_container">
-                <div className="signin_box_container_item">
-                  <Link to="/profile">Profile</Link>
-                </div>
                 <>
                   {isAdmin ? (
                     <>
                       <div className="signin_box_container_item">
-                        <Link to="/admin/home">Dashboard</Link>
+                        <Link to="/admin/products/all-product">Dashboard</Link>
                       </div>
                       <div className="signin_box_container_item">
                         <Link to="/admin/voucher-discount/all-voucher">Vouchers</Link>
