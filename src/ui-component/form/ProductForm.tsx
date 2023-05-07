@@ -12,26 +12,28 @@ type Props = {
 
 function ProductForm({ initialData }: Props) {
   const [productInfo, setProductInfo] = useState(initialData);
-  const [reviewImagesBlob, setReviewImagesBlob] = useState<File[]>([]);
+  const [reviewImagesBlob, setReviewImagesBlob] = useState<Blob | null>();
   const { toastDispatch } = useToastContext();
 
-  const onImageChanged = (file: File[]) => {
-    if (file && file?.length) {
+  const onImageChanged = (file: File) => {
+    if (file) {
       const arrayCheck = [".jpg", ".jpeg", ".png", "tiff", "webp", "gif"];
-      file.forEach((image) => {
-        const nameFile = image?.name;
-        if (!arrayCheck.some((v) => nameFile.includes(v))) {
-          toastDispatch({
-            type: REMOVE_ALL_AND_ADD,
-            payload: {
-              type: "is-danger",
-              content: `Please upload .jpg / .jpeg / .png / .tiff / .webp / .gif file only`,
-            },
-          });
-        } else {
-          setReviewImagesBlob([...reviewImagesBlob, image]);
-        }
-      });
+      let images: string[] = [];
+      const nameFile = file?.name;
+      images = [...images, `/images/products/${nameFile}`];
+      if (!arrayCheck.some((v) => nameFile.includes(v))) {
+        toastDispatch({
+          type: REMOVE_ALL_AND_ADD,
+          payload: {
+            type: "is-danger",
+            content: `Please upload .jpg / .jpeg / .png / .tiff / .webp / .gif file only`,
+          },
+        });
+
+        return;
+      }
+      setProductInfo({ ...productInfo, images: images });
+      setReviewImagesBlob(file);
     }
   };
 
@@ -43,36 +45,70 @@ function ProductForm({ initialData }: Props) {
     });
   };
 
-  const handleSubmit = async () => {
-    let payload = {
-      name: productInfo?.name,
-      price: productInfo?.price,
-      description: productInfo?.description,
-      images: productInfo?.images,
-      brand: productInfo?.brand
-    }
-    await axiosInstance
-      ?.put(`/product/${productInfo?.id}`, payload)
-      .then((res) => {
-        if (res?.data?.success) {
-          toastDispatch({
-            type: REMOVE_ALL_AND_ADD,
-            payload: {
-              type: "is-success",
-              content: `Edited successfully!`,
-            },
-          });
-        }
-      })
-      .catch(() => {
+  const handleSubmitImage = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", reviewImagesBlob as Blob);
+      formData.append("upload_preset", "eyf8dpkh");
+      if (reviewImagesBlob) {
+        await axiosInstance
+          .post(
+            "https://api.cloudinary.com/v1_1/dp9xqwrsz/image/upload",
+            formData
+          )
+          .then((res) => res);
+      } else {
         toastDispatch({
           type: REMOVE_ALL_AND_ADD,
           payload: {
             type: "is-danger",
-            content: `Something went wrong!`,
+            content: `Please upload your image`,
           },
         });
+      }
+    } catch (error: any) {
+      toastDispatch({
+        type: REMOVE_ALL_AND_ADD,
+        payload: {
+          type: "is-danger",
+          content: error.msg,
+        },
       });
+    }
+  };
+
+  const handleSubmit = async () => {
+    await handleSubmitImage().then(async () => {
+      let payload = {
+        name: productInfo?.name,
+        price: productInfo?.price,
+        description: productInfo?.description,
+        images: productInfo?.images,
+        brand: productInfo?.brand,
+      };
+      await axiosInstance
+        ?.put(`/product/${productInfo?.id}`, payload)
+        .then((res) => {
+          if (res?.data?.success) {
+            toastDispatch({
+              type: REMOVE_ALL_AND_ADD,
+              payload: {
+                type: "is-success",
+                content: `Edited successfully!`,
+              },
+            });
+          }
+        })
+        .catch(() => {
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-danger",
+              content: `Something went wrong!`,
+            },
+          });
+        });
+    });
   };
   return (
     <>
@@ -130,7 +166,7 @@ function ProductForm({ initialData }: Props) {
           <div className={`image-container`}>
             <div
               className={`${
-                reviewImagesBlob?.length
+                reviewImagesBlob
                   ? "after-upload-boarder"
                   : "before-upload-boarder"
               }`}
@@ -141,15 +177,12 @@ function ProductForm({ initialData }: Props) {
                 allowedTypes="image/*"
                 onFilesChanged={(f) => onImageChanged(f)}
               />
-              {reviewImagesBlob?.length ? (
-                reviewImagesBlob?.map((image, key) => (
-                  <img
-                    className="preview-image"
-                    src={URL.createObjectURL(image)}
-                    key={key}
-                    alt=""
-                  />
-                ))
+              {reviewImagesBlob ? (
+                <img
+                  className="preview-image"
+                  src={URL.createObjectURL(reviewImagesBlob)}
+                  alt=""
+                />
               ) : (
                 <></>
               )}
