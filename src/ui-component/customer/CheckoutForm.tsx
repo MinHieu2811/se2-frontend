@@ -15,10 +15,16 @@ type Props = {
   errors: AddressErrors;
   valueSyncedProps: SyncedProps<CustomerAddress>;
   label: string;
-  onSubmit: (paymentInfo?: any) => Promise<void>
+  onSubmit: (paymentInfo?: any) => Promise<void>;
 };
 
-function CheckoutForm({ className, errors, valueSyncedProps, label, onSubmit }: Props) {
+function CheckoutForm({
+  className,
+  errors,
+  valueSyncedProps,
+  label,
+  onSubmit,
+}: Props) {
   const [syncedAddress, setSyncedAddress] = valueSyncedProps;
   const { totalPrice } = useCart();
   const { toastDispatch } = useToastContext();
@@ -67,18 +73,18 @@ function CheckoutForm({ className, errors, valueSyncedProps, label, onSubmit }: 
   }, []);
 
   const validateFields = () => {
-    let validated
+    let validated;
     (Object.keys(syncedAddress) as Array<keyof CustomerAddress>)?.forEach(
       (key) => {
-        if(syncedAddress[key] === ''){
+        if (syncedAddress[key] === "") {
           validated = true;
         } else {
-          validated = false
+          validated = false;
         }
       }
     );
 
-    return validated
+    return validated;
   };
   return (
     <div className={`address-form ${className ? className : ""}`}>
@@ -214,7 +220,10 @@ function CheckoutForm({ className, errors, valueSyncedProps, label, onSubmit }: 
       </div>
 
       <div className="columns is-mobile is-variable is-1 m-0">
-        <button className="checkout-button button is-primary col-12" onClick={onSubmit}>
+        <button
+          className="checkout-button button is-primary col-12"
+          onClick={onSubmit}
+        >
           <AiFillLock className="mr-2" /> Check out for{" "}
           <BsCurrencyDollar className="ml-2" />
           {totalPrice}
@@ -231,44 +240,44 @@ function CheckoutForm({ className, errors, valueSyncedProps, label, onSubmit }: 
         ) : (
           <Loading isFullWidth={false} />
         )} */}
-        {clientId ? (
-          <PayPalScriptProvider
-            options={{ "client-id": `ATngXdphPho9msckiEPa0rD1PCunfyGlBMKYgBnUZxvogf6pappDOgScSb_DQVp4F4z5Xti60VsSxtOf`, currency: "USD" }}
-          >
-            <PayPalButtons
-              disabled={validateFields()}
-              style={{ layout: "horizontal" }}
-              createOrder={(data, actions) => {
-                return actions?.order?.create({
-                  purchase_units: [
-                    {
-                      amount: {
-                        value: `${totalPrice}`,
-                      },
+        <PayPalScriptProvider
+          options={{
+            "client-id": `ATngXdphPho9msckiEPa0rD1PCunfyGlBMKYgBnUZxvogf6pappDOgScSb_DQVp4F4z5Xti60VsSxtOf`,
+            currency: "USD",
+          }}
+        >
+          <PayPalButtons
+            disabled={validateFields()}
+            style={{ layout: "horizontal" }}
+            createOrder={(data, actions) => {
+              return actions?.order?.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: `${totalPrice}`,
                     },
-                  ],
+                  },
+                ],
+              });
+            }}
+            onApprove={(data, action): Promise<void> => {
+              return action?.order?.capture().then((details) => {
+                // console.log("details", details);
+                setTimeout(async () => {
+                  await onSubmit(details);
+                }, 500);
+                toastDispatch({
+                  type: REMOVE_ALL_AND_ADD,
+                  payload: {
+                    type: "is-success",
+                    content: `Checkout successfully!`,
+                  },
                 });
-              }}
-              onApprove={(data, action): Promise<void> => {
-                return action?.order?.capture().then((details) => {
-                  // console.log("details", details);
-                  setTimeout(async() => {
-                    await onSubmit(details)
-                  }, 500)
-                  toastDispatch({
-                    type: REMOVE_ALL_AND_ADD,
-                    payload: {
-                      type: "is-success",
-                      content: `Checkout successfully!`,
-                    },
-                  });
-                }) as Promise<void>;
-              }}
-            />
-          </PayPalScriptProvider>
-        ) : (
-          <Loading />
-        )}
+              }) as Promise<void>;
+            }}
+          />
+        </PayPalScriptProvider>
+        )
       </div>
     </div>
   );

@@ -59,12 +59,14 @@ const CreateProduct = () => {
       formData.append("file", reviewImagesBlob as Blob);
       formData.append("upload_preset", "eyf8dpkh");
       if (reviewImagesBlob) {
-        await axiosImageInstance
+        const res = await axiosImageInstance
           .post(
             "https://api.cloudinary.com/v1_1/dp9xqwrsz/image/upload",
             formData
           )
-          .then((res) => res)
+          .then((res) => res);
+
+          return res
       } else {
         toastDispatch({
           type: REMOVE_ALL_AND_ADD,
@@ -87,6 +89,7 @@ const CreateProduct = () => {
 
   const handlePostInfo = async (images: string[]) => {
     try {
+      productInfo.images = images;
       let checked: boolean = true;
       Object.keys(productInfo).forEach((item: string) => {
         if (
@@ -153,16 +156,22 @@ const CreateProduct = () => {
     //     });
     //   });
 
-    await handleSubmitImage().then(async (res: any) => {
-      await handlePostInfo([res?.data?.secure_url]).catch((err) => {
-        toastDispatch({
-          type: REMOVE_ALL_AND_ADD,
-          payload: {
-            type: "is-danger",
-            content: "Something went wrong!",
-          },
+    await handleSubmitImage().then((res: any) => {
+      setTimeout(async () => {
+        debugger
+        await handlePostInfo([res?.data?.secure_url]).then(() => {
+          setProductInfo(initialStates);
+          setReviewImagesBlob(null);
+        }).catch((err) => {
+          toastDispatch({
+            type: REMOVE_ALL_AND_ADD,
+            payload: {
+              type: "is-danger",
+              content: "Something went wrong!",
+            },
+          });
         });
-      });
+      }, 2000);
     });
   };
 

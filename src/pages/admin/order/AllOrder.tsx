@@ -12,12 +12,13 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthProvider";
 import { ProductModel } from "../../../model/product";
 import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
+import { DetailedObject } from "../../../model/utils";
 
 const OrderList = () => {
   const itemsPerPage = 2;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [orderList, setOrderList] = useState([]);
-  const [productList, setProductList] = useState([]);
+  const [productList, setProductList] = useState<ProductModel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
   const { token } = useAuth();
@@ -27,7 +28,7 @@ const OrderList = () => {
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
 
-    ;(async () => {
+    (async () => {
       setLoading(true);
       await axiosInstance
         .get("/order", {
@@ -46,7 +47,6 @@ const OrderList = () => {
           await axiosInstance
             ?.post("/product/ids", { ids: a?.flat() })
             .then((res) => {
-              console.log(res?.data?.data);
               setProductList(res?.data?.data);
             });
         })
@@ -56,34 +56,54 @@ const OrderList = () => {
         .finally(() => {
           setLoading(false);
         });
-    })()
+    })();
 
     return () => {
       cancelToken.cancel();
     };
   }, [toastDispatch, token]);
 
-  const handleFinishOrder = useCallback(async(orderId: string) => {
+  const handleFinishOrder = useCallback(async (orderId: string) => {
     await axiosInstance?.post(`/order/${orderId}/finish`)?.then((res) => {
-      if(res?.data?.success) {
+      if (res?.data?.success) {
         toastDispatch({
           type: REMOVE_ALL_AND_ADD,
           payload: {
-            type: 'is-success',
-            content: 'Order finished!'
-          }
-        })
+            type: "is-success",
+            content: "Order finished!",
+          },
+        });
       }
-    })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const genObj = (id: string) => {
+    const orderObj = orderList?.map((item: any) => ({
+      [item?.id as string]: item?.products?.map((prod: any) => prod?.id),
+    }));
+    const prodOrder = orderObj?.find((item) => item?.[id]);
+    const res = prodOrder?.[id]?.map((item: any) =>
+      productList.find((prd) => prd.id === item)
+    );
+
+    return res?.map((item: any) => (
+      <div key={item?.id}>
+        <img
+          src={item?.images[0]}
+          alt={item?.name}
+          className="order-table__img"
+        />
+        <span>{item?.name}</span>
+      </div>
+    ));
+  };
 
   const generateCateGrid = (
     products: any[],
     currentPage: number,
     productsPerPage: number
   ) => {
-
     return (
       <Table bordered size="xl">
         <thead>
@@ -96,13 +116,20 @@ const OrderList = () => {
           </tr>
         </thead>
         <tbody>
-          {orderList?.map((item: ResponeOrder) => (
-            <tr key={item?.id}>
+          {orderList?.map((order: ResponeOrder, index) => (
+            <tr key={order?.id}>
               <td className="order-table__body id">
-                <Link to={`/admin/order/${item?.id}`}>#{item?.id}</Link>
+                <Link to={`/admin/order/${order?.id}`}>#{order?.id}</Link>
               </td>
               <td className="order-table__body">
-                {productList?.map((item: ProductModel) => (
+                {/* {
+                  genObj()?.map((item) => {
+                    item?.[order?.id]
+                  })
+                } */}
+                {genObj(order?.id)}
+
+                {/* {productList?.map((item: ProductModel) => (
                   <div key={item?.id}>
                     <img
                       src={item?.images[0]}
@@ -111,14 +138,18 @@ const OrderList = () => {
                     />
                     <span>{item?.name}</span>
                   </div>
-                ))}
+                ))} */}
               </td>
-              <td className="order-table__body">{item?.address}</td>
-              <td className="order-table__body">{item?.status as STATUS}</td>
+              <td className="order-table__body">{order?.address}</td>
+              <td className="order-table__body">{order?.status as STATUS}</td>
               <td className="order-table__body">
-                <button className="order-table__button" style={{padding: "10px", width: "100%"}} disabled={item?.status === "DELIVERED"}
-                onClick={() => handleFinishOrder(item?.id)}>
-                    <AiFillCheckSquare /> Accept
+                <button
+                  className="order-table__button"
+                  style={{ padding: "10px", width: "100%" }}
+                  disabled={order?.status === "DELIVERED"}
+                  onClick={() => handleFinishOrder(order?.id)}
+                >
+                  <AiFillCheckSquare /> Accept
                 </button>
               </td>
             </tr>
@@ -135,13 +166,13 @@ const OrderList = () => {
           <h1 style={{ flex: 1 }}>All Products</h1>
         </div>
         {generateCateGrid(orderList, currentPage, itemsPerPage)}
-        <div className="pagination-wrapper" style={{ margin: "20px auto" }}>
+        {/* <div className="pagination-wrapper" style={{ margin: "20px auto" }}>
           <AdminPagination
             currentPage={currentPage}
             totalPages={Math.ceil(orderList.length / itemsPerPage)}
             onPageChange={handlePageChange}
           />
-        </div>
+        </div> */}
       </div>
     </Layout>
   );
