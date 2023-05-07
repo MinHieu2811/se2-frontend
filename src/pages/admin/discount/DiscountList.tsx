@@ -8,6 +8,8 @@ import { AiOutlineEdit, AiFillDelete } from "react-icons/ai";
 import { ResponseData } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
 import AdminPagination from "../AdminPagination";
+import { useNavigate } from "react-router";
+
 const fakeData = [
   {
     _id: "1",
@@ -53,6 +55,7 @@ const DiscountList = () => {
   const [productData, setProductData] = useState<ResponseData>();
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
+  const navigate = useNavigate();
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
@@ -131,7 +134,9 @@ const DiscountList = () => {
           <InputGroup style={{flex: 2, margin: "0px 20px"}}>
             {/* <Form.Control type="text" placeholder="Keyword"/> */}
           </InputGroup>
-          <Button style={{ flex: 0.5}}>Create New Discount</Button>
+          <Button style={{ flex: 0.5}}
+                  onClick={() => navigate("/admin/voucher-discount/create-discount")}
+          >Create New Discount</Button>
         </div>
         {generateCateGrid(fakeData,currentPage,itemsPerPage)}
         <div className="pagination-wrapper" style={{margin: "20px auto"}}>

@@ -9,6 +9,7 @@ import { ProductModel } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
 import AdminPagination from "../AdminPagination";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const ProductList = () => {
   const itemsPerPage = 5;
@@ -16,6 +17,7 @@ const ProductList = () => {
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { toastDispatch } = useToastContext();
+  const navigate = useNavigate();
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
@@ -105,7 +107,9 @@ const ProductList = () => {
           <InputGroup style={{ flex: 3, margin: "0px 20px" }}>
             {/* <Form.Control type="text" placeholder="Keyword" /> */}
           </InputGroup>
-          <Button style={{ flex: 1 }}>Create New Product</Button>
+          <Button style={{ flex: 1 }}
+                  onClick={() => navigate("/admin/products/create-product")}
+          >Create New Product</Button>
         </div>
         {generateCateGrid(productData, currentPage, itemsPerPage)}
         <div className="pagination-wrapper" style={{ margin: "20px auto" }}>
