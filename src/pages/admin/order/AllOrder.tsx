@@ -6,13 +6,11 @@ import { useToastContext } from "../../../ui-component/toast/ToastContext";
 import Loading from "../../../ui-component/shared/Loading";
 import { AiFillCheckSquare } from "react-icons/ai";
 import Layout from "../../../ui-component/shared/Layout";
-import AdminPagination from "../AdminPagination";
 import { ResponeOrder, STATUS } from "../../../model/order";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthProvider";
 import { ProductModel } from "../../../model/product";
 import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
-import { DetailedObject } from "../../../model/utils";
 
 const OrderList = () => {
   const itemsPerPage = 2;

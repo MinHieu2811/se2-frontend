@@ -1,14 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
-import { Collapse, Dropdown } from "react-bootstrap";
+import { Collapse } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { GrMoreVertical } from "react-icons/gr";
 import { AiFillHome } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { GiPresent } from "react-icons/gi";
 import { BiCategoryAlt } from "react-icons/bi";
 import { TbCheckupList, TbShoppingCartDiscount } from "react-icons/tb";
-import { BiErrorCircle } from "react-icons/bi";
 
 type UIprops = {
   [key: string]: boolean;

@@ -5,7 +5,6 @@ import { useCart } from "../../context/CartProvider";
 import { AiFillLock } from "react-icons/ai";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { axiosImageInstance } from "../../client-api";
-import Loading from "../shared/Loading";
 import { useToastContext } from "../toast/ToastContext";
 import { REMOVE_ALL_AND_ADD } from "../toast";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
@@ -242,7 +241,7 @@ function CheckoutForm({
         )} */}
         <PayPalScriptProvider
           options={{
-            "client-id": `ATngXdphPho9msckiEPa0rD1PCunfyGlBMKYgBnUZxvogf6pappDOgScSb_DQVp4F4z5Xti60VsSxtOf`,
+            "client-id": clientId,
             currency: "USD",
           }}
         >

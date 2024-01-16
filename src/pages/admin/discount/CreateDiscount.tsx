@@ -3,7 +3,7 @@ import Layout from "../../../ui-component/shared/Layout";
 import { Form } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { axiosImageInstance, axiosInstance } from "../../../client-api";
+import { axiosInstance } from "../../../client-api";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
 import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";
 interface Props {}

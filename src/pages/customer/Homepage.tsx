@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Helmet from "../../ui-component/shared/Helmet";
-import { useToastContext } from "../../ui-component/toast/ToastContext";
-import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
 import { axiosInstance } from "../../client-api";
 import axios from "axios";
 import Loading from "../../ui-component/shared/Loading";
-import products from "../../fake-data";
 import HeroSlider from "../../ui-component/customer/HeroSlider";
 import Collection from "../../ui-component/customer/Collection";
 import Grid from "../../ui-component/customer/Grid";
@@ -42,7 +39,6 @@ const policy: PolicyCard = [
 function Homepage() {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const { toastDispatch } = useToastContext();
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
     setLoading(true);

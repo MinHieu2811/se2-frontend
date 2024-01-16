@@ -1,16 +1,14 @@
 import React from "react";
-import { Dropdown } from "react-bootstrap";
-import { AiFillSetting, AiOutlineBars } from 'react-icons/ai'
-import { FiLogOut } from 'react-icons/fi'
+import { AiOutlineBars } from "react-icons/ai";
 import { useAuth } from "../../context/AuthProvider";
 
 const Navbar: React.FC = () => {
-  const {token} = useAuth()
+  const { token } = useAuth();
   const toggleOffcanvas = () => {
-    const sidebarRight = document.querySelector('.sidebar-offcanvas')!;
-    sidebarRight.classList.toggle('active');
-  }
-  console.log(token)
+    const sidebarRight = document.querySelector(".sidebar-offcanvas")!;
+    sidebarRight.classList.toggle("active");
+  };
+  console.log(token);
   return (
     <nav className="navbar p-0 fixed-top d-flex flex-row">
       <div className="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
@@ -21,8 +19,8 @@ const Navbar: React.FC = () => {
           onClick={toggleOffcanvas}
         >
           <span className="toggle-sidebar-icon">
-              <AiOutlineBars style={{color: "white"}}/>
-            </span>
+            <AiOutlineBars style={{ color: "white" }} />
+          </span>
         </button>
       </div>
       <div className="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
@@ -205,8 +203,8 @@ const Navbar: React.FC = () => {
                 <p className="p-3 mb-0 text-center">See all notifications</p>
               </Dropdown.Menu>
             </Dropdown> */}
-          <Dropdown as="li" className="nav-item">
-            {/* <Dropdown.Toggle
+          {/* <Dropdown as="li" className="nav-item"> */}
+          {/* <Dropdown.Toggle
               as="a"
               className="nav-link cursor-pointer no-caret"
             >
@@ -219,7 +217,7 @@ const Navbar: React.FC = () => {
               </div>
             </Dropdown.Toggle> */}
 
-            {/* <Dropdown.Menu className="navbar-dropdown preview-list navbar-profile-dropdown-menu">
+          {/* <Dropdown.Menu className="navbar-dropdown preview-list navbar-profile-dropdown-menu">
               <Dropdown.Divider />
               <Dropdown.Divider />
               <Dropdown.Item
@@ -238,7 +236,7 @@ const Navbar: React.FC = () => {
               </Dropdown.Item>
               <Dropdown.Divider />
             </Dropdown.Menu> */}
-          </Dropdown>
+          {/* </Dropdown> */}
         </ul>
       </div>
     </nav>

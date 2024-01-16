@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, InputGroup, Table } from "react-bootstrap";
+import { Button, InputGroup, Table } from "react-bootstrap";
 import axios from "axios";
 import { axiosInstance } from "../../../client-api";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
-import Loading from "../../../ui-component/shared/Loading";
 import { AiOutlineEdit, AiFillDelete } from "react-icons/ai";
 import { ResponseData } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
@@ -54,7 +53,6 @@ const CategoryList = () => {
   const [productData, setProductData] = useState<ResponseData>();
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
   const { toastDispatch } = useToastContext();
   const navigate = useNavigate();
   const handlePageChange = (pageNumber: number) => {
@@ -90,7 +88,7 @@ const CategoryList = () => {
   const generateCateGrid = (products: any[], currentPage: number, productsPerPage: number) => {
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
-    
+
     return (
       <Table striped="column" bordered hover>
           <thead>

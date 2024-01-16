@@ -5,7 +5,6 @@ import { axiosInstance } from "../../../client-api";
 import { useToastContext } from "../../../ui-component/toast/ToastContext";
 import Loading from "../../../ui-component/shared/Loading";
 import { AiOutlineEdit, AiFillDelete } from "react-icons/ai";
-import { ProductModel, ResponseData } from "../../../model/product";
 import Layout from "../../../ui-component/shared/Layout";
 import AdminPagination from "../AdminPagination";
 import { REMOVE_ALL_AND_ADD } from "../../../ui-component/toast";

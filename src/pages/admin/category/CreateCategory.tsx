@@ -59,16 +59,18 @@ const CreateCategory = (props: Props) => {
                   onChange={handleChange}
                 />
               </Form.Group>
-              
-                
-               
-              
               <Form.Group className="mb-4 width-all">
                 <label htmlFor="CategoryDesc">Category Description</label>
-                <textarea className="form-control text-area mr-2" onChange={handleChange} placeholder="Category Description" style={{width: "100%", resize: "vertical"}} name="CategoryDesc" id="CategoryDesc" />
+                <textarea
+                  className="form-control text-area mr-2"
+                  onChange={handleChange}
+                  placeholder="Category Description"
+                  style={{ width: "100%", resize: "vertical" }}
+                  name="CategoryDesc"
+                  id="CategoryDesc"
+                />
               </Form.Group>
-             
-              
+
               <button className="btn btn-primary mr-1 mt-2">Create</button>
             </form>
           </div>

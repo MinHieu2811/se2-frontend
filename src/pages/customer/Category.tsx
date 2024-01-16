@@ -162,27 +162,6 @@ const Category = () => {
     };
   }, [filterObj]);
 
-  // useUpdateEffect(() => {
-  //   console.log('second run');
-  //   const query = serializeQuery(filterObj || initialState)
-  //   ;(async () => {
-  //     setLoading(true);
-  //     await axiosInstance
-  //       .get(`/product?${query}`)
-  //       .then((res) => res.data)
-  //       .then((res) => console.log(res))
-  //       .finally(() => setLoading(false))
-  //       .catch((err) =>
-  //         toastDispatch({
-  //           type: REMOVE_ALL_AND_ADD,
-  //           payload: {
-  //             type: "is-danger",
-  //             content: "Something went wrong!",
-  //           },
-  //         })
-  //       );
-  //   })();
-  // }, [filterObj])
   return (
     <Layout>
       <>
