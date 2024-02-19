@@ -5,7 +5,7 @@ import axios, {
 } from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "https://se2-ecommerce.herokuapp.com",
+  baseURL: "http://localhost:8000",
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": "true",

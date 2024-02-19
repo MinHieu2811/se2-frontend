@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Helmet from "../../ui-component/shared/Helmet";
 import { axiosInstance } from "../../client-api";
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 import Loading from "../../ui-component/shared/Loading";
 import HeroSlider from "../../ui-component/customer/HeroSlider";
 import Collection from "../../ui-component/customer/Collection";
@@ -11,6 +11,8 @@ import { BiDiamond } from "react-icons/bi";
 import SectionProduct from "../../ui-component/customer/SectionProduct";
 import Banner from "../../ui-component/customer/Banner";
 import Layout from "../../ui-component/customer/Layout";
+import products from "../../fake-data";
+import { ProductModel } from "../../model/product";
 
 type PolicyCard = {
   name: string;
@@ -37,31 +39,37 @@ const policy: PolicyCard = [
 ];
 
 function Homepage() {
-  const [allProducts, setAllProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState<ProductModel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const handleFetchProduct = async ({
+    cancelToken,
+  }: {
+    cancelToken: CancelTokenSource;
+  }) => {
+    try {
+      setLoading(true);
+      await axiosInstance
+        .get("/product?brand=&page=1&sorting=&keyword=", {
+          cancelToken: cancelToken.token,
+        })
+        .then((res) => {
+          setLoading(false);
+          setAllProducts(products);
+        });
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
-    setLoading(true);
-    (async () => {
-      try {
-        setLoading(true);
-        await axiosInstance
-          .get("/product?brand=&page=1&sorting=&keyword=", {
-            cancelToken: cancelToken.token,
-          })
-          .then((res) => {
-            setLoading(false);
-            setAllProducts(res.data?.data);
-          });
-      } catch (error: any) {
-        console.log(error);
-      }
-    })();
+    handleFetchProduct({ cancelToken });
 
     return () => {
       cancelToken.cancel();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -70,9 +78,7 @@ function Homepage() {
         <Helmet title="SolStore" />
         {loading && <Loading />}
 
-        <>
-          <HeroSlider productList={allProducts} />
-        </>
+        <HeroSlider productList={allProducts} />
 
         <div style={{ margin: "50px 50px" }}>
           <Grid col={3} mdCol={2} smCol={1} gap={20}>

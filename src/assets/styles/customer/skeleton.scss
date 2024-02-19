@@ -1,0 +1,54 @@
+.skeleton-wrapper {
+  height: 535px;
+  width: 100%;
+
+  &__image {
+    width: 387px; /* Set the width of the image placeholder */
+    height: 387px; /* Set the height of the image placeholder */
+    // background-color: #f0f0f0; /* Light gray background color */
+    animation: shimmer 1.5s infinite linear;
+
+    background: #f6f7f8;
+    background-image: linear-gradient(
+      to right,
+      #f6f7f8 0%,
+      #edeef1 20%,
+      #f6f7f8 40%,
+      #f6f7f8 100%
+    );
+    background-repeat: no-repeat;
+  }
+
+  &__info {
+    flex: 1;
+    margin-top: 10px;
+
+    &--branch,
+    &--name,
+    &--price {
+      height: 20px; /* Set the height of each info placeholder */
+      background-color: #f0f0f0; /* Light gray background color */
+      margin-bottom: 10px; /* Adjust margin for spacing between placeholders */
+      animation: shimmer 1.5s infinite linear; /* Shimmer animation */
+      background: #f6f7f8;
+      background-image: linear-gradient(
+        to right,
+        #f6f7f8 0%,
+        #edeef1 20%,
+        #f6f7f8 40%,
+        #f6f7f8 100%
+      );
+      background-repeat: no-repeat;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -468px 0;
+    }
+
+    100% {
+      background-position: 468px 0;
+    }
+  }
+}

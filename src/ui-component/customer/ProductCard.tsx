@@ -9,19 +9,25 @@ import {
 import { BiShow } from "react-icons/bi";
 import { useCart } from "../../context/CartProvider";
 import { useToggleModal } from "../../context/ModalProvider";
+import SkeletonLoading from "../shared/SkeletonLoading";
 
 type Props = {
   productInfo: ProductModel;
+  isLoading?: boolean;
 };
 
-function ProductCard({ productInfo }: Props) {
+function ProductCard({ productInfo, isLoading = false }: Props) {
   const { addToCartHandler } = useCart();
   const { setOpen } = useToggleModal();
 
   const addToCart = (product: ProductModel, quantity: number) => {
-    addToCartHandler && addToCartHandler(product, quantity);
+    addToCartHandler?.(product, quantity);
     setOpen?.();
   };
+
+  if (isLoading) {
+    return <SkeletonLoading />;
+  }
   return (
     <div className="productCart-wrapper">
       <div className="productCart-wrapper_img">

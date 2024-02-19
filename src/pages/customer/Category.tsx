@@ -17,7 +17,7 @@ import { useToastContext } from "../../ui-component/toast/ToastContext";
 import { REMOVE_ALL_AND_ADD } from "../../ui-component/toast";
 import axios from "axios";
 import { ProductModel } from "../../model/product";
-import LoadingCustomer from "./Loading";
+import products from "../../fake-data";
 // import { useUpdateEffect } from "../../hooks/useUpdateEffect";
 
 function shallowEqual(
@@ -133,16 +133,17 @@ const Category = () => {
     );
     (async () => {
       setLoading(true);
-      filterObj && shallowEqual(filterObj as DetailedObject<number | string>, result) &&
+      filterObj &&
+        shallowEqual(filterObj as DetailedObject<number | string>, result) &&
         (await axiosInstance
           .get(`/product?${query}`, {
             cancelToken: cancelToken.token,
           })
           .then((res) => res?.data)
           .then((res) => {
-            const list = res?.data
-            setTotalPage(Math.ceil(list?.length/PRODUCT_PER_PAGE))
-            setProductList(list)
+            const list = res?.data;
+            setTotalPage(Math.ceil(list?.length / PRODUCT_PER_PAGE));
+            setProductList(list);
           })
           .finally(() => setLoading(false))
           .catch((err) => {
@@ -166,7 +167,7 @@ const Category = () => {
     <Layout>
       <>
         <Helmet title="Category" />
-        {loading && <LoadingCustomer />}
+        {/* {loading && <LoadingCustomer />} */}
         <div className="category-wrapper">
           <div className="container">
             <Breadcrumb />
@@ -200,17 +201,11 @@ const Category = () => {
             <div className="product-list">
               <Grid col={3} mdCol={2} smCol={1} gap={20}>
                 <>
-                  {!loading ? (
-                    productList?.map((item, index) => (
-                      <div key={index}>
-                        <ProductCard productInfo={item} />
-                      </div>
-                    ))
-                  ) : (
-                    <div style={{ minHeight: "50vh" }}>
-                      <></>
+                  {products?.map((item, index) => (
+                    <div key={index}>
+                      <ProductCard productInfo={item} isLoading={loading} />
                     </div>
-                  )}
+                  ))}
                 </>
               </Grid>
             </div>
